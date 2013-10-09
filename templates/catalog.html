@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extended_head %}
+    {{ header_content|safe }}
+{% endblock %}
+
+{% block content %}
+      <div id="wrapper">
+       <h2>Каталог</h2>
+       <p>
+		<img src="/static/images/paper.png">
+		{% if car_model %}
+			<a href="/catalog?car_model={{ car_model }}"> {{ car_model_name }}</a> 
+			{% if category %}
+				&#8722; <a href="/catalog?car_model={{ car_model }}&category={{ category }}">{{ category_name }}</a> 
+			{% endif %}
+		{% endif %}
+       </p>
+		{% if items.object_list %}
+		   <table class="catalog" rules="all" border="1">
+			  <tr>
+<!-- 				  <td>Производитель</td> -->
+				  <td>Фото</td>
+				  <td>Артикул</td>
+				  <td>Наименование</td>
+				  <td>На автомобиль</td>
+				  <td>Цвет</td>
+				  <td>Наличие</td>
+				  <td><span class="red">Цена</span></td>
+<!-- 				  <td><span class="blue">Предоплата</span></td> -->
+				  <td>В корзину</td>
+			  </tr>
+			  
+			  {% for i in items.object_list %}
+			  
+			  <tr>
+				  <td><img  {% if i.image %} src="/media/{{ i.image }}" style='max-height: 46px; max-width: 46px' {% else %} src="/static/images/photo.jpg" {% endif %}  alt='{{ i.name }}' ></td>
+				  <td>{{ i.art }}</td> 
+				  <td class="left">
+					<p><h3><a href="/item/{{ i.id }}">{{ i.name }}</a></h3>
+					</p>
+				  </td>
+				  <td>{{ i.car_model.full_name }}</td>
+				  <td>{% if i.color %} {{ i.color.name }} {% else %} --- {% endif %}</td>
+				  <td class="color">
+					<span class="green"></span>
+					<span class="green"></span>
+					<span class="green"></span>
+					<span class="green"></span>
+					<span class="green"></span>
+				</td>
+				  <td><b>{{ i.price }} руб.</b></td>
+<!-- 				  <td>1200</td> -->
+				  <td>
+                            <form method='POST'>
+                                <input type="submit" class='in_basket' value="" name="in_basket" />
+                                <input type="hidden" name='action' value="add_in_basket" />
+                                <input type="hidden" name='item_id' value="{{ i.id }}" />
+                                {% csrf_token %}
+                            </form>				  
+				  </td>
+			  </tr>
+			  
+			  {% endfor %}
+			  </table><!--."catalog-->
+		{% else %}
+			<br />
+			<h2>По Вашему запросу ничего не найдено.</h2>
+		{% endif %}
+		{% if need_pagination %}
+	          <div id="page_nav">
+			      <div class="page_navigation">
+					{% if items.has_previous %}
+						<a href="{{ get_request }}?page={{ items.previous_page_number }}"><img src="/static/images/page_nav.jpg" /></a>
+					{% endif %}
+					<ul>
+						{% for p in page_range %}
+							<li {% if p == items.number %} class='active' {% endif %}>
+								<a href="{{ get_request }}&page={{ p }}">{{ p }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+					{% if items.has_next %}
+						<a href="{{ get_request }}&page={{ items.next_page_number }}"><img src="/static/images/page_next.jpg" /></a>
+					{% endif %}
+			</div><!--#page_nav-->
+		</div><!--.page_navigation-->
+		{% endif %}
+	    </div><!-- #wrapper-->
+{% endblock %}

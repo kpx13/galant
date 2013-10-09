@@ -1,0 +1,3 @@
+Для активации вашего аккаунта необходимо перейти по ссылке:
+http://mygoodthings.ru/accounts/activate/{{ activation_key }}/
+Спасибо!

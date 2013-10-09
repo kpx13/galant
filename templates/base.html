@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <title>Добрые Вещи | Интернет магазин | {% block title %}{% endblock %}</title>
+            <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+            <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet">
+            <script src="/static/js/jquery-1.9.1.min.js"></script>
+            <script src="/static/js/bootstrap.js"></script>
+            <link href="/static/css/bootstyle.css" type="text/css" rel="stylesheet">
+            <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+            <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        
+            {% block extended_head %}
+            {% endblock %}
+        </head>
+        
+ 
+        <body>
+        
+            <div id="auth_dialog" title='Вход'  style='display: none'>
+                <form method='POST' class='authentication_form' action='/'>
+                        {{ authentication_form.as_p }}
+                        <a href="/accounts/password/reset/">Забыли пароль?</a>
+                        <input type="submit" id="button-entry" class='btn btn-primary' value="вход" />
+                        <input type="hidden" name="action" value="login" />
+                    {% csrf_token %}
+                </form>
+            </div>
+            <div id="outer"></div>
+            <div class="container">
+                
+                <div class='row'>
+                    <div class='row-fluid'>
+                        <div class='span9 grad_bg'>
+                                <ul class="top-menu left">
+                                <li><a href="/">Главная</a></li><li>|</li>
+                                <li><a href="/news">Новости</a></li><li>|</li>
+                                <li><a href="/oplata">Оплата</a></li><li>|</li>
+                                <li><a href="/skidki">Скидки</a></li><li>|</li>
+                                <li><a href="/dostavka">Доставка</a></li><li>|</li>
+                                <li><a href="/vozvrat">Возврат</a></li><li>|</li>
+                                <li><a href="/request">Обратная связь</a></li>
+                            </ul>
+                        </div>
+                        <div class='span3 grad_bg'  style='text-align: right'>
+                            
+                                {% if not user.is_authenticated %}
+
+                                        <ul class="top-menu right">
+                                            <li><a href="/accounts/login/">Вход</a></li>
+                                            <li>|</li>
+                                            <li><a href="/accounts/register/">Регистрация</a></li>
+                                        </ul>
+                             
+                                {% else %}
+                                        <ul class="top-menu right">
+                                            <li><a href="/accounts/logout" id='auth_dialog_btn'>Выход</a></li>
+                                            <li>|</li>
+                                            <li><a href="#">Личный кабинет</a></li>
+                                        </ul>
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class='header_img'>
+                    <img src='/static/img/top.png' style='width: 1200px; height: 37px; margin-bottom: 10px' />
+                </div>
+                <div class='row'>
+                    <div class='span6'> <!--Левая часть шапки-->
+                        <div class='row'>
+                            <div class='row-fluid' >
+                                <div class='span3' style='padding: 0; margin: 0'>
+                                    <a href='/'><img src='/static/img/logo.jpg' class='logo'></a>
+                                </div>
+            
+                                <div class="span9 header">
+                                    <img src='/static/img/logo_title.png' style='width: 320px; margin-left: 30px; margin-top: -10px' />
+                                </div>
+                                
+                                <div class="span12" style='text-align: right; margin-bottom: 0px; margin-top: -20px'>
+                                    <div>
+                                        <img src='/static/img/six.jpg' style='height: 30px; margin-right: 20px' />
+                                        <img src='/static/img/vkontakte.png' style='height: 30px;' />
+                                        <img src='/static/img/twitter.png' style='height: 30px;' />
+                                        <img src='/static/img/facebook.png' style='height: 30px;' />
+                                        <img src='/static/img/instagram.png' style='height: 30px;' />
+                                    </div>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                    
+                    <div class='span3'> <!--Правая часть шапки-->
+                        <div class='well well-small well-header'>
+                            <p>
+                                <img src='/static/img/phone.png' style='height: 30px;' /><b>8 (965) 115-03-25</b><br />
+                                <img src='/static/img/skype.png' style='height: 30px;' /> mygoodthings<br />
+                                <img src='/static/img/mail.png' style='height: 30px;' /> goodthings@list.ru
+                            </p>
+                        </div>
+                    </div>
+                    <div class='span3'>
+                        <div class='well well-small well-header'>
+                            <img src='/static/img/shopcart.png' style='height: 60px; float: left' />
+                            {% if cart_count > 0 %}
+                                <p>В вашей корзине <b>{{ cart_count }} ед. товара</b>
+                                на сумму: <span> {{ cart_sum }}</span> руб.</p>
+                                <a href="/cart" style='float: right'>Перейти в корзину</a>
+                            {% else %}
+                                <p>Ваша корзина пуста.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class='span12'>
+                        <div class='row'>
+                            <div class='row-fluid' style='height: 45px'>
+                                <form method='GET' action='/search'>
+                                    <div class="input-append" style='width: 100%'>
+                                    
+                                            <input type='text' class='span11' name='search' {% if search %}value='{{search}}'{% endif %} />
+                                            <button class="btn" type="submit"><i class="icon-search"></i> Найти</button>
+                                            
+                                    </div>
+                                 </form>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='row-fluid'>
+                                <div class="span7"> <!-- style='background-color: blue'>-->
+                                    <ul class="breadcrumb header-bg">
+                                        {% block breadcrumb %}
+                                            <li class="active">Главная</li>
+                                        {% endblock %}
+                                    </ul>
+                                </div>
+                                <div class="span3 grad_bg"><!--  >-->
+                                    {% block sort %}
+                                   <!-- <p> 
+                                        Сортировать по: &nbsp;&nbsp;&nbsp;
+                                        <a href='#'>Цене</a>&nbsp;&nbsp;&nbsp;
+                                        <a href='#'>Дате</a>&nbsp;&nbsp;
+                                    </p>-->
+                                    {% endblock %}
+                                </div>
+                                <div class="span2 grad_bg" style='text-align: right' ><!-- style='background-color: black'>-->
+                                    <a href='/favorites'><i class="icon-heart icon-white"></i> Избранное</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div><!-- шапка-->
+                <div class='row'>
+                        {% for message in messages %}
+                            <div class='message-wrapper'>
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message|safe }}
+                            </div>
+                            </div>
+                        {% endfor %}
+                </div>
+                {% block content %}
+                
+                {% endblock %}
+                        
+                <div class='header_img'>
+                    <img src='/static/img/bottom.png' style='width: 1200px; height: 37px; margin-top: 10px' />
+                </div>
+                
+                <div class='row'>
+                    <footer>
+                     
+                        
+                        {{ podval|safe }}
+                        
+                        <div style='float: right'>
+                            <img src='/static/img/vkontakte.png' style='height: 40px;' />
+                            <img src='/static/img/twitter.png' style='height: 40px;' />
+                            <img src='/static/img/facebook.png' style='height: 40px;' />
+                            <img src='/static/img/instagram.png' style='height: 40px;' />
+                        </div>
+                        <div>
+                            <p>&copy; Добрые Вещи 2013<br /><a href='http://webgenesis.ru'>Создание сайта</a></p>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            
+            
+            <script src="/static/js/holder.js"></script>
+        </body>
+</html>

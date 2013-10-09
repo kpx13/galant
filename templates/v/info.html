@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title> 
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="robots" content="index, follow" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	
+		<script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+					$(".cart").mouseover(function() {
+							$(".cartup").show();
+			 
+						});	
+					$(".cart").mouseout(function() {
+							$(".cartup").hide();
+			 
+						});	
+					$(".zakaz").click(function() {
+							$(".tovarup").hide();
+							$(this).parent().find(".tovarup").show();
+							return false;
+				
+						});	
+					$(".tovarup-close").click(function() {
+							$(this).parent().hide();
+							return false;				
+						});	
+				});
+		</script>
+		<!--[if lt IE 7]>
+		<style media="screen" type="text/css">
+		#container {
+		height:100%;
+		}
+		</style>
+		<![endif]-->	 
+		 
+		<!--[if lte IE 7]>
+		<link rel="stylesheet" type="text/css" href="css/ie7.css" />
+		<![endif]-->
+		 	<script type="text/javascript" src="js/jquery.bpopup-0.8.0.min.js"></script>
+		<script type="text/javascript">
+			// Semicolon (;) to ensure closing of earlier scripting
+			// Encapsulation
+			// $ is assigned to jQuery
+			;(function($) {
+
+					// DOM Ready
+					$(function() {
+
+							// Binding a click event
+							// From jQuery v.1.7.0 use .on() instead of .bind()
+							$('#my-button').bind('click', function(e) {
+
+									// Prevents the default action to be triggered. 
+									e.preventDefault();
+
+									// Triggering bPopup when click event is fired
+									$('#element_to_pop_up').bPopup();
+
+								});
+
+						});
+		
+					$(function() {
+
+							// Binding a click event
+							// From jQuery v.1.7.0 use .on() instead of .bind()
+							$('#my-button1').bind('click', function(e) {
+
+									// Prevents the default action to be triggered. 
+									e.preventDefault();
+
+									// Triggering bPopup when click event is fired
+									$('#element_to_pop_up').bPopup();
+
+								});
+
+						});
+		
+					$(function() {
+
+							// Binding a click event
+							// From jQuery v.1.7.0 use .on() instead of .bind()
+							$('#my-button2').bind('click', function(e) {
+
+									// Prevents the default action to be triggered. 
+									e.preventDefault();
+
+									// Triggering bPopup when click event is fired
+									$('#onlinereq').bPopup();
+
+								});
+
+						});
+
+				})(jQuery);
+		</script>
+	</head>
+	<body>
+
+
+		<div id="container">
+
+
+
+			<div id="header">
+				<div id="headerin">
+
+					<div class="c1">
+						<a href=""><img src="images/logo.png" class="logo" /></a>
+					</div> <!--c1-->
+
+					<div class="c2w">
+		
+						<div class="c2pad">
+							<p>Здравствуйте, Александр Викторович</p>
+							<a href="" class="exit">Выйти</a>
+							<a href="" class="lk">Личный кабинет</a>
+	
+						</div> <!--c2pad-->
+
+						<div class="clear"></div>
+	
+						<div class="c2">
+							<h2>Сумки, кошельки, перчатки, кожгалантерея, остальная продукция</h2> 
+							<a href="about.html">о компании</a>
+							<a href="news.html">НОвости</a>
+						</div> <!--c2-->
+	
+						<div class="c3">
+							<p>Наш телефон:</p>
+							<h3>+7 (925) 075-63-20</h3>
+							<h3>+7 (925) 678-61-25</h3>
+							<a href="" id="my-button2">Обратный звонок</a>  
+		
+						</div> <!--c3-->
+	
+						<div class="c4">
+							<div class="cartw">
+								<div class="cart">
+									<img src="images/carti.png" class="icon" />
+									<h2>	ваша корзина</h2>
+									<p>	В корзине: <span>2 шт.</span></p>
+									<p>Сумма: <span>150,50 руб.</span></p>	
+			
+			
+									<div class="cartup">
+	
+										<div class="mini">
+											<div class="miniw">
+												<a href="catin.html">
+													<div class="item">
+														<img src="images/ch4.jpg" alt="" />
+														<span class="model">Платье Vika Smolyanitskaya</span>
+														<span class="amount">Всего: 12</span>
+														<span class="counter">Цена: 144 466, 00 руб.</span>
+													</div> <!--item-->
+												</a>
+
+
+												<div class="clear"></div>
+
+												<a href="catin.html">
+													<div class="item">
+														<img src="images/ch5.jpg" alt="" />
+														<span class="model">Куртка, TOM FARR</span>
+														<span class="amount">Всего: 1</span>
+														<span class="counter">Цена: 11 050 руб.</span>
+													</div> <!--item-->
+												</a>
+
+												<div class="clear"></div>
+
+												<a href="catin.html">
+													<div class="item">
+														<img src="images/ch6.jpg" alt="" />
+														<span class="model"> Куртка, Laura Scott</span>
+														<span class="amount">Всего: 1</span>
+														<span class="counter">Цена:  4 315 руб.</span>
+													</div> <!--item-->
+												</a>
+
+												<div class="clear"></div>
+
+												<div class="zakaz4"><a href="cart.html">В корзину</a></div>
+
+
+											</div> <!--miniw-->
+										</div> <!--mini-->
+
+									</div> <!--cartup-->
+			
+			
+								</div> <!--cart-->
+							</div> <!--cartw-->
+						</div> <!--c4-->
+						<div class="clear"></div>
+						<div id="menu">
+							<ul>
+								<li><a href="index.html" >Главная</a></li>
+								<li><a href="cat.html">каталог</a></li>
+								<li><a href="news.html">акции</a></li>
+								<li><a href="dostavka.html">доставка</a></li>
+								<li><a href="info.html"  class="active">оптовикам</a></li>
+								<li><a href="contact.html"  >контакты</a></li>
+							</ul>
+						</div> <!--menu-->
+	
+					</div> <!--c2w-->
+
+				</div> <!--headerin-->
+				<div class="top"></div>
+			</div> <!--header-->
+		   
+
+			<div class="maskwrap">
+				<div class="colmask leftmenu">
+					<div class="colleft">
+						<div class="col1">
+							<!-- Column 1 start -->
+			
+							<div class="breadcrumbs">
+								<a href="" class="empty">Главная</a> 
+								<a href="" class="no">Оптовикам</a>
+							</div>
+
+
+							<p>
+
+								Самовывоз заказов из пункта выдачи (м. Войковская)
+
+								Вы можете получить свой заказ в пункте самовывоза по адресу: ул. Космонавта Волкова, д. 10, оф. 7, станция метро «Войковская» на следующий рабочий день с 15:00 до 19:00 после размещения, если он оформлен до 15:00, во все последующие дни с 10:00 до 19:00. Срок хранения заказа в пункте самовывоза составляет 7 дней, включая дату размещения.
+
+								Бесплатный способ доставки. Вы можете заказать несколько товаров для примерки в соответствии с данными ограничениями:
+							</p>	
+		
+							<p><strong>Заполните, пожалуйста, следующую форму. Поля отмеченные * - обязательны к заполнению.</strong></p>
+
+							<div class="forms info">
+
+								<label>ФИО*</label>
+								<input type="text" name="T1" class="tinput stretch">	
+
+								<label>Логин*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+								<label>Пароль*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+								<label>Подтверждение пароля*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+								<label>Контактный телефон с кодом города*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+
+								<label>E-mail*</label>
+								<input type="text" name="T1" class="tinput stretch">	
+
+								<label>Город</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+								<label>Организация*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+								<label>Адрес торгового центра*</label>
+								<input type="text" name="T1" class="tinput stretch" >	
+
+
+								<div class="clear"></div>
+		
+								<input type="button" class="send cl" value="Отправить">
+
+							</div> <!--forms-->
+		
+						</div>	<!--col1-->
+	
+						<div class="col2">
+							<!-- Column 2 start -->
+							<div class="lmenu">
+		
+
+	
+								<ul>
+		
+									<li>
+										<a href="" class="open">Женская одежда</a>
+				
+										<ul>
+											<li>
+												<a href="">Платья</a>
+												<ul>
+													<li><a href="">Платья</a></li>
+													<li><a href="">IceBerg</a></li>
+													<li><a href="">LoriBlu</a></li>
+													<li><a href="">Mangano</a></li>
+												</ul>
+											</li>
+					
+											<li>
+												<a href="">Кофты</a>
+												<ul>
+													<li><a href="">Платья</a></li>
+													<li><a href="">IceBerg</a></li>
+													<li><a href="">LoriBlu</a></li>
+													<li><a href="">Mangano</a></li>
+												</ul>
+											</li>
+
+										</ul>
+			
+									</li>
+		
+		
+									<li><a href="">Мужская одежда</a></li>
+									<li><a href="">Женская обувь</a></li>
+									<li><a href="">Мужская обувь</a></li>
+									<li><a href="">Детская одежа</a></li>
+									<li><a href="">Детская обувь</a></li>
+									<li><a href="">Аксессуары</a></li>
+		
+								</ul>
+		
+		
+	
+
+							</div> <!-- lmenu end -->
+	
+	
+							<div class="sidehead"><h2>Торговые марки</h2></div>
+	
+							<div class="brands">
+	 
+								<ul>
+									<li><a href="">Labbra <span>(421)</span></a></li>
+									<li><a href="">Modo Gru <span>(56)</span></a></li>
+									<li><a href="">AnyDay <span>(39)</span></a></li>
+									<li><a href="">Elizone <span>(17)</span></a></li>
+									<li><a href="">Galini <span>(2)</span></a></li>
+				
+								</ul>
+							</div> <!--brands-->
+							<!-- Column 2 end -->
+						</div>
+					</div>
+				</div> <!--colmask-->
+			</div> <!--id body-->
+	
+
+	 
+			<div id="footer">
+				<div class="bottom"></div>
+
+				<div id="footerin">
+
+					<div class="fc1">
+						<p>© 2013. Galant. Все права защищены.</p>
+						<div class="social">Мы в социальных сетях  — 
+							<a href=""><img src="images/vk.jpg" class="si"/></a>
+							<a href=""><img src="images/fb.jpg" class="si" /></a>
+							<a href=""><img src="images/tw.jpg" class="si"/></a>
+						</div> <!--social-->
+	
+					</div> <!--fc1-->	
+
+					<div class="fc2"> 
+						<p><strong>Телефон</strong>: +7 (495) 678-67-67</p>
+						<p><strong>E-mail</strong>: <a href="mailto:mail@mail.ru">mail@mail.ru</a></p>
+						<p><strong>Skype</strong>: Login</p>
+
+					</div> <!--fc2-->
+
+					<div class="fc3"> 
+						<p>Разработка сайта веб-студии</p>
+					</div> <!--fc3-->
+	
+				</div> <!--footerin-->	
+			</div> <!--footer-->
+			<div id="onlinereq">
+	
+				<h2>Обратный звонок</h2>
+				<label>Ваше имя</label>
+				<input type="text" name="T1" class="tinput">
+			
+				<label>Ваш телефон</label>
+				<input type="text" name="T1" class="tinput">
+	
+			
+			
+				<input type="button" class="button bi" value="Отправить">
+					
+			</div> <!--onlinereq-->
+		</div> <!--container-->
+
+
+
+
+
+	</body>
+</html>

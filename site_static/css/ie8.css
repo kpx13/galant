@@ -1,0 +1,7 @@
+input[type=checkbox].css-checkbox {display:block;float:left;}
+.css-label { background-image:none;}
+input[type=checkbox].css-checkbox + label.css-label { padding-left:0px;}
+.discount {display: block;float: right;clear: both;}
+.tpad span {color: #be5559!important;font-size: 1.7em!important;display: block; font-family: tahoma, arial, verdana;padding: 0;clear: both;float: none;margin: 0;text-transform: none;}
+
+

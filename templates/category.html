@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extended_head %}
+    {{ header_content|safe }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/">Главная</a> <span class="divider">/</span></li>
+    {% for p in category.get_path %}
+        <li><a href="/category/{{ p.id }}">{{ p.name }}</a> <span class="divider">/</span></li>
+    {% endfor %}
+    <li class="active">{{ category.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class='row'><!-- средняя часть страницы-->
+        <div class='row-fluid'>
+            <div class='span3'> <!--левая панель-->
+                <div>
+                    <div class="accordion" id="accordion2">
+                        {% for c in categories %}
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_{{ c.id }}">
+                                        {{ c.name }}
+                                    </a>
+                                </div>
+                                <div id="collapse_{{ c.id }}" class="accordion-body collapse {% if category.id = c.id or category.parent.id = c.id %} in {% endif %}">
+                                    <div class="accordion-inner">
+                                        <ul class="nav nav-list">
+                                            {% for s in c.child.all %}
+                                                <li><a href="/category/{{ s.id }}">{{ s.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        
+    </div>
+    <div class='span9'><!-- правая панель-->
+            <div id="fb-root"></div>
+            <script>
+                (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+    
+            <div style='float: right'>
+                <p><div class="fb-like" data-href="http://www.mygoodthings.ru/" data-send="true" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial" data-action="recommend"></div>  Если Вам нравится, поставьте Like</p>
+            </div>
+            <div style='clear: both'></div>
+        
+        
+        {% if category.child %}
+        <div class="row-fluid">
+            <ul class="thumbnails">
+                {% for c in category.child.all %}
+                    <li class="span4">
+                        <a href="/category/{{ c.id }}" class="thumbnail" style='height: 230px'>
+                            <img src="/media/{{ c.image }}" alt="" style='max-height: 200px'/>
+                            <div class="caption"><p>{{ c.name }}</p></div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% if category.items %}
+        <div class="row-fluid">
+            <ul class="thumbnails">
+                {% for i in category.items %}
+                    <li class="span3">
+                        <a href="/item/{{ i.id }}" class="thumbnail" style='height: 230px'>
+                            <img src="/media/{{ i.image.all.0.image }}" alt="" style='max-height: 180px'/>
+                            <div class="caption"><p>{{ i.name }} <span>{{ i.price }}&nbsp;руб.</span></p></div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+                <p>В этой категории нет товаров.</p>
+        {% endif %}
+
+    </div>
+</div>
+</div>
+{% endblock %}

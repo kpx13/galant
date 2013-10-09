@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extended_head %}
+    {{ header_content|safe }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/">Главная</a> <span class="divider">/</span></li>
+    <li class="active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+	<h2>{{ title }}</h2>
+    {{ content|safe }}
+{% endblock %}

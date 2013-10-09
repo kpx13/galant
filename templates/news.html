@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/">Главная</a> <span class="divider">/</span></li>
+    <li class="active">Новости</li>
+{% endblock %}
+
+{% block content %}
+    {% for n in news %}
+        <h2>{{ n.name }}</h2>
+        <p>{{ n.text }}<br /> <i>{{ n.date|date }}</i></p>
+        
+    {% endfor %}
+{% endblock %}

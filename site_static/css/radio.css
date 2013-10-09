@@ -1,0 +1,22 @@
+.radio {
+	vertical-align: middle;
+	width: 14px;
+	height: 16px;
+	background: url(../images/radio.png) no-repeat;
+	cursor: pointer;
+}
+.radio.checked {
+  background-position: -14px 0;
+}
+.radio.disabled {
+  background-position: 0 -16px;
+}
+.radio.checked.disabled {
+  background-position: -14px -16px;
+}
+.radio.focused {
+  background-position: 0 -32px;
+}
+.radio.checked.focused {
+  background-position: -14px -32px;
+}

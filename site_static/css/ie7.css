@@ -1,0 +1,28 @@
+.cartup {position: absolute;margin: 0 -100px 0 0;z-index: 999}
+.catalog .block {float: left;	}
+.cart h2 {margin: 20px 0 0 0 ;}
+.nivo-controlNav {text-align:center;padding: 15px 0;position: relative;margin: -70px 45%;z-index: 9999;}
+.mask {width: 1018px;float: left;background: url(../images/mask.png) no-repeat;height: 282px;z-index: 1;overflow: hidden;}
+input[type=checkbox].css-checkbox {display:block;float:left;}
+.css-label { background-image:none;}
+input[type=checkbox].css-checkbox + label.css-label { padding-left:0px;}
+.forms label {
+color: #4a4d57!important;font-size: 0.9em!important;float: left;margin: 5px 5px 0 0;font-family: tahoma, arial, verdana;padding: 2px 0 5px 0;text-align: center;clear: both;text-transform: none;}
+.minus, .plus {cursor: pointer;display: inline;position: relative;bottom: 5px;}
+.checkout1 {color: #fff!important;}
+.maskwrap {width: 970px;padding-bottom:145px;   margin: 0 auto; overflow: hidden;}
+#header .c2pad p {float: right;text-align: right;}
+#footer .fc1, .fc2, .fc3 {float: left;width: 33%;}
+.tovardsc .instock {color: #be5559!important;font-size: 0.8em!important;float: left;margin: 10px -15px ;font-family: tahoma, arial, verdana;padding: 0;clear: both;text-transform: none;width: 30%;}
+.tpad span {display: block;float: right;clear: both;}
+.cartup {position: absolute;width: 200px;z-index: 9999;overflow: hidden;margin: 15px -70px 0 -70px;}
+.cartup a {cursor: pointer;}
+#header .c2pad .lk {margin: 0 0 0 10px;}
+.discount {display: block;float: right;clear: both;}
+#footerin {overflow: hidden;} 
+#header .c1, .c2, .c3, .c4 {float: left;height: 93px;z-index: 999999;}
+.cartw {z-index: 999;position: relative;top: 5px; }
+.cart {margin: 10px 0 0 0;float: right;z-index: 999;}
+#menu ul li a {  padding: 0 33px;}
+#menu {	margin: 25px 0 0 0; height: 41px; float: right;}
+.cart {	height: 55px;}
