@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from models import Brand, Category, Color, Image, Item, Material
+from models import Brand, Category, Color, Image, Item, Material, Size
 
 class ImageInline(admin.StackedInline): 
     model = Image
@@ -11,10 +11,11 @@ class CategoryAdmin(admin.ModelAdmin):
     
 class ItemAdmin(admin.ModelAdmin):
     inlines = [ ImageInline, ]
-    list_display = ('name', 'category', 'price',  'stock')
+    list_display = ('name', 'category', 'price')
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand)
 admin.site.register(Color)
 admin.site.register(Material)
+admin.site.register(Size)
 admin.site.register(Item, ItemAdmin)

@@ -7,9 +7,9 @@ import pytils
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'название')
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', verbose_name=u'родитель')
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', verbose_name=u'родительская категория')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
-    slug = models.SlugField(verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
+    slug = models.SlugField(max_length=128, verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -53,7 +53,7 @@ class Category(MPTTModel):
         
 class Brand(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'название')
-    slug = models.SlugField(verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
+    slug = models.SlugField(max_length=128, verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -113,16 +113,30 @@ class Size(models.Model):
     
 class Item(models.Model):
     category = models.ForeignKey(Category, verbose_name=u'категория', related_name='items')
-    brand = models.ForeignKey(Brand, verbose_name=u'марка', related_name='item')
-    color = models.ForeignKey(Color, blank=True, verbose_name=u'цвет', related_name='item')
-    material = models.ForeignKey(Material, blank=True, verbose_name=u'материал', related_name='item')
-    sizes = models.ManyToManyField(Size, blank=True, verbose_name=u'размеры', related_name='item')
+    brand = models.ForeignKey(Brand, verbose_name=u'марка', related_name='items')
+    color = models.ForeignKey(Color, blank=True, verbose_name=u'цвет', related_name='items')
+    material = models.ForeignKey(Material, blank=True, verbose_name=u'материал', related_name='items')
+    sizes = models.ManyToManyField(Size, blank=True, verbose_name=u'размеры')
     name = models.CharField(max_length=512, verbose_name=u'название')
+    art = models.CharField(max_length=50, verbose_name=u'артикул')
     price = models.FloatField(verbose_name=u'цена')
     price_new = models.FloatField(blank=True, verbose_name=u'новая цена (для акций)')
     description = RichTextField(default=u'', verbose_name=u'описание')
-    stock = models.IntegerField(default=0, blank=True, verbose_name=u'в наличии')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
+    at_home = models.BooleanField(blank=True, default=False, verbose_name=u'показывать на главной')
+    slug = models.SlugField(max_length=128, verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug=pytils.translit.slugify(self.name) + '-' + self.art
+        super(Item, self).save(*args, **kwargs)
+    
+    @staticmethod
+    def get_by_slug(page_name):
+        try:
+            return Item.objects.get(slug=page_name)
+        except:
+            return None
 
     @staticmethod
     def get(id_):

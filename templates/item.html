@@ -41,85 +41,48 @@
             <div class="colleft1_1">
                 <div class="col1_1_1">
                     <!-- Column 1 start -->
-
-
+                    
                     <div class="tpad">
-
                         <div class="state">
-
-                            <h3>Платье Bench</h3>
-                            <p>Артикул: 310017</p>
+                            <h3>{{ item.name }}</h3>
+                            <p>Артикул: {{ item.art }}</p>
                         </div>   <!--state-->
-
-
+                        
                         <div class="costs">
-                            <div class="discount">2845 р.</div>     
-                            <span >2517 р.</span>   
-
+                            {% if item.price_new %}
+                                <div class="discount">{{ item.price|floatformat:"0" }} р.</div>     
+                                <span >{{ item.price_new|floatformat:"0" }} р.</span>
+                            {% else %}
+                                <span >{{ item.price }} р.</span>
+                            {% endif %}
                         </div>
-
                     </div> <!--tpad-->
-
-
-
-
-                    <p><b>Ткань верха</b>: 100% полиэстер<br>
-                        <b>Подкладка</b>: 100% полиэстер<br>
-                        <b>Отделка</b>: 97% полиэстер 3% спандекс<br><br>
-
-
-                        Элегантное коктейльное платье для стильных девушек, которые привыкли быть в центре внимания. Модель без рукавов с округлым вырезом горловины и с завышенной линией талии. Юбка сделана из плиссированного материала и декорирована несколькими слоями оборок, что придает платью легкий и воздушный вид. Атласный пояс привлечет внимание к тонкой талии. Изящное платье  сделает акцент на плавных женственных изгибах вашего тела и позволит подчеркнуть ваш неповторимый вкус и чувство стиля.</p>
-
-
-                    <div class="colors">
-                        <span>Выберите цвет:</span> 
-                        <div class="palette">
-                            <input id="example-1-14" type="radio" name="example-1" value="4" class="radioImageSelect" data-image="/static/images/k1.jpg" checked="checked" />
-                            <input id="example-1-15" type="radio" name="example-1" value="5" class="radioImageSelect" data-image="/static/images/k2.jpg"  />
-                            <input id="example-1-16" type="radio" name="example-1" value="6" class="radioImageSelect" data-image="/static/images/k3.jpg"  />
-
-                        </div> <!--palette-->
-                    </div> <!--colors-->
-
-
+                    
+                    {{ item.description|safe }}
+                    
                     <div class="sizes">
                         <span>Выберите размер:</span>   
                         <div class="clear"></div>
-
-                        <input type="radio" id="radio1" class="sbs" name="radios" value="all" checked>
-                        <label for="radio1" class="out">42</label>
-
-                        <input type="radio" id="radio2" name="radios"value="false">
-                        <label for="radio2">44</label>
-
-                        <input type="radio" id="radio3" name="radios" value="true">
-                        <label for="radio3">46</label> 
-
-                        <input type="radio" id="radio4" name="radios" value="true">
-                        <label for="radio4">48</label> 
-
-                        <input type="radio" id="radio5" name="radios" value="true">
-                        <label for="radio5">50</label> 
-
-                        <input type="radio" id="radio6" name="radios" value="true">
-                        <label for="radio6">52</label> 
-
+                        
+                        {% for s in item.sizes.all %}
+                            <input type="radio" id="radio_{{ s.name }}" name="size" value="{{ s.name }}">
+                            <label for="radio_{{ s.name }}">{{ s.name }}</label>
+                        {% endfor %}
+                    
                     </div> <!--sizes-->
                     <div class="zakaz">заказать</div>
                     <div class="instock">Товар в наличии</div>
-
-
-
-
-
+                    
                     <!-- Column 1 end -->
                 </div>
 
 
                 <div class="col2_2_2">
                     <!-- Column 2 start -->
-                    <img src="/static/images/ib.jpg" alt="" />
-                    <a href="/static/images/ib.jpg" rel="prettyPhoto[gallery2]"><img src="/static/images/ib.jpg" width="54" height="73" /></a>
+                    <img src="/media/{{ item.image.all.0.image }}/" alt="" style='max-height: 300px'/>
+                    {% for im in item.image.all %}
+                        <a href="/media/{{ im.image }}/" rel="prettyPhoto[gallery2]"><img src="/media/{{ im.image }}/" style='max-width:54px; max-height: 73px' /></a>
+                    {% endfor %}
 
                     <!-- Column 2 end -->
                 </div>
