@@ -23,13 +23,26 @@ class Category(MPTTModel):
         except:
             return None
         
+    def breadcrumb(self):
+        page = self
+        breadcrumbs = []
+        while page:
+            breadcrumbs.append(page)
+            page = page.parent
+        breadcrumbs.reverse()
+        return breadcrumbs[:-1]
+        
     class Meta:
         verbose_name = u'категория'
         verbose_name_plural = u'категории'
         ordering=['order']
+
     
+    class MPTTMeta:
+        order_insertion_by = ['name']
+        
     def __unicode__(self):
-        return self.name
+        return '%s%s' % (' -- ' * self.level, self.name)
     
     @staticmethod
     def get(id_):
@@ -53,6 +66,9 @@ class Brand(models.Model):
             return Brand.objects.get(slug=page_name)
         except:
             return None
+        
+    def items_count(self):
+        return Item.objects.filter(brand=self).count()
         
     class Meta:
         verbose_name = u'бренд'
@@ -96,14 +112,14 @@ class Size(models.Model):
         return self.name
     
 class Item(models.Model):
-    category = models.ForeignKey(Category, verbose_name=u'категория', related_name='item')
-    brand = models.ForeignKey(Brand, verbose_name=u'категория', related_name='item')
-    color = models.ForeignKey(Color, blank=True, verbose_name=u'категория', related_name='item')
-    material = models.ForeignKey(Material, blank=True, verbose_name=u'категория', related_name='item')
-    size = models.ForeignKey(Size, blank=True, verbose_name=u'категория', related_name='item')
+    category = models.ForeignKey(Category, verbose_name=u'категория', related_name='items')
+    brand = models.ForeignKey(Brand, verbose_name=u'марка', related_name='item')
+    color = models.ForeignKey(Color, blank=True, verbose_name=u'цвет', related_name='item')
+    material = models.ForeignKey(Material, blank=True, verbose_name=u'материал', related_name='item')
+    sizes = models.ManyToManyField(Size, blank=True, verbose_name=u'размеры', related_name='item')
     name = models.CharField(max_length=512, verbose_name=u'название')
     price = models.FloatField(verbose_name=u'цена')
-    price_new = models.FloatField(verbose_name=u'новая цена (для акций)')
+    price_new = models.FloatField(blank=True, verbose_name=u'новая цена (для акций)')
     description = RichTextField(default=u'', verbose_name=u'описание')
     stock = models.IntegerField(default=0, blank=True, verbose_name=u'в наличии')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')

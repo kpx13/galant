@@ -7,7 +7,7 @@ class ImageInline(admin.StackedInline):
     extra = 3
     
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent', 'order')
+    list_display = ('__unicode__', 'parent', 'order')
     
 class ItemAdmin(admin.ModelAdmin):
     inlines = [ ImageInline, ]

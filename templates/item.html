@@ -1,28 +1,201 @@
- 
 {% extends 'base.html' %}
 
 {% block title %}{{ item.name }}{% endblock %}
 
 {% block extended_head %}
-<script>
-$(function(){
-    $('#gallery .span2 img').click(function(){
-        var src=$(this).attr('src').replace('thumb','extra');
-        $('#gallery .span10 img').attr('src',src);
-    });
-});
-</script>
+    <link rel="stylesheet" type="text/css" href="/static/css/radio-image-select.css" media="screen" />
+    <script src="/static/js/jquery.radioImageSelect.js"></script>
+    
+    <link rel="stylesheet" href="/static/css/prettyPhoto.css" type="text/css" media="screen" title="Фотогалерея" charset="utf-8" />
+    <script src="/static/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+                $("a[rel^='prettyPhoto']").prettyPhoto({
+                        animationSpeed: 'normal', /* fast/slow/normal */
+                        opacity: 0.80, /* Value between 0 and 1 */
+                        theme: 'pp_default',
+                        showTitle: true /* true/false */
+                    });
+            });
+    </script>
+    
+    <script type="text/javascript">
+        jQuery(document).ready( function($) {
+                $('input.radioImageSelect').radioImageSelect();
+            });
+    </script>
 {% endblock %}
             
 {% block breadcrumb %}
-    <li><a href="/">Главная</a> <span class="divider">/</span></li>
-    {% for p in item.get_path %}
-        <li><a href="/category/{{ p.id }}">{{ p.name }}</a> <span class="divider">/</span></li>
+    {% for p in category.breadcrumb %}
+        <a href="/category/{{ p.slug }}">{{ p.name }}</a>
     {% endfor %}
-    <li class="active">{{ item.name }}</li>
+    <a href="/category/{{ category.slug }}/">{{ category.name }}</a>
+    <a href="" class="no">{{ item.name }}</a>
 {% endblock %}
-            
+
 {% block content %}
+    <div class="tovardsc">
+        <div class="colmask1 leftmenu1_1">
+            <div class="colleft1_1">
+                <div class="col1_1_1">
+                    <!-- Column 1 start -->
+
+
+                    <div class="tpad">
+
+                        <div class="state">
+
+                            <h3>Платье Bench</h3>
+                            <p>Артикул: 310017</p>
+                        </div>   <!--state-->
+
+
+                        <div class="costs">
+                            <div class="discount">2845 р.</div>     
+                            <span >2517 р.</span>   
+
+                        </div>
+
+                    </div> <!--tpad-->
+
+
+
+
+                    <p><b>Ткань верха</b>: 100% полиэстер<br>
+                        <b>Подкладка</b>: 100% полиэстер<br>
+                        <b>Отделка</b>: 97% полиэстер 3% спандекс<br><br>
+
+
+                        Элегантное коктейльное платье для стильных девушек, которые привыкли быть в центре внимания. Модель без рукавов с округлым вырезом горловины и с завышенной линией талии. Юбка сделана из плиссированного материала и декорирована несколькими слоями оборок, что придает платью легкий и воздушный вид. Атласный пояс привлечет внимание к тонкой талии. Изящное платье  сделает акцент на плавных женственных изгибах вашего тела и позволит подчеркнуть ваш неповторимый вкус и чувство стиля.</p>
+
+
+                    <div class="colors">
+                        <span>Выберите цвет:</span> 
+                        <div class="palette">
+                            <input id="example-1-14" type="radio" name="example-1" value="4" class="radioImageSelect" data-image="/static/images/k1.jpg" checked="checked" />
+                            <input id="example-1-15" type="radio" name="example-1" value="5" class="radioImageSelect" data-image="/static/images/k2.jpg"  />
+                            <input id="example-1-16" type="radio" name="example-1" value="6" class="radioImageSelect" data-image="/static/images/k3.jpg"  />
+
+                        </div> <!--palette-->
+                    </div> <!--colors-->
+
+
+                    <div class="sizes">
+                        <span>Выберите размер:</span>   
+                        <div class="clear"></div>
+
+                        <input type="radio" id="radio1" class="sbs" name="radios" value="all" checked>
+                        <label for="radio1" class="out">42</label>
+
+                        <input type="radio" id="radio2" name="radios"value="false">
+                        <label for="radio2">44</label>
+
+                        <input type="radio" id="radio3" name="radios" value="true">
+                        <label for="radio3">46</label> 
+
+                        <input type="radio" id="radio4" name="radios" value="true">
+                        <label for="radio4">48</label> 
+
+                        <input type="radio" id="radio5" name="radios" value="true">
+                        <label for="radio5">50</label> 
+
+                        <input type="radio" id="radio6" name="radios" value="true">
+                        <label for="radio6">52</label> 
+
+                    </div> <!--sizes-->
+                    <div class="zakaz">заказать</div>
+                    <div class="instock">Товар в наличии</div>
+
+
+
+
+
+                    <!-- Column 1 end -->
+                </div>
+
+
+                <div class="col2_2_2">
+                    <!-- Column 2 start -->
+                    <img src="/static/images/ib.jpg" alt="" />
+                    <a href="/static/images/ib.jpg" rel="prettyPhoto[gallery2]"><img src="/static/images/ib.jpg" width="54" height="73" /></a>
+
+                    <!-- Column 2 end -->
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div> <!--tovardsc-->
+
+    <div class="clear"></div>
+
+    <h3>Похожие товары в каталоге:</h3>
+
+    <div class="catalog">
+
+        <div class="block">
+
+            <a href=""><img src="/static/images/c1.jpg" alt="" /></a>
+            <div class="dsc">
+                <a href="">Платье Bench Платье Bench Платье Bench</a>   
+            </div> <!--dsc-->   
+            <span>2517 р.</span>
+            <div class="clear"></div>
+            <div class="zakaz">заказать</div>
+
+        </div> <!--block-->
+
+        <div class="block">
+
+            <img src="/static/images/c1.jpg" alt="" />
+            <div class="dsc">
+                <a href="">Платье Bench Платьh</a>  
+
+            </div> <!--dsc-->   
+            <span>2517 р.</span>
+            <div class="clear"></div>
+            <div class="zakaz">заказать</div>
+
+        </div> <!--block-->
+
+        <div class="block">
+
+            <a href=""><img src="/static/images/c1.jpg" alt="" /></a>
+            <div class="dsc">
+                <a href="">Платье Bench Платье Bench Платье Bench</a>   
+
+            </div> <!--dsc-->   
+            <span>2517 р.</span>
+            <div class="clear"></div>
+            <div class="zakaz">заказать</div>
+
+        </div> <!--block-->
+
+        <div class="block">
+
+            <a href=""><img src="/static/images/c1.jpg" alt="" /></a>
+            <div class="dsc">
+                <a href="">Платье Bench Платьh</a>  
+
+            </div> <!--dsc-->   
+            <span>2517 р.</span>
+            <div class="clear"></div>
+            <div class="zakaz">заказать</div>
+
+        </div> <!--block-->
+
+
+
+
+    </div> <!--catalog-->
+{% endblock %}
+
+{% block content_ %}
+
 
 <div class="row"><!-- средняя часть страницы-->
 

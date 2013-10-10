@@ -11,7 +11,7 @@ from django.template import RequestContext
 from call_request.forms import CallRequestForm
 from pages.models import Page
 from news.models import NewsItem
-from catalog.models import Item, Category
+from catalog.models import Category, Brand, Item
 #from shop.models import Cart, Order
 #from sessionworking import SessionCartWorking, SessionFavoritesWorking
 
@@ -20,6 +20,8 @@ def get_common_context(request):
     c['request_url'] = request.path
     c['user'] = request.user
     c['authentication_form'] = AuthenticationForm()
+    c['categories'] = Category.objects.filter(parent=None).extra(order_by = ['id'])
+    c['brands'] = Brand.objects.all()
     """
     if request.user.is_authenticated():
         c['favorites_working'] = request.user.get_profile()
@@ -38,6 +40,26 @@ def home_page(request):
     c = get_common_context(request)
     c['request_url'] = 'home'
     return render_to_response('home.html', c, context_instance=RequestContext(request))
+
+def category(request, slug):
+    c = get_common_context(request)
+    c['category'] = Category.get_by_slug(slug)
+    return render_to_response('category.html', c, context_instance=RequestContext(request))
+
+def item(request, item_id):
+    c = get_common_context(request)
+    if request.method == 'POST':
+        if request.POST['action'] == 'add_in_basket':
+            c['cart_working'].add_to_cart(request.user, request.POST['item_id'])
+            messages.success(request, u'Товар был добавлен в корзину.')
+        elif request.POST['action'] == 'add_to_favorites':
+            c['favorites_working'].add_to_favorites(request.POST['item_id'])
+        elif request.POST['action'] == 'del_favorites':
+            c['favorites_working'].del_favorites(request.POST['item_id'])
+        return HttpResponseRedirect(request.get_full_path())
+    c['item'] = Item.get(item_id)
+    c['category'] = c['item'].category
+    return render_to_response('item.html', c, context_instance=RequestContext(request))
 
 """
 def cart_page(request):
@@ -77,26 +99,8 @@ def news_page(request):
     return render_to_response('news.html', c, context_instance=RequestContext(request))
 
 
-def item_page(request, item_id):
-    c = get_common_context(request)
-    if request.method == 'POST':
-        if request.POST['action'] == 'add_in_basket':
-            c['cart_working'].add_to_cart(request.user, request.POST['item_id'])
-            messages.success(request, u'Товар был добавлен в корзину.')
-        elif request.POST['action'] == 'add_to_favorites':
-            c['favorites_working'].add_to_favorites(request.POST['item_id'])
-        elif request.POST['action'] == 'del_favorites':
-            c['favorites_working'].del_favorites(request.POST['item_id'])
-        return HttpResponseRedirect(request.get_full_path())
-    c['item'] = Item.get(item_id)
-    c['in_favorites'] = c['favorites_working'].favorites_check(c['item'].id)
-    return render_to_response('item.html', c, context_instance=RequestContext(request))
 
 
-def category_page(request, category_id):
-    c = get_common_context(request)
-    c['category'] = Category.get(category_id)
-    return render_to_response('category.html', c, context_instance=RequestContext(request))
 
 
 def collection_page(request, collection_id):

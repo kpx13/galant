@@ -1,160 +1,380 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-        <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-            <title>Добрые Вещи | Интернет магазин | {% block title %}{% endblock %}</title>
-            <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-            <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet">
-            <script src="/static/js/jquery-1.9.1.min.js"></script>
-            <script src="/static/js/bootstrap.js"></script>
-            <link href="/static/css/bootstyle.css" type="text/css" rel="stylesheet">
-            <link href="/static/css/style.css" type="text/css" rel="stylesheet">
-            <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="robots" content="index, follow" />
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css" media="screen" />
+        <link rel="stylesheet" href="/static/themes/default/default.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/static/themes/light/light.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/static/themes/dark/dark.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/static/themes/bar/bar.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/static/css/nivo-slider.css" type="text/css" media="screen" />
+    
+        <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+
+    
+        <script type="text/javascript">
+            $(document).ready(function(){
+                    $(".cart").mouseover(function() {
+                            $(".cartup").show();
+             
+                        }); 
+                    $(".cart").mouseout(function() {
+                            $(".cartup").hide();
+              
+                        }); 
+                    $(".zakaz").click(function() {
+                            $(".tovarup").hide();
+                            $(this).parent().find(".tovarup").show();
+                            return false;
+                
+                        }); 
+                    $(".tovarup-close").click(function() {
+                            $(this).parent().hide();
+                            return false;               
+                        }); 
+                });
+        </script>
+        <!--[if lt IE 7]>
+        <style media="screen" type="text/css">
+        #container {
+        height:100%;
+        }
+
+        </style>
+        <![endif]-->     
+         
+        <!--[if lte IE 7]>
+        <link rel="stylesheet" type="text/css" href="/static/css/ie7.css" />
+        <![endif]-->     
+
+        <!--[if IE 8]>
+        <link rel="stylesheet" type="text/css" href="/static/css/ie8.css" />
+    
+        <![endif]-->
+            <script type="text/javascript" src="/static/js/jquery.bpopup-0.8.0.min.js"></script>
+        <script type="text/javascript">
+            // Semicolon (;) to ensure closing of earlier scripting
+            // Encapsulation
+            // $ is assigned to jQuery
+            ;(function($) {
+
+                    // DOM Ready
+                    $(function() {
+
+                            // Binding a click event
+                            // From jQuery v.1.7.0 use .on() instead of .bind()
+                            $('#my-button').bind('click', function(e) {
+
+                                    // Prevents the default action to be triggered. 
+                                    e.preventDefault();
+
+                                    // Triggering bPopup when click event is fired
+                                    $('#element_to_pop_up').bPopup();
+
+                                });
+
+                        });
         
-            {% block extended_head %}
-            {% endblock %}
-        </head>
+                    $(function() {
+
+                            // Binding a click event
+                            // From jQuery v.1.7.0 use .on() instead of .bind()
+                            $('#my-button1').bind('click', function(e) {
+
+                                    // Prevents the default action to be triggered. 
+                                    e.preventDefault();
+
+                                    // Triggering bPopup when click event is fired
+                                    $('#element_to_pop_up').bPopup();
+
+                                });
+
+                        });
+        
+                    $(function() {
+
+                            // Binding a click event
+                            // From jQuery v.1.7.0 use .on() instead of .bind()
+                            $('#my-button2').bind('click', function(e) {
+
+                                    // Prevents the default action to be triggered. 
+                                    e.preventDefault();
+
+                                    // Triggering bPopup when click event is fired
+                                    $('#onlinereq').bPopup();
+
+                                });
+
+                        });
+
+                })(jQuery);
+        </script> 
+        {% block extended_head %}
+        {% endblock %}
+    </head>
         
  
-        <body>
-        
-            <div id="auth_dialog" title='Вход'  style='display: none'>
-                <form method='POST' class='authentication_form' action='/'>
-                        {{ authentication_form.as_p }}
-                        <a href="/accounts/password/reset/">Забыли пароль?</a>
-                        <input type="submit" id="button-entry" class='btn btn-primary' value="вход" />
-                        <input type="hidden" name="action" value="login" />
-                    {% csrf_token %}
-                </form>
-            </div>
-            <div id="outer"></div>
-            <div class="container">
-                
-                <div class='row'>
-                    <div class='row-fluid'>
-                        <div class='span9 grad_bg'>
-                                <ul class="top-menu left">
-                                <li><a href="/">Главная</a></li><li>|</li>
-                                <li><a href="/news">Новости</a></li><li>|</li>
-                                <li><a href="/oplata">Оплата</a></li><li>|</li>
-                                <li><a href="/skidki">Скидки</a></li><li>|</li>
-                                <li><a href="/dostavka">Доставка</a></li><li>|</li>
-                                <li><a href="/vozvrat">Возврат</a></li><li>|</li>
-                                <li><a href="/request">Обратная связь</a></li>
-                            </ul>
-                        </div>
-                        <div class='span3 grad_bg'  style='text-align: right'>
-                            
-                                {% if not user.is_authenticated %}
+    <body>
+        <div id="container">
+            <div id="header">
+                <div id="headerin">
 
-                                        <ul class="top-menu right">
-                                            <li><a href="/accounts/login/">Вход</a></li>
-                                            <li>|</li>
-                                            <li><a href="/accounts/register/">Регистрация</a></li>
-                                        </ul>
-                             
-                                {% else %}
-                                        <ul class="top-menu right">
-                                            <li><a href="/accounts/logout" id='auth_dialog_btn'>Выход</a></li>
-                                            <li>|</li>
-                                            <li><a href="#">Личный кабинет</a></li>
-                                        </ul>
-                                {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class='header_img'>
-                    <img src='/static/img/top.png' style='width: 1200px; height: 37px; margin-bottom: 10px' />
-                </div>
-                <div class='row'>
-                    <div class='span6'> <!--Левая часть шапки-->
-                        <div class='row'>
-                            <div class='row-fluid' >
-                                <div class='span3' style='padding: 0; margin: 0'>
-                                    <a href='/'><img src='/static/img/logo.jpg' class='logo'></a>
-                                </div>
-            
-                                <div class="span9 header">
-                                    <img src='/static/img/logo_title.png' style='width: 320px; margin-left: 30px; margin-top: -10px' />
-                                </div>
-                                
-                                <div class="span12" style='text-align: right; margin-bottom: 0px; margin-top: -20px'>
-                                    <div>
-                                        <img src='/static/img/six.jpg' style='height: 30px; margin-right: 20px' />
-                                        <img src='/static/img/vkontakte.png' style='height: 30px;' />
-                                        <img src='/static/img/twitter.png' style='height: 30px;' />
-                                        <img src='/static/img/facebook.png' style='height: 30px;' />
-                                        <img src='/static/img/instagram.png' style='height: 30px;' />
-                                    </div>
-                                </div>
-                            </div>
-                                
-                        </div>
-                    </div>
-                    
-                    <div class='span3'> <!--Правая часть шапки-->
-                        <div class='well well-small well-header'>
-                            <p>
-                                <img src='/static/img/phone.png' style='height: 30px;' /><b>8 (965) 115-03-25</b><br />
-                                <img src='/static/img/skype.png' style='height: 30px;' /> mygoodthings<br />
-                                <img src='/static/img/mail.png' style='height: 30px;' /> goodthings@list.ru
-                            </p>
-                        </div>
-                    </div>
-                    <div class='span3'>
-                        <div class='well well-small well-header'>
-                            <img src='/static/img/shopcart.png' style='height: 60px; float: left' />
-                            {% if cart_count > 0 %}
-                                <p>В вашей корзине <b>{{ cart_count }} ед. товара</b>
-                                на сумму: <span> {{ cart_sum }}</span> руб.</p>
-                                <a href="/cart" style='float: right'>Перейти в корзину</a>
+                    <div class="c1">
+                        <a href="/"><img src="/static/images/logo.png" class="logo" /></a>
+                    </div> <!--c1-->
+
+                    <div class="c2w">
+        
+                        <div class="c2pad">
+                            {% if not user.is_authenticated %}
+                                <a href="auth.html" class="lk">Авторизация</a>
                             {% else %}
-                                <p>Ваша корзина пуста.</p>
+                                <p>Здравствуйте, Александр Викторович</p>
+                                <a href="" class="exit">Выйти</a>
+                                <a href="" class="lk">Личный кабинет</a>
                             {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class='span12'>
-                        <div class='row'>
-                            <div class='row-fluid' style='height: 45px'>
-                                <form method='GET' action='/search'>
-                                    <div class="input-append" style='width: 100%'>
+                        </div> <!--c2pad-->
+
+                        <div class="clear"></div>
+    
+                        <div class="c2">
+                            <h2>Сумки, кошельки, перчатки, кожгалантерея, остальная продукция</h2> 
+                            <a href="about.html">о компании</a>
+                            <a href="news.html">НОвости</a>
+                        </div> <!--c2-->
+    
+                        <div class="c3">
+                            <p>Наш телефон:</p>
+                            <h3>+7 (925) 075-63-20</h3>
+                            <h3>+7 (925) 678-61-25</h3>
+                            <a href=""  id="my-button2">Обратный звонок</a>  
+        
+                        </div> <!--c3-->
+    
+                        <div class="c4">
+                            <div class="cartw">
+                                <div class="cart">
+                                    <img src="/static/images/carti.png" class="icon" />
                                     
-                                            <input type='text' class='span11' name='search' {% if search %}value='{{search}}'{% endif %} />
-                                            <button class="btn" type="submit"><i class="icon-search"></i> Найти</button>
-                                            
-                                    </div>
-                                 </form>
+                                    {% if cart_count > 0 %}
+                                        <h2>    ваша корзина</h2>
+                                        <p> В корзине: <span>{{ cart_count }} шт.</span></p>
+                                        <p>Сумма: <span>{{ cart_sum }} руб.</span></p>  
+                
+                
+                                        <div class="cartup">
+        
+                                            <div class="mini">
+                                                <div class="miniw">
+                                                    <a href="catin.html">
+                                                        <div class="item">
+                                                            <img src="/static/images/ch4.jpg" alt="" />
+                                                            <span class="model">Платье Vika Smolyanitskaya</span>
+                                                            <span class="amount">Всего: 12</span>
+                                                            <span class="counter">Цена: 144 466, 00 руб.</span>
+                                                        </div> <!--item-->
+                                                    </a>
+
+
+                                                    <div class="clear"></div>
+
+                                                    <a href="catin.html">
+                                                        <div class="item">
+                                                            <img src="/static/images/ch5.jpg" alt="" />
+                                                            <span class="model">Куртка, TOM FARR</span>
+                                                            <span class="amount">Всего: 1</span>
+                                                            <span class="counter">Цена: 11 050 руб.</span>
+                                                        </div> <!--item-->
+                                                    </a>
+
+                                                    <div class="clear"></div>
+
+                                                    <a href="catin.html">
+                                                        <div class="item">
+                                                            <img src="/static/images/ch6.jpg" alt="" />
+                                                            <span class="model"> Куртка, Laura Scott</span>
+                                                            <span class="amount">Всего: 1</span>
+                                                            <span class="counter">Цена:  4 315 руб.</span>
+                                                        </div> <!--item-->
+                                                    </a>
+
+                                                    <div class="clear"></div>
+
+                                                    <div class="zakaz4"><a href="/cart">В корзину</a></div>
+
+
+                                                </div> <!--miniw-->
+                                            </div> <!--mini-->
+
+                                        </div> <!--cartup-->
+                                    {% else %}
+                                        <p>Ваша корзина пуста.</p>
+                                        <br /><br /><br />
+                                    {% endif %}
+                                    
+                                    
+            
+                                </div> <!--cart-->
+                            </div> <!--cartw-->
+                        </div> <!--c4-->
+                        <div class="clear"></div>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="index.html"   class="active">Главная</a></li>
+                                <li><a href="cat.html">каталог</a></li>
+                                <li><a href="news.html">акции</a></li>
+                                <li><a href="dostavka.html">доставка</a></li>
+                                <li><a href="info.html">оптовикам</a></li>
+                                <li><a href="contact.html">контакты</a></li>
+                            </ul>
+                        </div> <!--menu-->
+    
+                    </div> <!--c2w-->
+
+                </div> <!--headerin-->
+
+
+
+                <div class="top"></div>
+            </div> <!--header-->
+           
+           
+            {% block slider %}
+            {% endblock %}
+
+            <div class="maskwrap">
+                <div class="colmask leftmenu">
+                    <div class="colleft">
+                        <div class="col1">
+                            <!-- Column 1 start -->
+            
+                            <div class="breadcrumbs">
+                                <a href="/" class="empty">Главная</a> 
+                                {% block breadcrumb %}
+                                {% endblock %}
                             </div>
+                            
+                            {% block content %}
+                            {% endblock %}
+
                         </div>
-                        <div class='row'>
-                            <div class='row-fluid'>
-                                <div class="span7"> <!-- style='background-color: blue'>-->
-                                    <ul class="breadcrumb header-bg">
-                                        {% block breadcrumb %}
-                                            <li class="active">Главная</li>
-                                        {% endblock %}
-                                    </ul>
-                                </div>
-                                <div class="span3 grad_bg"><!--  >-->
-                                    {% block sort %}
-                                   <!-- <p> 
-                                        Сортировать по: &nbsp;&nbsp;&nbsp;
-                                        <a href='#'>Цене</a>&nbsp;&nbsp;&nbsp;
-                                        <a href='#'>Дате</a>&nbsp;&nbsp;
-                                    </p>-->
-                                    {% endblock %}
-                                </div>
-                                <div class="span2 grad_bg" style='text-align: right' ><!-- style='background-color: black'>-->
-                                    <a href='/favorites'><i class="icon-heart icon-white"></i> Избранное</a>
-                                </div>
-                            </div>
+        
+                        <div class="col2">
+                            <!-- Column 2 start -->
+                            <div class="lmenu">
+        
+                                {% load mptt_tags %}
+                                
+                                <ul>    
+                                {% for node in categories %}
+                                    <li>
+                                        <a href="/category/{{ node.slug }}/" {% if not node.is_leaf_node %} class="open" {% endif %}>{{ node.name }}</a>
+                                        {% if not node.is_leaf_node %}
+                                            <ul>
+                                            {% for i in node.children.all %}
+                                                <li>
+                                                    <a href="/category/{{ i.slug }}/">{{ i.name }}</a>
+                                                    {% if not i.is_leaf_node %}
+                                                        <ul>
+                                                        {% for j in i.children.all %}
+                                                            <li><a  href="/category/{{ j.slug }}/">{{ j.name }}</a></li>
+                                                        {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                                </ul>
+    
+                            </div> <!-- lmenu end -->
+    
+    
+                            <div class="sidehead"><h2>Торговые марки</h2></div>
+    
+                            <div class="brands">
+     
+                                <ul>
+                                    {% for b in brands %}
+                                        <li><a href="/brand/{{ b.slug }}/">{{ b.name }} <span>({{ b.items_count }})</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div> <!--brands-->
+                            <!-- Column 2 end -->
                         </div>
                     </div>
+                </div> <!--colmask-->
+            </div> <!--id body-->
+
+
+            <div id="footer">
+                <div class="bottom"></div>
+
+                <div id="footerin">
+
+                    <div class="fc1">
+                        <p>© 2013. Galant. Все права защищены.</p>
+                        <div class="social">Мы в социальных сетях  — 
+                            <a href=""><img src="/static/images/vk.jpg" class="si"/></a>
+                            <a href=""><img src="/static/images/fb.jpg" class="si" /></a>
+                            <a href=""><img src="/static/images/tw.jpg" class="si"/></a>
+                        </div> <!--social-->
+    
+                    </div> <!--fc1-->   
+
+                    <div class="fc2"> 
+                        <p><strong>Телефон</strong>: +7 (495) 678-67-67</p>
+                        <p><strong>E-mail</strong>: <a href="mailto:mail@mail.ru">mail@mail.ru</a></p>
+                        <p><strong>Skype</strong>: Login</p>
+
+                    </div> <!--fc2-->
+
+                    <div class="fc3"> 
+                        <p>Разработка сайта веб-студии</p>
+                    </div> <!--fc3-->
+    
+                </div> <!--footerin-->  
+            </div> <!--footer-->
+
+            <div id="onlinereq">
+    
+                <h2>Обратный звонок</h2>
+                <label>Ваше имя</label>
+                <input type="text" name="T1" class="tinput">
+            
+                <label>Ваш телефон</label>
+                <input type="text" name="T1" class="tinput">
+    
+            
+            
+                <input type="button" class="button bi" value="Отправить">
                     
-                </div><!-- шапка-->
-                <div class='row'>
+            </div> <!--onlinereq-->
+       
+        </div> <!--container-->
+
+
+        <script type="text/javascript" src="/static/js/jquery.nivo.slider.js"></script>
+        <script type="text/javascript">
+            $(window).load(function() {
+                    $('#slider').nivoSlider();
+                });
+        </script>
+
+
+    </body>
+</html>
+
+                           
+                        
+                                
+                                   
                         {% for message in messages %}
                             <div class='message-wrapper'>
                             <div class="alert alert-{{ message.tags }}">
@@ -162,35 +382,5 @@
                             </div>
                             </div>
                         {% endfor %}
-                </div>
-                {% block content %}
-                
-                {% endblock %}
-                        
-                <div class='header_img'>
-                    <img src='/static/img/bottom.png' style='width: 1200px; height: 37px; margin-top: 10px' />
-                </div>
-                
-                <div class='row'>
-                    <footer>
-                     
-                        
-                        {{ podval|safe }}
-                        
-                        <div style='float: right'>
-                            <img src='/static/img/vkontakte.png' style='height: 40px;' />
-                            <img src='/static/img/twitter.png' style='height: 40px;' />
-                            <img src='/static/img/facebook.png' style='height: 40px;' />
-                            <img src='/static/img/instagram.png' style='height: 40px;' />
-                        </div>
-                        <div>
-                            <p>&copy; Добрые Вещи 2013<br /><a href='http://webgenesis.ru'>Создание сайта</a></p>
-                        </div>
-                    </footer>
-                </div>
-            </div>
-            
-            
-            <script src="/static/js/holder.js"></script>
-        </body>
-</html>
+               
+               
