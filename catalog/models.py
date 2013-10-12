@@ -4,6 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.db import models
 from ckeditor.fields import RichTextField
 import pytils
+import datetime
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'название')
@@ -120,11 +121,12 @@ class Item(models.Model):
     name = models.CharField(max_length=512, verbose_name=u'название')
     art = models.CharField(max_length=50, verbose_name=u'артикул')
     price = models.FloatField(verbose_name=u'цена')
-    price_new = models.FloatField(blank=True, verbose_name=u'новая цена (для акций)')
+    price_new = models.FloatField(blank=True, null=True, verbose_name=u'новая цена (для акций)')
     description = RichTextField(default=u'', verbose_name=u'описание')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
     at_home = models.BooleanField(blank=True, default=False, verbose_name=u'показывать на главной')
     slug = models.SlugField(max_length=128, verbose_name=u'слаг', unique=True, blank=True, help_text=u'заполнять не нужно')
+    date = models.DateTimeField(default=datetime.datetime.now, verbose_name=u'дата добавления')
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -187,6 +189,6 @@ class Image(models.Model):
         ordering=['order']
         
     def __unicode__(self):
-        return str(self.item) + ' ' + str(self.id) 
+        return str(self.id) 
     
     

@@ -3,7 +3,36 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block extended_head %}
+    <link rel="stylesheet" href="/static/css/Selectyze.jquery.css" type="text/css" />
+    <script type="text/javascript" src="/static/js/Selectyze.jquery.min.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function(){
+                    $('.selectyze1').Selectyze({
+                            theme : 'skype'
+                        });
+            
+                    $('.selectyze2').Selectyze({
+                            theme : 'mac',
+                 
+                            effectOpen:'slide',
+                            effectClose:'fade'
+                        });
+            
+                    $('.selectyze3').Selectyze({
+                            theme : 'grey'
+                        }); 
+            
+                    $('.selectyze4').Selectyze({
+                            theme : 'firefox'
+                        });
+            
+                    $('.selectyze5').Selectyze({
+                            theme : 'css3'
+                        });
 
+                });
+        </script>
+    
 {% endblock %}
 
 {% block slider %}
@@ -18,39 +47,12 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="sorting">
-        <div class="sortlist">
-            <span>Сортировать по:</span> 
-            <a href="" class="light">новинкам</a> 
-            <a href="" class="dark">названию</a>
-            <a href="" class="light">цене</a>
-        </div> <!--sortlist-->
-
-        <div class="sortnum">
-            <span>Показывать по:</span> 
-            <select name="d" class="styleds">
-                <option value="1">10</option>
-                <option value="2">30</option>
-                <option value="3">50</option>
-            </select>
-        </div> <!--sortnum-->
-
-        <div class="sortpage">
-            <div class="inpgw">
-                <a href=""><img src="/static/images/pl.png" alt="" /></a>
-                <a href="">1</a>   
-                <a href="" class="active">2</a>   
-                <a href="">3</a>   
-                <a href=""><img src="/static/images/pr.png" alt="" /></a>
-            </div> <!--pgw-->
-        </div> <!--sortpage-->
-    </div> <!--sorting-->
-
-
+    
+    {% include 'sorting.html' %}
+    
     <div class="catalog">
-        {% if category.items %}
-            {% for i in category.items.all %}
+        {% if items %}
+            {% for i in items.all %}
                 <div class="block">
                     <div class="tovarup">
                         <span>Выбор размера</span>
@@ -62,9 +64,9 @@
                         <div class="zakaz1"><a href="">Подтвердить</a></div>
                         <a href="" class="tovarup-close">Закрыть</a>
                     </div> <!--tovarup-->
-                    <a href=""><img src="/media/{{ i.image.all.0.image }}" alt="" /></a>
+                    <a href="/item/{{ i.slug }}/"><img src="/media/{{ i.image.all.0.image }}" alt="" /></a>
                     <div class="dsc">
-                        <a href="/item/{{ i.id }}" >{{ i.name }}</a>    
+                        <a href="/item/{{ i.slug }}/" >{{ i.name }}</a>    
                     </div> <!--dsc-->   
                     <span>{% if i.price_new %} {{ i.price_new|floatformat:"0" }} {% else %} {{ i.price|floatformat:"0" }} {% endif %}р.</span>
                     <div class="clear"></div>
@@ -78,36 +80,88 @@
      
     </div> <!--catalog-->
 
-    
-    <div class="sorting">
-        <div class="sortlist">
-            <span>Сортировать по:</span> 
-            <a href="" class="light">новинкам</a> 
-            <a href="" class="dark">названию</a>
-            <a href="" class="light">цене</a>
-        </div> <!--sortlist-->
+    {% include 'sorting.html' %}
 
-        <div class="sortnum">
-            <span>Сортировать по:</span> 
-            <select name="style33"  >
-                <option value="1">10</option>
-                <option value="2">30</option>
-                <option value="3">50</option>
+
+{% endblock %}
+
+{% block left_filter %}
+    <div class="sidesort">
+
+        <div class="sidesortw">
+
+            <div class="cost">Цена:</div> <!--cost-->
+            <div class="range">
+
+                <span>с</span>  
+                <input type="text" class="tinput"> 
+                <span>по</span> 
+                <input type="text" class="tinput"> 
+            </div> <!--range-->
+
+
+            <div class="sideline"></div> <!--sidline-->
+
+            <input id="Checkbox11" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox11" name="lbl_Checkbox11" class="css-label"><span>Весна-лето</span></label>        
+
+
+            <br>
+
+            <input id="Checkbox22" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox22" name="lbl_Checkbox22" class="css-label"><span>Осень-зима</span></label>        
+
+
+            <div class="sideline"></div> <!--sidline-->
+
+            <input id="Checkbox33" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox33" name="lbl_Checkbox33" class="css-label"><span>Новинки</span></label>        
+
+            <br>
+
+            <input id="Checkbox44" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox44" name="lbl_Checkbox44" class="css-label"><span>Акции</span></label>        
+
+            <br>
+
+            <input id="Checkbox55" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox55" name="lbl_Checkbox55" class="css-label"><span>Товары по акции</span></label>        
+
+            <div class="sideline"></div> <!--sidline-->
+
+            <select name="style2" class="selectyze2" >
+                <option selected="selected">Цвет изделия</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
             </select>
-        </div> <!--sortnum-->
 
-        <div class="sortpage">
-            <div class="inpgw">
-                <a href=""><img src="/static/images/pl.png" alt="" /></a>
-                <a href="">1</a>   
-                <a href="" class="active">2</a>   
-                <a href="">3</a>   
-                <a href=""><img src="/static/images/pr.png" alt="" /></a>
-            </div> <!--pgw-->
-        </div> <!--sortpage-->
-    </div> <!--sorting-->
-        
-        
-        
 
+            <select name="style3" class="selectyze2">
+                <option selected="selected">Материал изделия</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
+            </select>
+
+
+
+            <select name="style4" class="selectyze2" >
+                <option selected="selected">Марка изделия</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
+            </select>
+
+
+            <select name="style4" class="selectyze2" >
+                <option selected="selected">Марка товара</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
+            </select>
+
+        </div> <!--sidesortw-->
+
+    </div> <!--sidesort-->
 {% endblock %}

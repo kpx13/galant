@@ -294,18 +294,30 @@
                                 </ul>
     
                             </div> <!-- lmenu end -->
+                            
+                            {% block left_filter %}
+                                <div class="sidehead"><h2>Торговые марки</h2></div>
+                                
+                                <div class="brands">
+                                    <ul>
+                                        {% for b in brands %}
+                                            <li><a href="/brand/{{ b.slug }}/">{{ b.name }} <span>({{ b.items_count }})</span></a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div> <!--brands-->
+                            {% endblock %}
+                            
+                            <div class="sidenews">
+                                <h3>Новости</h3>
+        
+                                <div class="date">23.02.2013</div>
+
+                                <a href="">У нас вы также можете купить кожаные обложки на паспорт и другие обложки на документы.</a> 
+
+                            </div> <!--news-->
+        
+                            <a href="" class="other">Все новости</a>
     
-    
-                            <div class="sidehead"><h2>Торговые марки</h2></div>
-    
-                            <div class="brands">
-     
-                                <ul>
-                                    {% for b in brands %}
-                                        <li><a href="/brand/{{ b.slug }}/">{{ b.name }} <span>({{ b.items_count }})</span></a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div> <!--brands-->
                             <!-- Column 2 end -->
                         </div>
                     </div>

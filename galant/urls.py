@@ -21,7 +21,10 @@ urlpatterns = patterns('',
 
     url(r'^$' , views.home_page),
     url(r'^category/(?P<slug>[\w-]+)/$', views.category),
-    url(r'^item/(?P<item_id>\w+)$' , views.item),
+    url(r'^item/(?P<slug>[\w-]+)/$' , views.item),
+    
+    url(r'^news/(?P<slug>[\w-]+)/$' , views.news),
+    url(r'^news/$' , views.news),
     
     #url(r'^request$' , views.request_page),
     

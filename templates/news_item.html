@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+
+{% block extended_head %}
+   <script type="text/javascript" src="/static/js/jquery.carouFredSel-6.2.1-packed.js"></script>   
+    <script type="text/javascript" src="/static/js/jquery.mousewheel-3.0.4.pack.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.fancybox-1.3.4.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.fancybox-1.3.4.css" media="screen" />
+
+    
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+                $("#foo1").carouFredSel({
+                        auto : false,
+                        prev : "#foo1_prev",
+                        next : "#foo1_next"
+
+                    });
+
+                $("#foo1 a").fancybox({
+    
+                    });
+
+            });
+
+        
+    </script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <a href="/news/">Новости</a>
+    <a href="" class="no">{{ item.name }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="newsin">
+        <img src="/media/{{ item.image }}/" alt="" />
+        <h2>{{ item.name }}</h2>
+        {{ item.text|safe }}
+    </div> <!--newsin-->
+
+    <div class="image_carousel">
+        <div id="foo1">
+            {% for i in item.photos.all %}
+                <a rel="fancybox" href="/media/{{ i.image }}/"><img src="/media/{{ i.image }}/" alt="" height="97px" /></a>
+            {% endfor %}
+        </div>
+
+        <div class="clearfix"></div>
+        <a class="prev" id="foo1_prev" href="#"><span>prev</span></a>
+        <a class="next" id="foo1_next" href="#"><span>next</span></a>    
+    </div> <!--image_carousel-->
+
+{% endblock %}

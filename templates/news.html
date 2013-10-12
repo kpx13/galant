@@ -1,16 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Новости{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="/">Главная</a> <span class="divider">/</span></li>
-    <li class="active">Новости</li>
+    <a href="" class="no">Новости</a>
 {% endblock %}
 
 {% block content %}
-    {% for n in news %}
-        <h2>{{ n.name }}</h2>
-        <p>{{ n.text }}<br /> <i>{{ n.date|date }}</i></p>
-        
-    {% endfor %}
+    <div class="sep"></div> <!--sep-->
+
+    <div class="news">
+        {% for n in news %}
+            <a href="/news/{{ n.slug }}/">
+                <div class="nb">
+                    <img src="/media/{{ n.image }}/" alt="" />
+                    <h2>{{ n.name }}</h2>
+                    {{ n.text|safe }}
+                </div> <!--nb-->
+            </a>
+        {% endfor %}
+
+    </div> <!--news-->
+
+    <div class="pgw">
+        <a href=""><img src="/static/images/pl.png" alt="" /></a>
+        <a href="">1</a>   
+        <a href="" class="active">2</a>   
+        <a href="">3</a>   
+        <a href="">4</a> 
+        <a href=""> 5</a>  
+        <a href=""><img src="/static/images/pr.png" alt="" /></a>
+    </div>
+    
 {% endblock %}

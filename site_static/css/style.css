@@ -1417,7 +1417,7 @@ text-decoration: none;
 	font-family:  tahoma, verdana, arial;
 }
 
-.inpgw a, .inpgw a:link {
+.inpgw button, .inpgw button:link {
 font-family:  tahoma, verdana, arial;
 font-size: 0.9em!important;
 display: inline;
@@ -1428,11 +1428,11 @@ text-align: left;
 text-decoration: none;
 }
 
-.inpgw a:hover {
+.inpgw button:hover {
 color: #bb4a55!important;
 text-decoration: none;
 }
-.inpgw a.active {
+.inpgw button.active {
 color: #bb4a55!important;
 text-decoration: none;
 }
@@ -1806,12 +1806,19 @@ display: inline;
 }
 	
 
-.sorting a {
+.sorting button {
 	font-family:  tahoma, verdana, arial;
 	font-size: 0.9em;
 	display: inline;
 	padding: 5px 10px;
 	text-decoration: none!important;
+    cursor: pointer;
+}
+
+.sorting button.transparent {
+    background: transparent;
+    border: none;
+    padding: 0px;
 }
 
 

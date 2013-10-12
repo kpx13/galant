@@ -1,0 +1,37 @@
+<div class="sorting">
+    <form method='GET'>
+        <div class="sortlist">
+            <span>Сортировать по:</span> 
+            <button name='sort' value='date' class="{% if sort == 'date' %}dark{% else %}light{% endif %}">новинкам</button> 
+            <button name='sort' value='name' class="{% if sort == 'name' %}dark{% else %}light{% endif %}">названию</button>
+            <button name='sort' value='price' class="{% if sort == 'price' %}dark{% else %}light{% endif %}">цене</button>
+        </div> <!--sortlist-->
+    </form>
+    <form method='GET'>
+        <div class="sortnum">
+            <span>Показывать по:</span> 
+            <select name="count" class="styleds sortnum_select">
+                <option value="1" {% if count == '1' %}selected{% endif %}>1</option>
+                <option value="3" {% if count == '3' %}selected{% endif %}>3</option>
+                <option value="5" {% if count == '5' %}selected{% endif %}>5</option>
+            </select>
+        </div> <!--sortnum-->
+    </form>
+    <form method='GET'>
+        <div class="sortpage">
+            <div class="inpgw">
+                <button name='page' class='transparent' value=''><img src="/static/images/pl.png" alt="" /></button>
+                <button name='page' class='transparent' value=''>1</button>
+                <button name='page' class='transparent active' value='' >2</button>
+                <button name='page' class='transparent' value=''>3</button>   
+                <button name='page' class='transparent' value=''><img src="/static/images/pr.png" alt="" /></button>
+            </div> <!--pgw-->
+        </div> <!--sortpage-->
+    </form>
+</div> <!--sorting-->
+
+<script>
+    $('.sortnum_select').change(function(){
+        $(this).parent().parent().submit();
+    });
+</script>

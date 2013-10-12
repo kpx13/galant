@@ -22,6 +22,7 @@ def get_common_context(request):
     c['authentication_form'] = AuthenticationForm()
     c['categories'] = Category.objects.filter(parent=None).extra(order_by = ['id'])
     c['brands'] = Brand.objects.all()
+    
     """
     if request.user.is_authenticated():
         c['favorites_working'] = request.user.get_profile()
@@ -41,12 +42,42 @@ def home_page(request):
     c['request_url'] = 'home'
     return render_to_response('home.html', c, context_instance=RequestContext(request))
 
+def news(request, slug=None):
+    c = get_common_context(request)
+    if slug == None:
+        c['news'] = NewsItem.objects.all()
+        return render_to_response('news.html', c, context_instance=RequestContext(request))
+    else:
+        c['item'] = NewsItem.get_by_slug(slug)
+        return render_to_response('news_item.html', c, context_instance=RequestContext(request))
+
 def category(request, slug):
     c = get_common_context(request)
     c['category'] = Category.get_by_slug(slug)
+    items = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))
+    
+    if 'sort' in request.GET:
+        request.session['catalog_sort'] = request.GET['sort']
+    if 'catalog_sort' in request.session:
+        items = items.order_by(request.session['catalog_sort'])
+        c['sort'] = request.session['catalog_sort']
+    else:
+        items = items.order_by('name')
+        c['sort'] = 'name'
+        
+    if 'count' in request.GET:
+        request.session['catalog_count'] = request.GET['count']
+    if 'catalog_count' in request.session:
+        items = items[0:request.session['catalog_count']]
+        c['count'] = request.session['catalog_count']
+    else:
+        items = items[0:1]
+        c['count'] = 1
+    
+    c['items'] = items
     return render_to_response('category.html', c, context_instance=RequestContext(request))
 
-def item(request, item_id):
+def item(request, slug):
     c = get_common_context(request)
     if request.method == 'POST':
         if request.POST['action'] == 'add_in_basket':
@@ -57,8 +88,9 @@ def item(request, item_id):
         elif request.POST['action'] == 'del_favorites':
             c['favorites_working'].del_favorites(request.POST['item_id'])
         return HttpResponseRedirect(request.get_full_path())
-    c['item'] = Item.get(item_id)
+    c['item'] = Item.get_by_slug(slug)
     c['category'] = c['item'].category
+    c['same'] = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))[0:4]
     return render_to_response('item.html', c, context_instance=RequestContext(request))
 
 """
