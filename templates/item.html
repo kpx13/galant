@@ -58,18 +58,26 @@
                     
                     {{ item.description|safe }}
                     
-                    <div class="sizes">
-                        <span>Выберите размер:</span>   
-                        <div class="clear"></div>
+                    <form method='POST'>  <!---->
+                        <div class="sizes">
+                            <span>Выберите размер:</span>   
+                            <div class="clear"></div>
+                            
+                            {% for s in item.sizes.all %}
+                                <input type="radio" id="radio_{{ s.name }}" name="size" value="{{ s.name }}" {% if forloop.counter == 1 %}checked{% endif %}>
+                                <label for="radio_{{ s.name }}">{{ s.name }}</label>
+                            {% endfor %}
                         
-                        {% for s in item.sizes.all %}
-                            <input type="radio" id="radio_{{ s.name }}" name="size" value="{{ s.name }}">
-                            <label for="radio_{{ s.name }}">{{ s.name }}</label>
-                        {% endfor %}
+                        </div> <!--sizes-->
                     
-                    </div> <!--sizes-->
-                    <div class="zakaz">заказать</div>
+                        <button type="submit" class="zakaz_">заказать</button>
+                        <input type="hidden" name='action' value="add_in_basket" />
+                        <input type="hidden" name='item_id' value="{{ item.id }}" />
+                        {% csrf_token %}
+                    </form>
+                    
                     <div class="instock">Товар в наличии</div>
+                    
                     
                     <!-- Column 1 end -->
                 </div>

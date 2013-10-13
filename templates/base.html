@@ -170,43 +170,22 @@
         
                                             <div class="mini">
                                                 <div class="miniw">
-                                                    <a href="catin.html">
-                                                        <div class="item">
-                                                            <img src="/static/images/ch4.jpg" alt="" />
-                                                            <span class="model">Платье Vika Smolyanitskaya</span>
-                                                            <span class="amount">Всего: 12</span>
-                                                            <span class="counter">Цена: 144 466, 00 руб.</span>
-                                                        </div> <!--item-->
-                                                    </a>
-
-
-                                                    <div class="clear"></div>
-
-                                                    <a href="catin.html">
-                                                        <div class="item">
-                                                            <img src="/static/images/ch5.jpg" alt="" />
-                                                            <span class="model">Куртка, TOM FARR</span>
-                                                            <span class="amount">Всего: 1</span>
-                                                            <span class="counter">Цена: 11 050 руб.</span>
-                                                        </div> <!--item-->
-                                                    </a>
-
-                                                    <div class="clear"></div>
-
-                                                    <a href="catin.html">
-                                                        <div class="item">
-                                                            <img src="/static/images/ch6.jpg" alt="" />
-                                                            <span class="model"> Куртка, Laura Scott</span>
-                                                            <span class="amount">Всего: 1</span>
-                                                            <span class="counter">Цена:  4 315 руб.</span>
-                                                        </div> <!--item-->
-                                                    </a>
-
-                                                    <div class="clear"></div>
-
-                                                    <div class="zakaz4"><a href="/cart">В корзину</a></div>
-
-
+                                                    {% for cc in cart_content|slice:"3" %}
+                                                        <a href="/item/{{ cc.item.slug }}/">
+                                                            <div class="item">
+                                                                <img src="/media/{{ cc.item.image.all.0.image }}/" alt="" style='max-height: 100px' />
+                                                                <span class="model">{{ cc.item.name }}</span>
+                                                                <span class="amount">Всего: {{ cc.count }}</span>
+                                                                <span class="amount">Размер: {{ cc.size }}</span>
+                                                                <span class="counter">Цена: {{ cc.item.price }} руб.</span>
+                                                            </div> <!--item-->
+                                                        </a>
+                                                        
+                                                        <div class="clear"></div>
+                                                    {% endfor %}
+                                                    
+                                                    <div class="zakaz4"><a href="/cart/">В корзину</a></div>
+                                                    
                                                 </div> <!--miniw-->
                                             </div> <!--mini-->
 

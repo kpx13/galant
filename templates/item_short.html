@@ -1,14 +1,19 @@
  <div class="block">
-    <div class="tovarup">
-        <span>Выбор размера</span>
-        {% for s in i.sizes.all %}
-            <input id="Checkbox_{{ i.id }}_{{ s.name }}" class="css-checkbox" type="checkbox" />
-            <label for="Checkbox_{{ i.id }}_{{ s.name }}" name="lbl_Checkbox_{{ i.id }}_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
-            <br />
-        {% endfor %}
-        <div class="zakaz1"><a href="">Подтвердить</a></div>
-        <a href="" class="tovarup-close">Закрыть</a>
-    </div> <!--tovarup-->
+    <form method='POST' action='/item/{{ i.slug }}/'>
+        <div class="tovarup">
+            <span>Выбор размера</span>
+            {% for s in i.sizes.all %}
+                <input id="Checkbox_{{ i.id }}_{{ s.name }}" name="size" value="{{ s.name }}" class="css-checkbox" type="checkbox" />
+                <label for="Checkbox_{{ i.id }}_{{ s.name }}" name="lbl_Checkbox_{{ i.id }}_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
+                <br />
+            {% endfor %}
+            <button type="submit" class="zakaz1">Подтвердить</button>
+            <input type="hidden" name='action' value="add_in_basket" />
+            <input type="hidden" name='item_id' value="{{ i.id }}" />
+            <a href="" class="tovarup-close">Закрыть</a>
+        </div> <!--tovarup-->
+        {% csrf_token %}
+    </form>    
     <a href="/item/{{ i.slug }}/"><img src="/media/{{ i.image.all.0.image }}" alt="" /></a>
     <div class="dsc">
         <a href="/item/{{ i.slug }}/" >{{ i.name }}</a>    
@@ -16,4 +21,5 @@
     <span>{{ i.price|floatformat:"0" }} р.</span>
     <div class="clear"></div>
     <div class="zakaz"><a href="">заказать</a></div>
+    
 </div> <!--block-->

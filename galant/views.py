@@ -12,8 +12,8 @@ from call_request.forms import CallRequestForm
 from pages.models import Page
 from news.models import NewsItem
 from catalog.models import Category, Brand, Item
-#from shop.models import Cart, Order
-#from sessionworking import SessionCartWorking, SessionFavoritesWorking
+from shop.models import Cart, Order
+from sessionworking import SessionCartWorking
 
 def get_common_context(request):
     c = {}
@@ -23,16 +23,13 @@ def get_common_context(request):
     c['categories'] = Category.objects.filter(parent=None).extra(order_by = ['id'])
     c['brands'] = Brand.objects.all()
     
-    """
     if request.user.is_authenticated():
-        c['favorites_working'] = request.user.get_profile()
         c['cart_working'] = Cart
         Cart.update(request.user, SessionCartWorking(request).pop_content())
     else:
-        c['favorites_working'] = SessionFavoritesWorking(request)
         c['cart_working'] = SessionCartWorking(request)
     c['cart_count'], c['cart_sum'] = c['cart_working'].get_goods_count_and_sum(request.user)
-    """
+    c['cart_content'] = c['cart_working'].get_content(None)
     c.update(csrf(request))
     return c
 
@@ -64,7 +61,7 @@ def filter_items(request, c, items):
     
     if 'brand' in request.GET and request.GET['brand']:
         items = items.filter(brand=Brand.get_by_slug(request.GET['brand']))
-        c['brand'] = request.session['catalog_brand']
+        c['brand'] = request.GET['brand']
         
     if 'count' in request.GET:
         request.session['catalog_count'] = request.GET['count']
@@ -97,31 +94,31 @@ def item(request, slug):
     c = get_common_context(request)
     if request.method == 'POST':
         if request.POST['action'] == 'add_in_basket':
-            c['cart_working'].add_to_cart(request.user, request.POST['item_id'])
+            sizes = request.POST.getlist('size')
+            for s in sizes:
+                c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
             messages.success(request, u'Товар был добавлен в корзину.')
-        elif request.POST['action'] == 'add_to_favorites':
-            c['favorites_working'].add_to_favorites(request.POST['item_id'])
-        elif request.POST['action'] == 'del_favorites':
-            c['favorites_working'].del_favorites(request.POST['item_id'])
         return HttpResponseRedirect(request.get_full_path())
     c['item'] = Item.get_by_slug(slug)
     c['category'] = c['item'].category
     c['same'] = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))[0:4]
     return render_to_response('item.html', c, context_instance=RequestContext(request))
 
-"""
-def cart_page(request):
+def cart(request):
     c = get_common_context(request)
     if request.method == 'POST':
         if request.POST['action'] == 'del_from_basket':
-            c['cart_working'].del_from_cart(request.user, request.POST['item_id'])
+            c['cart_working'].del_from_cart(request.user, request.POST['item_id'], request.POST['size'])
             messages.success(request, u'Товар был удален из корзины.')
             return HttpResponseRedirect(request.get_full_path())
+        elif ('set_count' in request.POST) and (int(request.POST['set_count']) != c['cart_working'].get_count(request.user, request.POST['item_id'], request.POST['size'])):
+            c['cart_working'].set_count(request.user, request.POST['item_id'], request.POST['size'], request.POST['set_count'])
+            return HttpResponseRedirect(request.get_full_path())
         elif request.POST['action'] == 'plus':
-            c['cart_working'].count_plus(request.user, request.POST['item_id'])
+            c['cart_working'].count_plus(request.user, request.POST['item_id'], request.POST['size'])
             return HttpResponseRedirect(request.get_full_path())
         elif request.POST['action'] == 'minus':
-            c['cart_working'].count_minus(request.user, request.POST['item_id'])
+            c['cart_working'].count_minus(request.user, request.POST['item_id'], request.POST['size'])
             return HttpResponseRedirect(request.get_full_path())
         elif request.POST['action'] == 'to_order':
             comment = request.POST['comment']
@@ -135,38 +132,7 @@ def cart_page(request):
     c['items'] = c['cart_working'].get_content(request.user)
     return render_to_response('cart.html', c, context_instance=RequestContext(request))
 
-
-def order_page(request):
-    c = get_common_context(request)
-    return render_to_response('order.html', c, context_instance=RequestContext(request))
-
-
-def news_page(request):
-    c = get_common_context(request)
-    c['news'] = NewsItem.objects.all()
-    return render_to_response('news.html', c, context_instance=RequestContext(request))
-
-
-
-
-
-
-def collection_page(request, collection_id):
-    c = get_common_context(request)
-    c['category'] = Collection.get(collection_id)
-    return render_to_response('category.html', c, context_instance=RequestContext(request))
-
-def favorites_page(request):
-    c = get_common_context(request)
-    c['items'] = c['favorites_working'].get_items()
-    return render_to_response('favorites.html', c, context_instance=RequestContext(request))
-
-def search_page(request):
-    c = get_common_context(request)
-    c['search'] = request.GET.get('search', '')
-    c['items_s'] = Item.objects.filter(name__icontains=c['search'])
-    c['categories_s'] = Category.objects.filter(name__icontains=c['search'])
-    return render_to_response('search.html', c, context_instance=RequestContext(request))
+"""
 
 def request_page(request):
     c = get_common_context(request)

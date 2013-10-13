@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.urls')),
 
     url(r'^$' , views.home_page),
+    url(r'^cart/$' , views.cart),
     url(r'^category/(?P<slug>[\w-]+)/$', views.category),
     url(r'^category/$', views.category, {'slug': None}),
     url(r'^item/(?P<slug>[\w-]+)/$' , views.item),

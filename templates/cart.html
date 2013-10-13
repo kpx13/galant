@@ -3,107 +3,103 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="/">Главная</a> <span class="divider">/</span></li>
-    <li class="active">Корзина</li>
+   <a href="" class="no">Моя корзина</a>
 {% endblock %}
 
 {% block content %}
-    <div class='row'><!-- средняя часть страницы-->
-        <div class='row-fluid'>
-            <div class='span12'> <!--левая панель-->
-                {% if items %}
-                    <h2>Корзина</h2>
-                    <table style='width: 100%'>
-                        <tr>
-                            <td>Фото</td>
-                            <td>Название</td>
-                            <td>Количество</td>
-                            <td>Цена</td>
-                            <td>Удалить</td>
-                        </tr>
-                        
-                        {% for i in items %}
-                        
-                        <tr>
-                            <td><img {% if i.item.image %} src="/media/{{ i.item.image.all.0.image }}" style='max-height: 100px;' {% endif %} alt='{{ i.item.name }}' ></td>
-                            <td><a href='/items/{{ i.item.id }}'>{{ i.item.name }}</a></td>
-                            <td>
-                                
-                                <form method='POST'>
-                                    <button type="submit" class='btn btn-success btn-small' value="minus" name="action" ><i class="icon-minus icon-white"></i></button>
-                                    <b>{{ i.count }}</b>
-                                    <button type="submit" class='btn btn-success btn-small' value="plus" name="action" ><i class="icon-plus icon-white"></i></button>
-                                    <input type="hidden" name='item_id' value="{{ i.item.id }}" />
-                                    {% csrf_token %}
-                                </form>    
-                            </td>
-                            <td><b>{{ i.item.price }} руб.</b></td>
-                            <td>
-                                        <form method='POST'>
-                                            <button type="submit" class='btn btn-warning btn-small' value="" name="from_basket" ><i class="icon-remove icon-white"></i></button>
-                                            <input type="hidden" name='action' value="del_from_basket" />
-                                            <input type="hidden" name='item_id' value="{{ i.item.id }}" />
-                                            {% csrf_token %}
-                                        </form>               
-                            </td>
-                        </tr>
-                        
-                        {% endfor %}
-                        
-                    </table><!--."catalog-->
-                        <div style='float: right; clear: both;'>
-                            <h3>{{ cart_sum }} руб.</h3>
-                            <br />
-                        </div>
-                    {% else %}
-                        <h2>Ваша корзина пуста.</h2>
-                    {% endif %}
-            </div>
-        </div>
-        <div class='row-fluid'>
-            {% if items and user.is_authenticated %}
-                <form method='POST'>
-                    
-                    
-                    <div class='span6'> <!--левая панель-->
-                        <div class="check-box">
-                            <p>Выбор типа оплаты</p>
-                                <div class="round cash">
-                                    <label for="radio">
-                                        <img src="/static/images/cash-box.jpg"><h6>Оплата за наличные</h6>
-                                    </label>
-                                    <input type="radio" id="radio" name="payment" value='1' checked=checked>
-                                </div>
-                                <div class="round out"> 
-                                    <label for="robot"><img src="/static/images/robot.jpg"><h6>Безналичный расчет</h6></label>
-                                    <input type="radio" id="robot" name="payment" value='2' disabled=disabled />
-                                </div>
-                        </div>
-                        
-                    </div>
-
-                    <div class='span6'><!-- правая панель-->
-                    
-                        <p>Выбор варианта доставки</p>
-                        <p><input type="radio" name="deliver" value='1'>Самовывоз со склада</p>
-                        <p><input type="radio" name="deliver" value='2'>Доставка курьером по Москве</p>
-                        <p><input type="radio" name="deliver" value='3'>Почтой</p>
-                        <br />
-                        <div id="comments">
-                            <p>Комментарии к заказу:
-                            <textarea name='comment'></textarea></p>
-                        </div>
-                        <input type="submit" class='btn btn-primary' value="Оформить заказ" />
-                    </div>
-                    <input type="hidden" name='action' value="to_order" />
-                    {% csrf_token %}
-                </form> 
-                
-            {% endif %}
+    {% if items %}
+        <table width="100%" class="check">
+            <tr class="heds">
+                <td >Фото</td>
+                <td width='40%'>Описание</td>
+                <td>Кол-во</td>
+                <td >Цена</td>
+                <td >Сумма</td>
+                <td ></td>
+            </tr>
             
-            {% if not user.is_authenticated %}
-                <div class='span12'><h4>Для оформления заказа Вам необходимо <a href='/accounts/register/'>зарегистрироваться</a>.</h4></div>
-            {% endif %}
-        </div>
-    </div>
+            {% for i in items %}
+                <tr>
+                    <td><img src="/media/{{ i.item.image.all.0.image }}/" /></td>
+                    <td>
+                        <p><strong>{{ i.item.name }}</strong></p>
+                        <p>Артикул: {{ i.item.art }}</p>
+                        <p>Цвет: {{ i.item.color }}</p>
+                        <p>Размер: {{ i.size }}</p>
+                    </td>
+                    <td>
+                        <div class="number">
+
+                            <div class="tnum1w">
+                                <div class="tnum1w1">
+                                    <form method='POST'>
+                                        <button type="submit" value="minus" name="action"  class="minus"><span>-</span></button>
+                                        <input type="text" value="{{ i.count }}" size="2" class="tnum1" name='set_count' />
+                                        <button type="submit" value="plus" name="action" class="plus" ><span>+</span></button>
+                                        <input type="hidden" name='item_id' value="{{ i.item.id }}" />
+                                        <input type="hidden" name='size' value="{{ i.size }}" />
+                                        {% csrf_token %}
+                                    </form>                
+                                </div> <!--tnum1w1-->
+                            </div> <!--tnum1w-->
+                        </div> <!--number-->
+
+                    </td>
+                    <td><div class="price nobright"> {{ i.item.price|floatformat:"0" }}</div></td>
+                    <td><div class="price"> {{ i.sum|floatformat:"0" }}</div></td>
+                    <td>
+                        <form method='POST'>
+                            <button type="submit" name='action' value="del_from_basket" class='minus' />
+                                <div class="trash"></div>
+                            </button>
+                            <input type="hidden" name='item_id' value="{{ i.item.id }}" />
+                            <input type="hidden" name='size' value="{{ i.size }}" />
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                        
+                    
+                </tr>
+            {% endfor %}
+        </table>
+        
+        <div class="sorting">
+            <div class="sortnumleft">
+                <span>Показывать по:</span> 
+                <select name="d" class="selectyze2">
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                </select>
+            </div> <!--sortnum-->
+            
+            <div class="sortpage">
+                <div class="inpgw">
+                    <a href=""><img src="/static/images/pl.png" alt="" /></a>
+                    <a href="">1</a>   
+                    <a href="" class="active">2</a>   
+                    <a href="">3</a>   
+                    <a href=""><img src="/static/images/pr.png" alt="" /></a>
+                </div> <!--pgw-->
+            </div> <!--sortpage-->
+        </div> <!--sorting-->
+
+        <div class="proceed">
+
+            <div class="p1">
+                <input type="submit" class="checkout" value="распечатать">
+            </div> <!--p1-->
+
+            <div class="p2">
+
+                <p>Сумма заказа: <span> {{ cart_sum|floatformat:"0" }} руб.</span></p>
+                <a href="reg1.html" class="checkout1">оформить</a>
+
+            </div> <!--p2-->
+
+        </div> <!--proceed-->
+    {% else %}
+        <h2>Ваша корзина пуста.</h2>
+    {% endif %}
+
 {% endblock %}

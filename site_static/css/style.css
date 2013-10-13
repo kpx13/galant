@@ -770,7 +770,7 @@ margin: 10px 0;
 	text-transform: none;
 }
 
-.tovardsc .zakaz {
+.tovardsc .zakaz_ {
 	background: url(../images/button.jpg) repeat-x;
 	height: 35px;
 	width: 25%;
@@ -787,7 +787,7 @@ margin: 10px 0;
 	float: left;
 }
 
-.tovardsc .zakaz:hover {
+.tovardsc .zakaz_:hover {
 	background: url(../images/button1.jpg) repeat-x;
 	height: 35px;
 	width: 25%;
@@ -801,8 +801,6 @@ margin: 10px 0;
 	cursor: pointer;
 	margin: 20px auto 0 auto;
 	float: left;
-	
-	
 }
 
 
@@ -914,6 +912,8 @@ padding: 0;
 .minus, .plus {
 	cursor: pointer;
 	display: inline;
+    background: transparent;
+    border: none;
 }
 
 

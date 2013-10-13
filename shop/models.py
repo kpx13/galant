@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template import Context, Template
 
-from catalog.item import Item
+from catalog.models import Item
 
 class Cart(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
