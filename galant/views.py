@@ -40,6 +40,7 @@ def get_common_context(request):
 def home_page(request):
     c = get_common_context(request)
     c['request_url'] = 'home'
+    c['items'] = Item.objects.filter(at_home=True)
     return render_to_response('home.html', c, context_instance=RequestContext(request))
 
 def news(request, slug=None):

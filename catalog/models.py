@@ -112,6 +112,9 @@ class Size(models.Model):
     def __unicode__(self):
         return self.name
     
+SEASON = (('ss', u'Весна-Лето'),
+          ('aw', u'Осень-Зима'))
+    
 class Item(models.Model):
     category = models.ForeignKey(Category, verbose_name=u'категория', related_name='items')
     brand = models.ForeignKey(Brand, verbose_name=u'марка', related_name='items')
@@ -121,7 +124,8 @@ class Item(models.Model):
     name = models.CharField(max_length=512, verbose_name=u'название')
     art = models.CharField(max_length=50, verbose_name=u'артикул')
     price = models.FloatField(verbose_name=u'цена')
-    price_new = models.FloatField(blank=True, null=True, verbose_name=u'новая цена (для акций)')
+    price_old = models.FloatField(blank=True, null=True, verbose_name=u'старая цена (для акций)')
+    season = models.CharField(choices=SEASON, blank=True, null=True, max_length=2, verbose_name=u'сезон (если есть)')
     description = RichTextField(default=u'', verbose_name=u'описание')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
     at_home = models.BooleanField(blank=True, default=False, verbose_name=u'показывать на главной')

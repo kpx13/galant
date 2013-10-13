@@ -49,12 +49,10 @@
                         </div>   <!--state-->
                         
                         <div class="costs">
-                            {% if item.price_new %}
-                                <div class="discount">{{ item.price|floatformat:"0" }} р.</div>     
-                                <span >{{ item.price_new|floatformat:"0" }} р.</span>
-                            {% else %}
-                                <span >{{ item.price|floatformat:"0" }} р.</span>
+                            {% if item.price_old %}
+                                <div class="discount">{{ item.price_old|floatformat:"0" }} р.</div>     
                             {% endif %}
+                            <span >{{ item.price|floatformat:"0" }} р.</span>
                         </div>
                     </div> <!--tpad-->
                     
@@ -105,11 +103,7 @@
                 <div class="dsc">
                     <a href="/item/{{ s.slug }}/">{{ s.name }}</a>   
                 </div> <!--dsc-->   
-                {% if item.price_new %}
-                    <span >{{ s.price_new|floatformat:"0" }} р.</span>
-                {% else %}
-                    <span >{{ s.price|floatformat:"0" }} р.</span>
-                {% endif %}
+                <span >{{ s.price|floatformat:"0" }} р.</span>
                 <div class="clear"></div>
                 <div class="zakaz">далее</div>
 

@@ -23,4 +23,13 @@
 {% endblock %}
 
 {% block content %}
+    <div class="catalog">
+        {% if items %}
+            {% for i in items.all %}
+               {% include 'item_short.html' with i=i %}
+            {% endfor %}
+        {% else %}
+            <p>Товары для показа на главной не выбраны.</p>
+        {% endif %}
+    </div>
 {% endblock %}

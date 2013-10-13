@@ -53,35 +53,14 @@
     <div class="catalog">
         {% if items %}
             {% for i in items.all %}
-                <div class="block">
-                    <div class="tovarup">
-                        <span>Выбор размера</span>
-                        {% for s in i.sizes.all %}
-                            <input id="Checkbox_{{ s.name }}" class="css-checkbox" type="checkbox" />
-                            <label for="Checkbox_{{ s.name }}" name="lbl_Checkbox_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
-                            <br />
-                        {% endfor %}
-                        <div class="zakaz1"><a href="">Подтвердить</a></div>
-                        <a href="" class="tovarup-close">Закрыть</a>
-                    </div> <!--tovarup-->
-                    <a href="/item/{{ i.slug }}/"><img src="/media/{{ i.image.all.0.image }}" alt="" /></a>
-                    <div class="dsc">
-                        <a href="/item/{{ i.slug }}/" >{{ i.name }}</a>    
-                    </div> <!--dsc-->   
-                    <span>{% if i.price_new %} {{ i.price_new|floatformat:"0" }} {% else %} {{ i.price|floatformat:"0" }} {% endif %}р.</span>
-                    <div class="clear"></div>
-                    <div class="zakaz"><a href="">заказать</a></div>
-                </div> <!--block-->
+                {% include 'item_short.html' with i=i %}
             {% endfor %}
         {% else %}
             <p>В этой категории нет товаров.</p>
         {% endif %}
-        
-     
     </div> <!--catalog-->
 
     {% include 'sorting.html' %}
-
 
 {% endblock %}
 
