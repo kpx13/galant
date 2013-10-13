@@ -131,7 +131,7 @@
         
                         <div class="c2pad">
                             {% if not user.is_authenticated %}
-                                <a href="auth.html" class="lk">Авторизация</a>
+                                <a href="/register/" class="lk">Авторизация</a>
                             {% else %}
                                 <p>Здравствуйте, Александр Викторович</p>
                                 <a href="" class="exit">Выйти</a>
@@ -225,6 +225,7 @@
             {% block slider %}
             {% endblock %}
 
+            {% block all_wrapper %}
             <div class="maskwrap">
                 <div class="colmask leftmenu">
                     <div class="colleft">
@@ -302,6 +303,7 @@
                     </div>
                 </div> <!--colmask-->
             </div> <!--id body-->
+            {% endblock %}
 
 
             <div id="footer">

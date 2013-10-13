@@ -448,24 +448,24 @@ color: #fff!important;
 		margin:  0 0 5px 0;
 	}
 	
-	.forms .tinput.cleft {
+	.forms.cleft .tinput {
 		position: relative;
 		right: 100px;
 	}
 	
-	.forms .tinput2.cleft {
+	.forms.cleft input[type=text], .forms.cleft input[type=password] {
 		position: relative;
 		right: 140px;
 		margin: 0 0 15px 0;
 	}
 	
-	.forms .tinput2.cright {
+	.forms.cright input[type=text], .forms.cright input[type=password] {
 		position: relative;
-		right: 120px;
+		right: 130px;
 		margin: 0 0 15px 0;
 	}
 	
-	.forms .tinput2 {
+	.forms input[type=text], .forms input[type=password] {
 	padding: 5px 0;
 		border: 1px solid #e6e5e5;
 		color: #000;
@@ -489,6 +489,7 @@ color: #fff!important;
 
 		position:relative;
 		left: 155px;
+        max-width: 100px;
 	}
 	
 	.forms .dc {

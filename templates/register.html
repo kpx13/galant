@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block all_wrapper %}
+    <div class="maskwrap">
+
+        <div class="breadcrumbs fixedbc">
+            <a href="/" class="empty">Главная</a> 
+            <a href="" class="no">Регистрация</a>
+        </div>
+
+
+
+        <div class="colmask doublepage1">
+            <div class="colleft">
+                <div class="col1">
+                    <div class="forms white cleft">
+                        <form method='POST' >
+                            <p>Форма авторизации</p>
+                            <label>E-mail*</label>
+                            {{ auth_form.username }}
+                            {% if auth_error %}
+                                <div class="fail">{{ auth_error }}</div>
+                            {% endif %}
+
+                            <label>Пароль*</label>
+                            
+                            {{ auth_form.password }}
+                            <div class="clear"></div>
+                            <a href="" class="memory">Забыли пароль?</a>
+
+                            <div class="clear"></div>
+
+                            <input type="submit" class="send cl" value="Войти">
+                            <span>*Обязательные для заполнения поля</span>
+                            <input type='hidden' name='action' value='auth' />
+                            {% csrf_token %}
+                        </form>
+
+                    </div> <!--forms-->
+
+                </div>  <!--col1-->
+
+
+                <div class="col2">
+
+
+
+                    <div class="forms white cright">
+                        <p>Форма регистрации</p>
+                        <form method='POST' >
+                            <label>ФИO*</label>
+                            {{ register_form.fio }}
+                            {% if register_form.fio.errors %}
+                                <div class="fail">{{ register_form.fio.errors.0 }}</div>
+                            {% endif %}
+                            <label>E-mail*</label>
+                            {{ register_form.email }}
+                            {% if register_form.email.errors %}
+                                <div class="fail">{{ register_form.email.errors.0 }}</div>
+                            {% endif %}
+
+                            <label>Пароль*</label>
+                            {{ register_form.password_1 }}
+                            {% if register_form.password_1.errors %}
+                                <div class="fail">{{ register_form.password_1.errors.0 }}</div>
+                            {% endif %}
+                            <label>Повторите пароль*</label>
+                            {{ register_form.password_2 }}
+                            {% if register_form.password_2.errors %}
+                                <div class="fail">{{ register_form.password_2.errors.0 }}</div>
+                            {% endif %}
+                            <div class="clear"></div>
+
+                            <input type="submit" class="send cl" value="Отправить">
+                            <span>*Обязательные для заполнения поля</span>
+                            <input type='hidden' name='action' value='register' />
+                            {% csrf_token %}
+                        </form>
+
+                    </div> <!--forms-->
+    
+                </div> <!-- Column 2 end -->
+
+            </div> <!--colleft-->
+        </div><!-- colmask doublepage-->
+
+
+    </div> <!--maskwrap-->
+
+{% endblock %}

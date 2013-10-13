@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm 
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponseNotFound
@@ -14,6 +15,7 @@ from news.models import NewsItem
 from catalog.models import Category, Brand, Item
 from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
+from users.forms import RegisterForm
 
 def get_common_context(request):
     c = {}
@@ -132,6 +134,11 @@ def cart(request):
     c['items'] = c['cart_working'].get_content(request.user)
     return render_to_response('cart.html', c, context_instance=RequestContext(request))
 
+def order(request, step='1'):
+    c = get_common_context(request)
+
+    return render_to_response('order_1.html', c, context_instance=RequestContext(request))
+
 """
 
 def request_page(request):
@@ -158,6 +165,60 @@ def other_page(request, page_name):
     except:
         return HttpResponseNotFound('page not found')
         #return render_to_response('base.html', c, context_instance=RequestContext(request))
+
+def register(request):
+    c = get_common_context(request)
+    
+    auth_form = AuthenticationForm()
+    register_form = RegisterForm()
+    c['auth_form'] = auth_form
+    c['register_form'] = register_form
+    if request.method == "POST":
+        if request.POST['action'] == 'auth':
+            auth_form = AuthenticationForm(request.POST)
+            if auth_form.is_valid():
+                username = request.POST.get('username', '')
+                password = request.POST.get('password', '')
+                user = auth.authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        auth.login(request, user)
+                        return HttpResponseRedirect('/')
+                    else:
+                        c['auth_error'] = u'Ваш аккаунт не активирован.'
+                        
+                else:
+                    c['auth_error'] = u'Неверный логин или пароль.'
+            else:
+                c['auth_error'] = u'Введите логин и пароль.'
+            c['auth_form'] = auth_form
+        elif request.POST['action'] == 'register':
+            from django.forms.util import ErrorList
+            
+            register_form = RegisterForm(request.POST)
+            if register_form.is_valid():
+                p1 = register_form.data.get('password_1')
+                p2 = register_form.data.get('password_2')
+                error = False
+                if p1 != p2:
+                    register_form._errors["password_2"] = ErrorList([u'Пароли не совпадают.'])
+                    error = True
+                if len(User.objects.filter(username=register_form.data.get('email'))):
+                    register_form._errors["email"] = ErrorList([u'Такой емейл уже зарегистрирован.'])
+                    error = True
+                if not error:
+                    u = User(username=register_form.data.get('email'))
+                    u.set_password(register_form.data.get('password_1'))
+                    u.save()
+                    p = u.get_profile()
+                    p.fio = register_form.data.get('fio')
+                    p.save()
+                    user = auth.authenticate(username=register_form.data.get('email'), password=register_form.data.get('password_1'))
+                    auth.login(request, user)
+                    return HttpResponseRedirect('/')
+            c['register_form'] = register_form
+                
+    return render_to_response('register.html', c, context_instance=RequestContext(request))
 
 def login_user(request, c):
     form = AuthenticationForm(request.POST)
