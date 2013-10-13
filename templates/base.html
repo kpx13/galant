@@ -108,7 +108,12 @@
                                     $('#onlinereq').bPopup();
 
                                 });
-
+                            {% if crf.errors %}
+                                $('#onlinereq').bPopup();
+                            {% endif %}
+                            {% if call_sent %}
+                                $('#onlinereq').bPopup();
+                            {% endif %}
                         });
 
                 })(jQuery);
@@ -133,8 +138,8 @@
                             {% if not user.is_authenticated %}
                                 <a href="/register/" class="lk">Авторизация</a>
                             {% else %}
-                                <p>Здравствуйте, Александр Викторович</p>
-                                <a href="" class="exit">Выйти</a>
+                                <p>Здравствуйте, {{ user.get_profile.fio }}</p>
+                                <a href="/logout/" class="exit">Выйти</a>
                                 <a href="" class="lk">Личный кабинет</a>
                             {% endif %}
                         </div> <!--c2pad-->
@@ -144,7 +149,7 @@
                         <div class="c2">
                             <h2>Сумки, кошельки, перчатки, кожгалантерея, остальная продукция</h2> 
                             <a href="/o-kompanii/">о компании</a>
-                            <a href="/news/">НОвости</a>
+                            <a href="/news/">Новости</a>
                         </div> <!--c2-->
     
                         <div class="c3">
@@ -336,18 +341,26 @@
             </div> <!--footer-->
 
             <div id="onlinereq">
-    
-                <h2>Обратный звонок</h2>
-                <label>Ваше имя</label>
-                <input type="text" name="T1" class="tinput">
-            
-                <label>Ваш телефон</label>
-                <input type="text" name="T1" class="tinput">
-    
-            
-            
-                <input type="button" class="button bi" value="Отправить">
-                    
+                {% if call_sent %}
+                    <h3>В ближайшее время мы Вам перезвоним.</h3>
+                {% else %}
+                    <form method='POST'>
+                        <h2>Обратный звонок</h2>
+                        <label>Ваше имя</label>
+                        <input type="text" name="name" class="tinput">
+                        {% if crf.name.errors %}
+                            <div style='color: red'>{{ crf.name.errors.0 }}</div>
+                        {% endif %}
+                        <label>Ваш телефон</label>
+                        <input type="text" name="phone" class="tinput">
+                        {% if crf.phone.errors %}
+                            <div style='color: red'>{{ crf.phone.errors.0 }}</div>
+                        {% endif %}
+                        <input type="submit" class="button bi" value="Отправить">
+                        <input type='hidden' name='action' value='call_request' />
+                        {% csrf_token %}
+                    </form>
+                {% endif %}
             </div> <!--onlinereq-->
        
         </div> <!--container-->

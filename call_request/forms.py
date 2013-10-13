@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.template import Context, Template
 from models import CallRequest
 from livesettings import config_value
-
+import config
 
 def sendmail(subject, body):
     mail_subject = ''.join(subject)

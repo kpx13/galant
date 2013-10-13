@@ -33,6 +33,16 @@ def get_common_context(request):
     c['cart_count'], c['cart_sum'] = c['cart_working'].get_goods_count_and_sum(request.user)
     c['cart_content'] = c['cart_working'].get_content(request.user)
     c.update(csrf(request))
+    
+    if request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'call_request':
+        from call_request.forms import CallRequestForm
+        crf = CallRequestForm(request.POST)
+        if crf.is_valid():
+            crf.save()
+            c['call_sent'] = True
+        else:
+            c['crf'] = crf
+    
     return c
 
 
@@ -137,8 +147,27 @@ def cart(request):
 
 def order(request, step='1'):
     c = get_common_context(request)
-
-    return render_to_response('order_1.html', c, context_instance=RequestContext(request))
+    if step == '1':
+        if request.user.is_authenticated():
+            return HttpResponseRedirect('/order/2/')
+        else:
+            return render_to_response('order_1.html', c, context_instance=RequestContext(request))
+    elif step == '2':
+        from shop.forms import Step2Form
+        if request.method == 'GET':
+            form = Step2Form(initial= {'fio': request.user.get_profile().fio,
+                                       'email': request.user.username})
+        else:
+            form = Step2Form(request.POST)
+            if form.is_valid():
+                Order(user=request.user).save()
+                return HttpResponseRedirect('/order/3/')
+            
+        c['form'] = form
+        return render_to_response('order_2.html', c, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/')
+        
 
 """
 
@@ -242,3 +271,4 @@ def login_user(request, c):
 
 def logout_user(request):
     auth.logout(request)
+    return HttpResponseRedirect('/')

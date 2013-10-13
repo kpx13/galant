@@ -492,6 +492,18 @@ color: #fff!important;
         max-width: 100px;
 	}
 	
+	.forms.stretch .fail {
+        font-size: 0.6em;
+        color: #be5559;
+        font-family: tahoma, arial;
+        float: right;
+        z-index: 115;
+
+        position:relative;
+        left: 455px;
+        max-width: 100px;
+    }
+	
 	.forms .dc {
 		
 		font-size: 0.9em;
@@ -524,7 +536,7 @@ color: #fff!important;
 		font-size: 0.7em;
 	}
 	
-	.forms .tinput.stretch {
+	.forms.stretch input[type=text] {
 		width: 345px;
 	}
 	

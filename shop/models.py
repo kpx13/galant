@@ -96,11 +96,6 @@ class Cart(models.Model):
         cart = Cart.get_content(user)
         return (sum([x['count'] for x in cart]), sum([x['count'] * x['item'].price for x in cart]))
 
-def sendmail(subject, body):
-    mail_subject = ''.join(subject)
-    send_mail(mail_subject, body, settings.DEFAULT_FROM_EMAIL,
-        settings.SEND_ALERT_EMAIL)
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
@@ -124,18 +119,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         super(Order, self).save(*args, **kwargs)
         OrderContent.move_from_cart(self.user, self)
-        subject=u'Поступил новый заказ с сайта MyGoodThings.ru',
-        body_templ=u"""Пользователь: http://goodthings.annkpx.ru/admin/auth/user/{{ o.user.id }}/ 
-Содержимое:
-    {% for c in o.content.all %}
-        Товар: http://goodthings.annkpx.ru/item/{{ c.item.id }}, {{ c.count }} шт. по цене {{ c.item.price }} руб.
-    {% endfor %}
-Всего позиций: {{ o.get_count }} шт.
-Общая стоимость:  {{ o.get_sum }} руб. 
-Сообщение: {{ o.comment }}
-"""
-        body = Template(body_templ).render(Context({'o': self}))
-        sendmail(subject, body)    
+        
         
 class OrderContent(models.Model):
     order = models.ForeignKey(Order, verbose_name=u'заказ', related_name='content')
@@ -154,7 +138,7 @@ class OrderContent(models.Model):
     def move_from_cart(user, order):
         cart_content = Cart.get_content(user)
         for c in cart_content:
-            OrderContent.add(order, c.item, c.count, c.size)
+            OrderContent.add(order, c['item'], c['count'], Size.objects.get(name=c['size']))
         Cart.clear(user) 
         
     @staticmethod
