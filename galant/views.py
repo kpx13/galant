@@ -31,7 +31,7 @@ def get_common_context(request):
     else:
         c['cart_working'] = SessionCartWorking(request)
     c['cart_count'], c['cart_sum'] = c['cart_working'].get_goods_count_and_sum(request.user)
-    c['cart_content'] = c['cart_working'].get_content(None)
+    c['cart_content'] = c['cart_working'].get_content(request.user)
     c.update(csrf(request))
     return c
 
@@ -98,6 +98,7 @@ def item(request, slug):
         if request.POST['action'] == 'add_in_basket':
             sizes = request.POST.getlist('size')
             for s in sizes:
+                print '***', s
                 c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
             messages.success(request, u'Товар был добавлен в корзину.')
         return HttpResponseRedirect(request.get_full_path())
@@ -177,20 +178,19 @@ def register(request):
         if request.POST['action'] == 'auth':
             auth_form = AuthenticationForm(request.POST)
             if auth_form.is_valid():
-                username = request.POST.get('username', '')
-                password = request.POST.get('password', '')
-                user = auth.authenticate(username=username, password=password)
-                if user is not None:
-                    if user.is_active:
-                        auth.login(request, user)
-                        return HttpResponseRedirect('/')
-                    else:
-                        c['auth_error'] = u'Ваш аккаунт не активирован.'
-                        
+                pass
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = auth.authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    auth.login(request, user)
+                    return HttpResponseRedirect('/')
                 else:
-                    c['auth_error'] = u'Неверный логин или пароль.'
+                    c['auth_error'] = u'Ваш аккаунт не активирован.'
+                    
             else:
-                c['auth_error'] = u'Введите логин и пароль.'
+                c['auth_error'] = u'Неверный логин или пароль.'
             c['auth_form'] = auth_form
         elif request.POST['action'] == 'register':
             from django.forms.util import ErrorList

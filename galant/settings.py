@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'pages',
     'users',
     'slideshow',
+    'shop',
 )
 
 
