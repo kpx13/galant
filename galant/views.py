@@ -52,11 +52,7 @@ def news(request, slug=None):
         c['item'] = NewsItem.get_by_slug(slug)
         return render_to_response('news_item.html', c, context_instance=RequestContext(request))
 
-def category(request, slug):
-    c = get_common_context(request)
-    c['category'] = Category.get_by_slug(slug)
-    items = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))
-    
+def filter_items(request, c, items):
     if 'sort' in request.GET:
         request.session['catalog_sort'] = request.GET['sort']
     if 'catalog_sort' in request.session:
@@ -65,6 +61,10 @@ def category(request, slug):
     else:
         items = items.order_by('name')
         c['sort'] = 'name'
+    
+    if 'brand' in request.GET and request.GET['brand']:
+        items = items.filter(brand=Brand.get_by_slug(request.GET['brand']))
+        c['brand'] = request.session['catalog_brand']
         
     if 'count' in request.GET:
         request.session['catalog_count'] = request.GET['count']
@@ -74,9 +74,24 @@ def category(request, slug):
     else:
         items = items[0:1]
         c['count'] = 1
-    
+ 
     c['items'] = items
-    return render_to_response('category.html', c, context_instance=RequestContext(request))
+    return c
+
+def category(request, slug):
+    c = get_common_context(request)
+    if slug:
+        c['category'] = Category.get_by_slug(slug)
+        items = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))
+    else:
+        items = Item.objects.all()
+    return render_to_response('category.html', filter_items(request, c, items), context_instance=RequestContext(request))
+
+def brand(request, slug):
+    c = get_common_context(request)
+    c['brand'] = Brand.get_by_slug(slug)
+    items = Item.objects.filter(brand=c['brand'])
+    return render_to_response('brand.html', filter_items(request, c, items), context_instance=RequestContext(request))
 
 def item(request, slug):
     c = get_common_context(request)

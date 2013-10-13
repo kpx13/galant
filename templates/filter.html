@@ -1,0 +1,79 @@
+<div class="sidesort">
+
+    <div class="sidesortw">
+        
+        <form method='GET'>
+            <div class="cost">Цена:</div> <!--cost-->
+            <div class="range">
+
+                <span>с</span>  
+                <input type="text" class="tinput"> 
+                <span>по</span> 
+                <input type="text" class="tinput"> 
+            </div> <!--range-->
+        </form>
+        
+        
+
+        <div class="sideline"></div> <!--sidline-->
+        
+        <form method='GET'>
+            <input id="Checkbox11" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox11" name="lbl_Checkbox11" class="css-label"><span>Весна-лето</span></label>        
+            <br>
+            <input id="Checkbox22" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox22" name="lbl_Checkbox22" class="css-label"><span>Осень-зима</span></label>        
+        </form>
+
+        <div class="sideline"></div> <!--sidline-->
+        
+        <form method='GET'>
+            <input id="Checkbox33" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox33" name="lbl_Checkbox33" class="css-label"><span>Новинки</span></label>        
+            <br>
+            <input id="Checkbox44" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox44" name="lbl_Checkbox44" class="css-label"><span>Акции</span></label>        
+            <br>
+            <input id="Checkbox55" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox55" name="lbl_Checkbox55" class="css-label"><span>Товары по акции</span></label>        
+        </form>
+        
+        <div class="sideline"></div> <!--sidline-->
+    
+        <form method='GET'>
+            <select name="style2" class="selectyze2" >
+                <option selected="selected">Цвет изделия</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
+            </select>
+        </form>
+
+        <form method='GET'>
+            <select name="style3" class="selectyze2">
+                <option selected="selected">Материал изделия</option>
+                <option>Синий</option>
+                <option>Желтый</option>
+                <option>Красный</option>
+            </select>
+        </form>
+
+
+        <form method='GET'>
+            <select name="brand" class="selectyze2" >
+                <option {% if not brand %} selected="selected" {% endif %} value=''>Марка изделия</option>
+                {% for b in brands %}
+                    <option {% if brand == b.slug %} selected="selected" {% endif %} value='{{ b.slug }}'>{{ b.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+    </div> <!--sidesortw-->
+
+</div> <!--sidesort-->
+
+<script>
+    $('.selectyze2').change(function(){
+        $(this).parent().submit();
+    });
+</script>

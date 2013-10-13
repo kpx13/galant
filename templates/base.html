@@ -143,8 +143,8 @@
     
                         <div class="c2">
                             <h2>Сумки, кошельки, перчатки, кожгалантерея, остальная продукция</h2> 
-                            <a href="about.html">о компании</a>
-                            <a href="news.html">НОвости</a>
+                            <a href="/o-kompanii/">о компании</a>
+                            <a href="/news/">НОвости</a>
                         </div> <!--c2-->
     
                         <div class="c3">
@@ -226,8 +226,8 @@
                             <ul>
                                 <li><a href="index.html"   class="active">Главная</a></li>
                                 <li><a href="cat.html">каталог</a></li>
-                                <li><a href="news.html">акции</a></li>
-                                <li><a href="dostavka.html">доставка</a></li>
+                                <li><a href="/news/">акции</a></li>
+                                <li><a href="/dostavka/">доставка</a></li>
                                 <li><a href="info.html">оптовикам</a></li>
                                 <li><a href="contact.html">контакты</a></li>
                             </ul>
@@ -301,7 +301,7 @@
                                 <div class="brands">
                                     <ul>
                                         {% for b in brands %}
-                                            <li><a href="/brand/{{ b.slug }}/">{{ b.name }} <span>({{ b.items_count }})</span></a></li>
+                                            <li><a href="/category/?brand={{ b.slug }}">{{ b.name }} <span>({{ b.items_count }})</span></a></li>
                                         {% endfor %}
                                     </ul>
                                 </div> <!--brands-->

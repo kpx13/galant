@@ -2,8 +2,8 @@
     <div class="tovarup">
         <span>Выбор размера</span>
         {% for s in i.sizes.all %}
-            <input id="Checkbox_{{ s.name }}" class="css-checkbox" type="checkbox" />
-            <label for="Checkbox_{{ s.name }}" name="lbl_Checkbox_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
+            <input id="Checkbox_{{ i.id }}_{{ s.name }}" class="css-checkbox" type="checkbox" />
+            <label for="Checkbox_{{ i.id }}_{{ s.name }}" name="lbl_Checkbox_{{ i.id }}_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
             <br />
         {% endfor %}
         <div class="zakaz1"><a href="">Подтвердить</a></div>

@@ -13,9 +13,9 @@
         {% for n in news %}
             <a href="/news/{{ n.slug }}/">
                 <div class="nb">
-                    <img src="/media/{{ n.image }}/" alt="" />
+                    <img src="/media/{{ n.image }}/" alt="" style='max-width: 300px' />
                     <h2>{{ n.name }}</h2>
-                    {{ n.text|safe }}
+                    <p>{{ n.text|removetags:"div p"|slice:":200" }}...</p>
                 </div> <!--nb-->
             </a>
         {% endfor %}
