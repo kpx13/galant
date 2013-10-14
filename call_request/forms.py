@@ -22,7 +22,7 @@ class CallRequestForm(ModelForm):
 
     def save(self, *args, **kwargs):
         super(CallRequestForm, self).save(*args, **kwargs)
-        subject=u'Поступило новое сообщение через обратную связь',
+        subject=u'Поступила новая заявка на обратный звонок',
         body_templ="""
             {% for field in form %}
                 {{ field.label }} - {{ field.value }}

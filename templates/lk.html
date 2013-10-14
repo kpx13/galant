@@ -71,8 +71,9 @@
             {% else %}
                 <p>Вы розничный покупатель. Чтобы стать оптовым, обратитесь к администрации.</p>
             {% endif %}
-
+            
             <input type="submit" class="send cl" value="Сохранить">
+            <a href='/accounts/password/change/'>Сменить пароль</a>
             {% csrf_token %}
         </form>
 

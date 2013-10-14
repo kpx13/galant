@@ -349,7 +349,7 @@ def opt(request):
                 register_form._errors["email"] = ErrorList([u'Такой емейл уже зарегистрирован.'])
                 error = True
             if not error:
-                u = User(username=register_form.data.get('email'))
+                u = User(username=register_form.data.get('email'), email=register_form.data.get('email'))
                 u.set_password(register_form.data.get('password_1'))
                 u.save()
                 p = u.get_profile()
@@ -428,7 +428,7 @@ def register(request):
                     register_form._errors["email"] = ErrorList([u'Такой емейл уже зарегистрирован.'])
                     error = True
                 if not error:
-                    u = User(username=register_form.data.get('email'))
+                    u = User(username=register_form.data.get('email'), email=register_form.data.get('email'))
                     u.set_password(register_form.data.get('password_1'))
                     u.save()
                     p = u.get_profile()
