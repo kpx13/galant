@@ -10,7 +10,7 @@ class Feedback(models.Model):
                     
     class Meta:
         verbose_name = u'сообщение'
-        verbose_name_plural = u'сообщения через обратную связь'
+        verbose_name_plural = u'вопросы через обратную связь'
         ordering = ['-request_date']
 
     def __unicode__(self):

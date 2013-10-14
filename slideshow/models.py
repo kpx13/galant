@@ -8,7 +8,7 @@ class Slider(models.Model):
     
     class Meta:
         verbose_name = 'слайдер'
-        verbose_name_plural = 'слайдер'
+        verbose_name_plural = 'слайдшоу на главной'
         ordering = ['sort_parameter']
         
     

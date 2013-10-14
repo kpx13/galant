@@ -43,21 +43,25 @@ class CustomIndexDashboard(Dashboard):
         
         self.children.append(
             modules.ModelList(
-                title = u'Страницы',
+                title = u'Содержимое сайта',
                 models=(
                     'pages.models.Page',
+                    'news.models.NewsItem',
+                    'slideshow.models.Slider',
                 ),
             )
         )
-        
         
         self.children.append(
             modules.ModelList(
                 title = u'Каталог',
                 models=(
-                    'catalog.category.Category',
-                    'catalog.producer.Producer',
-                    'catalog.item.Item',
+                    'catalog.models.Category',
+                    'catalog.models.Item',
+                    'catalog.models.Brand',
+                    'catalog.models.Color',
+                    'catalog.models.Material',
+                    'catalog.models.Size',
                 ),
             )
         )
@@ -71,8 +75,19 @@ class CustomIndexDashboard(Dashboard):
                 ),
             )
         )
-
         
+        
+        self.children.append(
+            modules.ModelList(
+                title = u'Обратная связь',
+                models=(
+                    'feedback.models.Feedback',
+                    'call_request.models.CallRequest',
+                ),
+            )
+        )
+        
+
         # append a recent actions module
         self.children.append(modules.RecentActions(_('Recent Actions'), 5))
 

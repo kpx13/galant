@@ -1,0 +1,52 @@
+body
+{
+   background-color: #fbf9f6;
+}
+
+#header {
+    background: url(/static/images/heder.jpg) repeat-x;
+}
+
+#user-tools{
+/*     display: none; */
+}
+
+.dashboard-title{
+    display: none;
+}
+
+#header #branding h1 {
+    margin: 0;
+    padding: 5px 0px;
+    text-indent: -9999px;
+    background: url(/static/images/heder.jpg) repeat-
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+    
+}
+
+#header
+{
+    color: #333;
+}
+
+#header a
+{
+    color: black !important;
+}
+
+#header #branding a
+{
+    color: black !important;
+    font-size: large !important;
+}
+
+.grp-horizontal-list
+{
+}
+
+.grp-horizontal-list ul li
+{
+    list-style: none;
+}
