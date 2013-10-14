@@ -5,11 +5,10 @@
         <form method='GET'>
             <div class="cost">Цена:</div> <!--cost-->
             <div class="range">
-
                 <span>с</span>  
-                <input type="text" class="tinput"> 
+                <input type="text" class="tinput" name='from_price' value='{{ from_price }}'> 
                 <span>по</span> 
-                <input type="text" class="tinput"> 
+                <input type="text" class="tinput" name='to_price' value='{{ to_price }}'> 
             </div> <!--range-->
         </form>
         
@@ -18,43 +17,42 @@
         <div class="sideline"></div> <!--sidline-->
         
         <form method='GET'>
-            <input id="Checkbox11" class="css-checkbox" type="checkbox" />
+            <input id="Checkbox11" class="css-checkbox" type="checkbox" {% if 'ss' in season %}checked {% endif %} name='season' value='ss'/>
             <label for="Checkbox11" name="lbl_Checkbox11" class="css-label"><span>Весна-лето</span></label>        
             <br>
-            <input id="Checkbox22" class="css-checkbox" type="checkbox" />
+            <input id="Checkbox22" class="css-checkbox" type="checkbox" {% if 'aw' in season %}checked {% endif %} name='season' value='aw' />
             <label for="Checkbox22" name="lbl_Checkbox22" class="css-label"><span>Осень-зима</span></label>        
+            <input type='hidden' name='season_change' value='true'>
         </form>
 
         <div class="sideline"></div> <!--sidline-->
         
         <form method='GET'>
-            <input id="Checkbox33" class="css-checkbox" type="checkbox" />
+            <input id="Checkbox33" class="css-checkbox" type="checkbox" {% if novelty %}checked {% endif %} name='novelty' value='true'/>
             <label for="Checkbox33" name="lbl_Checkbox33" class="css-label"><span>Новинки</span></label>        
             <br>
-            <input id="Checkbox44" class="css-checkbox" type="checkbox" />
-            <label for="Checkbox44" name="lbl_Checkbox44" class="css-label"><span>Акции</span></label>        
-            <br>
-            <input id="Checkbox55" class="css-checkbox" type="checkbox" />
-            <label for="Checkbox55" name="lbl_Checkbox55" class="css-label"><span>Товары по акции</span></label>        
+            <input id="Checkbox55" class="css-checkbox" type="checkbox" {% if for_sale %}checked {% endif %} name='for_sale' value='true'/>
+            <label for="Checkbox55" name="lbl_Checkbox55" class="css-label"><span>Товары со скидкой</span></label>        
+            <input type='hidden' name='novelty_sale' value='true'>
         </form>
         
         <div class="sideline"></div> <!--sidline-->
     
         <form method='GET'>
-            <select name="style2" class="selectyze2" >
-                <option selected="selected">Цвет изделия</option>
-                <option>Синий</option>
-                <option>Желтый</option>
-                <option>Красный</option>
+            <select name="color" class="selectyze2" >
+                <option {% if not color %} selected="selected" {% endif %} value=''>Цвет изделия</option>
+                {% for b in colors %}
+                    <option {% if color == b.id %} selected="selected" {% endif %} value='{{ b.id }}'>{{ b.name }}</option>
+                {% endfor %}
             </select>
         </form>
 
         <form method='GET'>
-            <select name="style3" class="selectyze2">
-                <option selected="selected">Материал изделия</option>
-                <option>Синий</option>
-                <option>Желтый</option>
-                <option>Красный</option>
+            <select name="material" class="selectyze2">
+                <option {% if not color %} selected="selected" {% endif %} value=''>Материал изделия</option>
+                {% for b in materials %}
+                    <option {% if material == b.id %} selected="selected" {% endif %} value='{{ b.id }}'>{{ b.name }}</option>
+                {% endfor %}
             </select>
         </form>
 
@@ -74,6 +72,14 @@
 
 <script>
     $('.selectyze2').change(function(){
+        $(this).parent().submit();
+    });
+    
+    $('.tinput').change(function(){
+        $(this).parent().parent().submit();
+    });
+    
+    $('.css-checkbox').change(function(){
         $(this).parent().submit();
     });
 </script>

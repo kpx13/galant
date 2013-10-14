@@ -9,11 +9,12 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.forms.util import ErrorList
+import datetime
 
 from call_request.forms import CallRequestForm
 from pages.models import Page
 from news.models import NewsItem
-from catalog.models import Category, Brand, Item
+from catalog.models import Category, Brand, Item, Color, Material
 from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
 from users.forms import RegisterForm, RegisterOptForm, ProfileForm
@@ -26,6 +27,8 @@ def get_common_context(request):
     c['authentication_form'] = AuthenticationForm()
     c['categories'] = Category.objects.filter(parent=None).extra(order_by = ['id'])
     c['brands'] = Brand.objects.all()
+    c['colors'] = Color.objects.all()
+    c['materials'] = Material.objects.all()
     c['news_left'] = NewsItem.objects.all()[0:3]
     
     if request.user.is_authenticated():
@@ -74,10 +77,53 @@ def filter_items(request, c, items):
         items = items.order_by('name')
         c['sort'] = 'name'
     
-    if 'brand' in request.GET and request.GET['brand']:
-        items = items.filter(brand=Brand.get_by_slug(request.GET['brand']))
-        c['brand'] = request.GET['brand']
+    if 'brand' in request.GET:
+        request.session['catalog_brand'] = request.GET['brand']
+    if 'catalog_brand' in request.session and request.session['catalog_brand']:
+        items = items.filter(brand=Brand.get_by_slug(request.session['catalog_brand']))
+        c['brand'] = request.session['catalog_brand']
+         
+    
+    if 'from_price' in request.GET:
+        request.session['catalog_from_price'] = request.GET['from_price']
+    if 'catalog_from_price' in request.session and request.session['catalog_from_price']:
+        items = items.filter(price__gte=int(request.session['catalog_from_price']))
+        c['from_price'] = request.session['catalog_from_price']
         
+    if 'to_price' in request.GET:
+        request.session['catalog_to_price'] = request.GET['to_price']
+    if 'catalog_to_price' in request.session and request.session['catalog_to_price']:
+        items = items.filter(price__lte=int(request.session['catalog_to_price']))
+        c['to_price'] = request.session['catalog_to_price']
+        
+    if 'season_change' in request.GET:
+        request.session['catalog_season'] = request.GET.getlist('season', [])
+    if 'catalog_season' in request.session and request.session['catalog_season']:
+        items = items.filter(season__in=request.session['catalog_season'])
+        c['season'] = request.session['catalog_season']
+        
+    if 'novelty_sale' in request.GET:
+        request.session['catalog_for_sale'] = request.GET.get('for_sale', False)
+        request.session['catalog_novelty'] = request.GET.get('novelty', False)
+    if 'catalog_for_sale' in request.session and request.session['catalog_for_sale']:
+        items = items.exclude(price_old__exact=None)
+        c['for_sale'] = True
+    if 'catalog_novelty' in request.session and request.session['catalog_novelty']:
+        items = items.filter(date__gte=(datetime.datetime.now() - datetime.timedelta(days=7)))
+        c['novelty'] = True
+    
+    if 'color' in request.GET:
+        request.session['catalog_color'] = request.GET['color']
+    if 'catalog_color' in request.session and request.session['catalog_color']:
+        items = items.filter(color=request.session['catalog_color'])
+        c['color'] = int(request.session['catalog_color'])
+        
+    if 'material' in request.GET:
+        request.session['catalog_material'] = request.GET['material']
+    if 'catalog_material' in request.session and request.session['catalog_material']:
+        items = items.filter(material=request.session['catalog_material'])
+        c['material'] = int(request.session['catalog_material'])
+    
     if 'count' in request.GET:
         request.session['catalog_count'] = request.GET['count']
     if 'catalog_count' in request.session:
