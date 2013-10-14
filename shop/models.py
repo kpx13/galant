@@ -112,6 +112,13 @@ DELIVERY_TYPE = (('post', u'Почта России'),
                  ('pickpoint', u'Пункты выдачи PickPoint'),
                  ('ems', u'EMS Почта России (экспресс почта)'),)
 
+import config
+from livesettings import config_value
+def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):
+    mail_subject = ''.join(subject)
+    send_mail(mail_subject, body, settings.DEFAULT_FROM_EMAIL,
+        [to_email])
+
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
     date = models.DateTimeField(default=datetime.datetime.now, verbose_name=u'дата заказа')
@@ -140,6 +147,48 @@ class Order(models.Model):
         OrderContent.move_from_cart(self.user, self)
         self.is_commit = True
         self.save()
+        
+        subject=u'Поступил новый заказ.',
+        body_templ=u"""
+Контактное лицо: {{ o.user.get_profile.fio }}
+Ссылка на профиль: {{ site }}admin/auth/user/{{ o.user.id }}/
+Cпособ доставки: {{ o.get_delivery_display }}
+
+Содержимое:
+    {% for c in o.content.all %}
+        Ссылка на товар: {{ site }}item/{{ c.item.slug }}/
+        Название: {{ c.item.name }} 
+        Размер: {{ c.size }} 
+        Кол-во: {{ c.count }}
+        Цена: {{ c.item.price }} руб.
+    {% endfor %}
+
+Общая стоимость:  {{ o.get_sum }} руб. 
+
+Ссылка на заказ: {{ site }}admin/shop/order/{{ o.id }}/
+"""
+        body = Template(body_templ).render(Context({'o': self, 'site': 'http://galant.webgenesis.ru/'}))
+        sendmail(subject, body)    
+        
+        subject=u'Вы оформили заказ в магазине galant.',
+        body_templ=u"""
+
+Содержимое:
+    {% for c in o.content.all %}
+        Ссылка на товар: {{ site }}item/{{ c.item.slug }}/
+        Название: {{ c.item.name }} 
+        Размер: {{ c.size }} 
+        Кол-во: {{ c.count }}
+        Цена: {{ c.item.price }} руб.
+    {% endfor %}
+
+Общая стоимость:  {{ o.get_sum }} руб. 
+Cпособ доставки: {{ o.get_delivery_display }}
+
+Скоро с Вами свяжется менеджер. Спасибо.
+"""
+        body = Template(body_templ).render(Context({'o': self, 'site': 'http://galant.webgenesis.ru/'}))
+        sendmail(subject, body, self.user.username)
     
     @staticmethod
     def get_recent(user):

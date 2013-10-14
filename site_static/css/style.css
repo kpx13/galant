@@ -127,7 +127,7 @@ color: #fff!important;
 	color: #000;
 }
 
-.tovarup .zakaz1 a {
+.tovarup button.zakaz1  {
 	background: url(../images/button.jpg) repeat-x;
 	height: 25px;
 	width: 100%;
@@ -142,9 +142,10 @@ color: #fff!important;
 	margin: 5px auto;
 	line-height: 2em;
 	display: block;
+    border: none;
 }
 
-.tovarup .zakaz1:hover a{
+.tovarup button.zakaz1:hover{
 	background: url(../images/button1.jpg) repeat-x;
 	height:25px;
 	width: 100%;

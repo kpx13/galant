@@ -87,13 +87,13 @@
                         {% if form.city.errors %}
                             <div class="fail">{{ form.city.errors.0 }}</div>
                         {% endif %}
-                        <label>Улица</label>
+                        <label>Улица*</label>
                         {{ form.street }}
                         {% if form.street.errors %}
                             <div class="fail">{{ form.street.errors.0 }}</div>
                         {% endif %}
 
-                        <label>Дом / квартира</label>
+                        <label>Дом / квартира*</label>
                         {{ form.house }}
                         {% if form.house.errors %}
                             <div class="fail">{{ form.house.errors.0 }}</div>
