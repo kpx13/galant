@@ -1,3 +1,5 @@
+ {% load thumbnail %}
+ 
  <div class="block">
     <form method='POST' action='/item/{{ i.slug }}/'>
         <div class="tovarup">
@@ -14,7 +16,10 @@
         </div> <!--tovarup-->
         {% csrf_token %}
     </form>    
-    <a href="/item/{{ i.slug }}/"><img src="/media/{{ i.image.all.0.image }}" alt="" /></a>
+    {% thumbnail i.image.all.0.image "300" as im %}
+        <a href="/item/{{ i.slug }}/"><img src="{{ im.url }}" alt="" /></a>
+    {% endthumbnail %}
+    
     <div class="dsc">
         <a href="/item/{{ i.slug }}/" >{{ i.name }}</a>    
     </div> <!--dsc-->   

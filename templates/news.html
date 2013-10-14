@@ -2,6 +2,8 @@
 
 {% block title %}Новости{% endblock %}
 
+{% load thumbnail %}
+
 {% block breadcrumb %}
     <a href="" class="no">Новости</a>
 {% endblock %}
@@ -13,7 +15,10 @@
         {% for n in news %}
             <a href="/news/{{ n.slug }}/">
                 <div class="nb">
-                    <img src="/media/{{ n.image }}/" alt="" style='max-width: 300px' />
+                    {% thumbnail n.image "300" as im %}
+                        <img src="{{ im.url }}/" />
+                    {% endthumbnail %}
+                    
                     <h2>{{ n.name }}</h2>
                     <p>{{ n.text|removetags:"div p"|slice:":200" }}...</p>
                 </div> <!--nb-->

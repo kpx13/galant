@@ -26,6 +26,7 @@ def get_common_context(request):
     c['authentication_form'] = AuthenticationForm()
     c['categories'] = Category.objects.filter(parent=None).extra(order_by = ['id'])
     c['brands'] = Brand.objects.all()
+    c['news_left'] = NewsItem.objects.all()[0:3]
     
     if request.user.is_authenticated():
         c['cart_working'] = Cart

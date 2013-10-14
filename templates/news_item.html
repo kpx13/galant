@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ item.name }}{% endblock %}
+{% load thumbnail %}
 
+{% block title %}{{ item.name }}{% endblock %}
 
 {% block extended_head %}
    <script type="text/javascript" src="/static/js/jquery.carouFredSel-6.2.1-packed.js"></script>   
@@ -44,7 +45,9 @@
     <div class="image_carousel">
         <div id="foo1">
             {% for i in item.photos.all %}
-                <a rel="fancybox" href="/media/{{ i.image }}/"><img src="/media/{{ i.image }}/" alt="" height="97px" /></a>
+                {% thumbnail i.image "x97" as im %}
+                    <a rel="fancybox" href="/media/{{ i.image }}/"><img src="{{ im.url }}" /></a>
+                {% endthumbnail %}
             {% endfor %}
         </div>
 

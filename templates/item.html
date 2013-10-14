@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load thumbnail %}
+
 {% block title %}{{ item.name }}{% endblock %}
 
 {% block extended_head %}
@@ -85,9 +87,16 @@
 
                 <div class="col2_2_2">
                     <!-- Column 2 start -->
-                    <img src="/media/{{ item.image.all.0.image }}/" alt="" style='max-height: 300px'/>
-                    {% for im in item.image.all %}
-                        <a href="/media/{{ im.image }}/" rel="prettyPhoto[gallery2]"><img src="/media/{{ im.image }}/" style='max-width:54px; max-height: 73px' /></a>
+                    {% thumbnail item.image.all.0.image "x300" as im %}
+                        <img src="{{ im.url }}" alt="" />
+                    {% endthumbnail %}
+                    
+                    {% for img in item.image.all %}
+                        {% thumbnail img.image "x100" as im %}
+                            <a href="/media/{{ img.image }}/" rel="prettyPhoto[gallery2]">
+                                <img src="{{ im.url }}/"/>
+                            </a>
+                        {% endthumbnail %}
                     {% endfor %}
 
                     <!-- Column 2 end -->
@@ -107,7 +116,10 @@
     <div class="catalog">
         {% for s in same %}
             <div class="block">
-                <a href="/item/{{ s.slug }}/"><img src="/media/{{ s.image.all.0.image }}" alt="" /></a>
+                {% thumbnail s.image.all.0.image "x300" as im %}
+                    <a href="/item/{{ s.slug }}/"><img src="{{ im.url }}" alt="" /></a>
+                {% endthumbnail %}
+                
                 <div class="dsc">
                     <a href="/item/{{ s.slug }}/">{{ s.name }}</a>   
                 </div> <!--dsc-->   

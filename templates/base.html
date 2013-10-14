@@ -296,14 +296,14 @@
                             
                             <div class="sidenews">
                                 <h3>Новости</h3>
-        
-                                <div class="date">23.02.2013</div>
-
-                                <a href="">У нас вы также можете купить кожаные обложки на паспорт и другие обложки на документы.</a> 
-
+                                {% for n in news_left %}
+                                    <div class="date">{{ n.date|date:"d.m.Y" }}</div>
+                                    <a href="/news/{{ n.slug }}/">{{ n.name }}</a>
+                                    <br />
+                                {% endfor %}
                             </div> <!--news-->
         
-                            <a href="" class="other">Все новости</a>
+                            <a href="/news/" class="other">Все новости</a>
     
                             <!-- Column 2 end -->
                         </div>
