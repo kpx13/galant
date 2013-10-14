@@ -93,6 +93,7 @@ def category(request, slug):
     c = get_common_context(request)
     if slug:
         c['category'] = Category.get_by_slug(slug)
+        
         items = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))
     else:
         items = Item.objects.all()

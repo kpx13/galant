@@ -257,22 +257,24 @@
                                 <ul>    
                                 {% for node in categories %}
                                     <li>
-                                        <a href="/category/{{ node.slug }}/" {% if not node.is_leaf_node %} class="open" {% endif %}>{{ node.name }}</a>
+                                        <a href="/category/{{ node.slug }}/" {% if not node.is_leaf_node %}{% if node in category.breadcrumb or node == category %} class="open" {% endif %}{% endif %}>{{ node.name }}</a>
                                         {% if not node.is_leaf_node %}
-                                            <ul>
-                                            {% for i in node.children.all %}
-                                                <li>
-                                                    <a href="/category/{{ i.slug }}/">{{ i.name }}</a>
-                                                    {% if not i.is_leaf_node %}
-                                                        <ul>
-                                                        {% for j in i.children.all %}
-                                                            <li><a  href="/category/{{ j.slug }}/">{{ j.name }}</a></li>
-                                                        {% endfor %}
-                                                        </ul>
-                                                    {% endif %}
-                                                </li>
-                                            {% endfor %}
-                                            </ul>
+                                            {% if node in category.breadcrumb or node == category %}
+                                                <ul>
+                                                {% for i in node.children.all %}
+                                                    <li>
+                                                        <a href="/category/{{ i.slug }}/">{{ i.name }}</a>
+                                                        {% if not i.is_leaf_node %}
+                                                            <ul>
+                                                            {% for j in i.children.all %}
+                                                                <li><a  href="/category/{{ j.slug }}/">{{ j.name }}</a></li>
+                                                            {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                                </ul>
+                                            {% endif %}
                                         {% endif %}
                                     </li>
                                 {% endfor %}
