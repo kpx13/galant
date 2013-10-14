@@ -7,10 +7,9 @@
             <div class="mask"></div>
             <div class="slider-wrapper theme-default">
                 <div id="slider" class="nivoSlider">
-                    <a href=""><img src="/static/images/4.jpg" data-thumb="/static/images/4.jpg" alt=""/></a>
-                    <a href=""><img src="/static/images/2.jpg" data-thumb="/static/images/2.jpg" alt="" /></a>
-                    <a href=""> <img src="/static/images/3.jpg" data-thumb="/static/images/3.jpg" alt="" /></a>
-                    <a href=""><img src="/static/images/4.jpg" data-thumb="/static/images/4.jpg" alt="" /></a>
+                    {% for s in slideshow %}    
+                        <a href="{{ s.href }}"><img src="/media/{{ s.image }}" data-thumb="/media/{{s.image}}" alt=""/></a>
+                    {% endfor %}
                 </div> <!--nivoSlider-->
 
             </div>   <!--slider-wrapper theme-default-->

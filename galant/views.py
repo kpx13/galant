@@ -20,6 +20,7 @@ from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
 from users.forms import RegisterForm, RegisterOptForm, ProfileForm
 from feedback.forms import FeedbackForm
+from slideshow.models import Slider
 
 NEWS_PAGINATION_COUNT = 10
 
@@ -59,6 +60,7 @@ def get_common_context(request):
 def home_page(request):
     c = get_common_context(request)
     c['request_url'] = 'home'
+    c['slideshow'] = Slider.objects.all()
     c['items'] = Item.objects.filter(at_home=True)
     return render_to_response('home.html', c, context_instance=RequestContext(request))
 
