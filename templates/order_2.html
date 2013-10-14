@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Оформление заказа. Шаг 2.{% endblock %}
 
 {% block breadcrumb %}
-   <a href="" class="no">Оформление заказа. Шаг 1.</a>
+   <a href="" class="no">Оформление заказа. Шаг 2.</a>
 {% endblock %}
 
 {% block all_wrapper %}
@@ -38,7 +38,7 @@
 
             <div class="step none">
                 <h2>Шаг 4</h2>
-                <span>Способ оплаты</span>
+                <span>Способ доставки</span>
             </div>  <!--step-->
             <div class=" nofill"></div>
 
@@ -58,48 +58,33 @@
                 <!-- Column 1 start -->
                 <h2>Оформление заказа</h2>
 
-                <p>
-    
-                    Заказы доставляются только по России. Средний срок доставки — 10 дней. В течение данного срока на указанный вами при оформлении заказа адрес придет уведомление о доставке. Вы можете получить заказ в ближайшем почтовом отделении, предъявив это уведомление. Компания не гарантирует доставку в указанные сроки - сроки установлены Почтой России. 
-                </p>
+                <table width="100%" class="check">
+                    <tr class="heds">
+                        <td width='20%'>Фото</td>
+                        <td width='50%'>Описание</td>
+                        <td width='20%'>Кол-во</td>
+                        <td width='10%'>Цена</td>
+                        <td width='20%'>Сумма</td>
+                    </tr>
 
-                <p><strong>Заполните, пожалуйста, следующую форму. Поля отмеченные * - обязательны к заполнению.</strong></p>
-
-                <div class="forms info stretch">
-                    <form method='POST' >
-                        <label>ФИО*</label>
-                        {{ form.fio }}
-                        {% if form.fio.errors %}
-                            <div class="fail">{{ form.fio.errors.0 }}</div>
-                        {% endif %}
-                        <label>Город</label>
-                        {{ form.city }}
-                        {% if form.city.errors %}
-                            <div class="fail">{{ form.city.errors.0 }}</div>
-                        {% endif %}
-                        <label>Индекс*</label>
-                        {{ form.index }}
-                        {% if form.index.errors %}
-                            <div class="fail">{{ form.index.errors.0 }}</div>
-                        {% endif %}
-                        <label>Контактный телефон с кодом города*</label>
-                        {{ form.phone }}
-                        {% if form.phone.errors %}
-                            <div class="fail">{{ form.phone.errors.0 }}</div>
-                        {% endif %}
-                        <label>E-mail*</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <div class="fail">{{ form.email.errors.0 }}</div>
-                        {% endif %}
-
-                        <div class="clear"></div>
-
-                        <button href="/order/1/" class="checkout11">Назад</button>
-                        <button type='submit' class="checkout11">Шаг 3</button>
-                        {% csrf_token %}
-                    </form>
-                </div> <!--forms-->
+                    {% for i in items %}
+                        <tr>
+                            <td><img src="/media/{{ i.item.image.all.0.image }}/" /></td>
+                            <td>
+                                <p><strong>{{ i.item.name }}</strong></p>
+                                <p>Артикул: {{ i.item.art }}</p>
+                                <p>Цвет: {{ i.item.color }}</p>
+                                <p>Размер: {{ i.size }}</p>
+                            </td>
+                            <td><div class="price nobright">{{ i.count }}</td>
+                            <td><div class="price nobright"> {{ i.item.price|floatformat:"0" }}</div></td>
+                            <td><div class="price"> {{ i.sum|floatformat:"0" }}</div></td>         
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+                <a href="/cart/" class="checkout11">Назад</a>
+                <a href="/order/3/" class="checkout11">Шаг 3</a>
 
             </div>  <!--col1-->
 

@@ -35,11 +35,6 @@ urlpatterns = patterns('',
     url(r'^news/(?P<slug>[\w-]+)/$' , views.news),
     url(r'^news/$' , views.news),
     
-    #url(r'^request$' , views.request_page),
-    
-    #url(r'^category/(?P<category_id>\w+)$' , views.category_page),
-    
-    
     url(r'^(?P<page_name>[\w-]+)/$' , views.other_page),
     
 )

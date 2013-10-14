@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Оформление заказа. Шаг 3.{% endblock %}
+
+{% block breadcrumb %}
+   <a href="" class="no">Оформление заказа. Шаг 3.</a>
+{% endblock %}
+
+{% block all_wrapper %}
+    <div class="maskwrap">
+    
+        <div class="breadcrumbs fixedbc">
+            <a href="/" class="empty">Главная</a> 
+            <a href="" class="no">Оформление заказа</a>
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step none1">
+                <h2>Шаг 1</h2>
+                <span >Авторизация</span>
+            </div>  <!--step-->
+            <div class=" nofill"></div>
+
+            <div class="step none ">
+                <h2>Шаг 2</h2>
+                <span>Оформление заказа</span>
+            </div>  <!--step-->
+            <div class=" nofill"></div>
+
+            <div class="step none">
+                <h2>Шаг 3</h2>
+                <span >Адрес доставки</span>
+            </div>  <!--step-->
+            <div class=" nofill1"></div>
+
+            <div class="step ">
+                <h2>Шаг 4</h2>
+                <span class="wh">Способ доставки</span>
+            </div>  <!--step-->
+            <div class="filltri"></div>
+
+            <div class="step none">
+                <h2>Шаг 5</h2>
+                <span>Подтверждение заказа</span>
+            </div>  <!--step-->
+            <div class="nofilllast"></div>
+
+
+
+        </div> <!--steps-->
+
+
+        <div class="colmask fullpage">
+            <div class="col1">
+                <!-- Column 1 start -->
+                <h2>Способ доставки</h2>
+
+                <div class="dostavka" >
+                    <form method='POST' >
+
+                        <input type="radio" name="delivery" value="post" checked><span class="radio"> Почта России</span><Br>
+
+                        <p> Заказы доставляются только по России. Средний срок доставки — 10 дней. В течение данного срока на указанный вами при оформлении заказа адрес придет уведомление о доставке. Вы можете получить заказ в ближайшем почтовом отделении, предъявив это уведомление. Компания не гарантирует доставку в указанные сроки - сроки установлены Почтой России.</p>
+        
+                        <input type="radio" name="delivery" value="pickpoint"><span class="radio"> Пункты выдачи PickPoint</span><Br>
+
+                        <p> Стоимость доставки – 200 руб. Вы сами забираете купленные товары – в любом удобном для Вас месте, в любое удобное для Вас время, в пункте выдачи заказов. Пункты выдачи расположены в местах высокой проходимости: торговые и бизнес-центры, крупные розничные сети. Срок доставки заказа до пункта выдачи 2 рабочих дня, Срок хранения товара в пункте выдачи – 7 дней. После доставки заказа в пункт выдачи, Вы получите СМС уведомление. Время работы пунктов указано на сайте PickPoint.ru</p>  
+
+                        <input type="radio" name="delivery" value="ems"><span class="radio"> EMS Почта России (экспресс почта)</span><Br>
+
+                        <p> Заказ будет доставлен по адресу, указанному при оформлении. Средний срок доставки 5 дней, более точную информацию о сроках доставки в Ваш город Вы можете получить на сайте перевозчика. Для оформления доставки необходимо указать почтовый индекс</p> 
+
+                        <div class="forms info">
+                            <div class="clear"></div>
+                            <a href="/order/3/" class="checkout11">Назад</a>
+                            <button type='submit' class="checkout11">Шаг 5</button>
+                            {% csrf_token %}
+                        </div> <!--forms-->
+                    </form>
+
+                </div> <!--dostavka-->
+
+            </div>  <!--col1-->
+
+
+
+        </div><!-- colmask doublepage-->
+
+
+    </div> <!--maskwrap-->
+{% endblock %}

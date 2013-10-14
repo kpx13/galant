@@ -1054,10 +1054,7 @@ text-decoration:underline
 }
 
 
-.checkout11:hover {
-	background: url(../images/dark1.jpg) repeat-x;
 
-}
 
 .checkout11 {
 	background: url(../images/dark.jpg) repeat-x;
@@ -1071,7 +1068,17 @@ text-decoration:underline
 	cursor: pointer;
 	line-height: 0.5em;
 	text-transform: uppercase;
-	border-radius: 2px;text-decoration: none!important;
+	border-radius: 2px;
+    text-decoration: none!important;
+}
+
+button.checkout11
+{
+    font-size: 17px;
+}
+
+.checkout11:hover {
+    background: url(../images/dark1.jpg) ;
 }
 
 .proceed .p1 {

@@ -8,11 +8,12 @@ class OrderForm(ModelForm):
         model = Order
                 
         
-class Step2Form(Form):
+class Step3Form(Form):
     fio = fields.CharField(label=u'ФИО')
-    city = fields.CharField(label=u'город', required=False)
-    index = fields.CharField(label=u'индекс')
     phone = fields.CharField(label=u'телефон')
-    email = fields.EmailField(label=u'email')
+    index = fields.CharField(label=u'индекс')
+    city = fields.CharField(label=u'город', required=False)
+    street = fields.CharField(label=u'улица')
+    house = fields.CharField(label=u'дом, квартира')
     
     

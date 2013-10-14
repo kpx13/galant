@@ -97,10 +97,16 @@ class Cart(models.Model):
         return (sum([x['count'] for x in cart]), sum([x['count'] * x['item'].price for x in cart]))
 
 
+DELIVERY_TYPE = (('post', u'Почта России'),
+                 ('pickpoint', u'Пункты выдачи PickPoint'),
+                 ('ems', u'EMS Почта России (экспресс почта)'),)
+
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
     date = models.DateTimeField(default=datetime.datetime.now, verbose_name=u'дата заказа')
     comment = models.TextField(blank=True, verbose_name=u'комментарий')
+    delivery = models.CharField(choices=DELIVERY_TYPE, max_length=10, blank=True, verbose_name=u'способ доставки')
+    is_commit = models.BooleanField(blank=True, default=False, verbose_name=u'заказ отправлен')
     
     class Meta:
         verbose_name = u'заказ'
@@ -118,9 +124,28 @@ class Order(models.Model):
     
     def save(self, *args, **kwargs):
         super(Order, self).save(*args, **kwargs)
+    
+    def send(self):
         OrderContent.move_from_cart(self.user, self)
+        self.is_commit = True
+        self.save()
+    
+    @staticmethod
+    def get_recent(user):
+        try:
+            return Order.objects.filter(user=user, is_commit=False)[0]
+        except:
+            return None # ошибка, необходимо вернуться на шаг назад
         
-        
+    @staticmethod
+    def get_or_create(user):
+        try:
+            return Order.objects.filter(user=user, is_commit=False)[0]
+        except:
+            u = Order(user=user)
+            u.save()
+            return u
+                
 class OrderContent(models.Model):
     order = models.ForeignKey(Order, verbose_name=u'заказ', related_name='content')
     item = models.ForeignKey(Item, verbose_name=u'товар')
