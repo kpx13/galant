@@ -8,6 +8,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.forms.util import ErrorList
 
 from call_request.forms import CallRequestForm
 from pages.models import Page
@@ -15,7 +16,7 @@ from news.models import NewsItem
 from catalog.models import Category, Brand, Item
 from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
-from users.forms import RegisterForm
+from users.forms import RegisterForm, RegisterOptForm
 from feedback.forms import FeedbackForm
 
 def get_common_context(request):
@@ -185,6 +186,35 @@ def contacts(request):
         c['form'] = form
     return render_to_response('contacts.html', c, context_instance=RequestContext(request))
 
+def opt(request):
+    c = get_common_context(request)
+    if request.method == 'GET':
+        c['form'] = RegisterOptForm()
+    else:
+        register_form = RegisterOptForm(request.POST)
+        if register_form.is_valid():
+            p1 = register_form.data.get('password_1')
+            p2 = register_form.data.get('password_2')
+            error = False
+            if p1 != p2:
+                register_form._errors["password_2"] = ErrorList([u'Пароли не совпадают.'])
+                error = True
+            if len(User.objects.filter(username=register_form.data.get('email'))):
+                register_form._errors["email"] = ErrorList([u'Такой емейл уже зарегистрирован.'])
+                error = True
+            if not error:
+                u = User(username=register_form.data.get('email'))
+                u.set_password(register_form.data.get('password_1'))
+                u.save()
+                p = u.get_profile()
+                p.fio = register_form.data.get('fio')
+                p.is_opt = True
+                p.save()
+                user = auth.authenticate(username=register_form.data.get('email'), password=register_form.data.get('password_1'))
+                auth.login(request, user)
+                return HttpResponseRedirect('/')
+        c['form'] = register_form
+    return render_to_response('opt.html', c, context_instance=RequestContext(request))
 
 def other_page(request, page_name):
     c = get_common_context(request)

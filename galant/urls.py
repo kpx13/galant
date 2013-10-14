@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^register/$' , views.register),
     url(r'^logout/$' , views.logout_user),
     url(r'^contacts/$' , views.contacts),
+    url(r'^opt/$' , views.opt),
     url(r'^cart/$' , views.cart),
     url(r'^order/(?P<step>[\w-]+)/$' , views.order),
     

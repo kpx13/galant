@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Оптовикам{% endblock %}
+
+{% block breadcrumb %}
+    <a href="" class="no">Оптовикам</a>
+{% endblock %}
+
+{% block content %}
+   <p>
+
+        Самовывоз заказов из пункта выдачи (м. Войковская)
+
+        Вы можете получить свой заказ в пункте самовывоза по адресу: ул. Космонавта Волкова, д. 10, оф. 7, станция метро «Войковская» на следующий рабочий день с 15:00 до 19:00 после размещения, если он оформлен до 15:00, во все последующие дни с 10:00 до 19:00. Срок хранения заказа в пункте самовывоза составляет 7 дней, включая дату размещения.
+
+        Бесплатный способ доставки. Вы можете заказать несколько товаров для примерки в соответствии с данными ограничениями:
+    </p>    
+
+    <p><strong>Заполните, пожалуйста, следующую форму. Поля отмеченные * - обязательны к заполнению.</strong></p>
+
+    <div class="forms info stretch">
+        <form method='POST' >
+            <label>ФИO*</label>
+            {{ form.fio }}
+            {% if form.fio.errors %}
+                <div class="fail">{{ form.fio.errors.0 }}</div>
+            {% endif %}
+            
+            <label>E-mail*</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="fail">{{ form.email.errors.0 }}</div>
+            {% endif %}
+
+            <label>Пароль*</label>
+            {{ form.password_1 }}
+            {% if form.password_1.errors %}
+                <div class="fail">{{ form.password_1.errors.0 }}</div>
+            {% endif %}
+            
+            <label>Повторите пароль*</label>
+            {{ form.password_2 }}
+            {% if form.password_2.errors %}
+                <div class="fail">{{ form.password_2.errors.0 }}</div>
+            {% endif %}
+            
+            <label>Контактный телефон с кодом города*</label>
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="fail">{{ form.phone.errors.0 }}</div>
+            {% endif %}
+
+            <label>Город</label>
+            {{ form.city }}
+            {% if form.city.errors %}
+                <div class="fail">{{ form.city.errors.0 }}</div>
+            {% endif %}
+
+            <label>Организация*</label>
+            {{ form.organization }}
+            {% if form.organization.errors %}
+                <div class="fail">{{ form.organization.errors.0 }}</div>
+            {% endif %}
+
+            <label>Адрес торгового центра*</label>
+            {{ form.address }}
+            {% if form.address.errors %}
+                <div class="fail">{{ form.address.errors.0 }}</div>
+            {% endif %}
+                
+            <div class="clear"></div>
+
+            <input type="submit" class="send cl" value="Отправить">
+            <span>*Обязательные для заполнения поля</span>
+            <input type='hidden' name='action' value='register' />
+            {% csrf_token %}
+        </form>
+        
+    </div> <!--forms-->
+{% endblock %}
