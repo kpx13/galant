@@ -434,6 +434,19 @@ color: #fff!important;
 		padding: 0;
 		height: 100px;
 	}
+	
+.forms.contacts input[type=text] {
+    padding: 5px 0;
+        border: 1px solid #e6e5e5;
+        color: #000;
+        font-family: tahoma, arial;
+        font-size:  0.8em;
+        float: right;
+        display: inline-block;
+        
+        width: 245px;
+        margin:  0 0 5px 0;
+    }
 
 .forms .tinput {
 	padding: 5px 0;

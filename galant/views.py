@@ -16,6 +16,7 @@ from catalog.models import Category, Brand, Item
 from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
 from users.forms import RegisterForm
+from feedback.forms import FeedbackForm
 
 def get_common_context(request):
     c = {}
@@ -169,24 +170,22 @@ def order(request, step='1'):
         return HttpResponseRedirect('/')
         
 
-"""
-
-def request_page(request):
+def contacts(request):
     c = get_common_context(request)
     if request.method == 'GET':
-        c['request_form'] = RequestForm()
+        c['form'] = FeedbackForm()
     else:
-        form = RequestForm(request.POST)
+        form = FeedbackForm(request.POST)
         if form.is_valid():
             form.save()
-            form = RequestForm()
-            messages.success(request, u'Ваш отзыв отправлен. Спасибо.')
-            return HttpResponseRedirect('/')
+            form = FeedbackForm()
+            c['msg_sent'] = u'Ваш отзыв отправлен. Спасибо.'
         else:
             c['request_form'] = form
-    return render_to_response('request.html', c, context_instance=RequestContext(request))
+        c['form'] = form
+    return render_to_response('contacts.html', c, context_instance=RequestContext(request))
 
-"""
+
 def other_page(request, page_name):
     c = get_common_context(request)
     try:
