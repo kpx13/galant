@@ -53,6 +53,18 @@ class SessionCartWorking(object):
                             'sum': int(self.__request.session[i]) * item.price})
         return res
     
+    def present_item(self, cap, item):
+        res = []
+        for i in self.__request.session.keys():
+            if i.startswith('cart_' + str(item)):
+                item, size = get_item_and_size(i[5:])
+                item = Item.get(int(item))
+                res.append({'item': item,
+                            'size': size,
+                            'count': int(self.__request.session[i]),
+                            'sum': int(self.__request.session[i]) * item.price})
+        return res
+    
     def pop_content(self):
         res = []
         for i in self.__request.session.keys():

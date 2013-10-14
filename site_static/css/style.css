@@ -1450,7 +1450,7 @@ text-decoration: none;
 	font-family:  tahoma, verdana, arial;
 }
 
-.inpgw button, .inpgw button:link {
+.inpgw a, .inpgw a:link {
 font-family:  tahoma, verdana, arial;
 font-size: 0.9em!important;
 display: inline;
@@ -1461,11 +1461,11 @@ text-align: left;
 text-decoration: none;
 }
 
-.inpgw button:hover {
+.inpgw a:hover {
 color: #bb4a55!important;
 text-decoration: none;
 }
-.inpgw button.active {
+.inpgw a.active {
 color: #bb4a55!important;
 text-decoration: none;
 }

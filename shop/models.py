@@ -84,6 +84,17 @@ class Cart(models.Model):
         return res
     
     @staticmethod
+    def present_item(user, item):
+        cart = list(Cart.objects.filter(user=user, item=item))
+        res = []
+        for c in cart:
+            res.append({'item': c.item,
+                        'size': c.size.name,
+                        'count': c.count,
+                        'sum': c.item.price * c.count})
+        return res
+    
+    @staticmethod
     def get_count(user, item, size):
         cart = list(Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size)))
         if len(cart) > 0:

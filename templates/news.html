@@ -27,14 +27,18 @@
 
     </div> <!--news-->
 
-    <div class="pgw">
-        <a href=""><img src="/static/images/pl.png" alt="" /></a>
-        <a href="">1</a>   
-        <a href="" class="active">2</a>   
-        <a href="">3</a>   
-        <a href="">4</a> 
-        <a href=""> 5</a>  
-        <a href=""><img src="/static/images/pr.png" alt="" /></a>
-    </div>
+    {% if need_pagination %}
+        <div class="inpgw">
+            {% if news.has_previous %}
+                <a href="{{ get_request }}?page={{ news.previous_page_number }}" class='transparent'><img src="/static/images/pl.png" /></a>
+            {% endif %}
+            {% for p in page_range %}
+                <a href="{{ get_request }}?page={{ p }}" class='transparent{% if p == news.number %} active{% endif %}'>{{ p }}</a>
+            {% endfor %}
+            {% if news.has_next %}
+                <a href="{{ get_request }}?page={{ news.next_page_number }}" class='transparent'><img src="/static/images/pr.png" /></a>
+            {% endif %}
+        </div> <!--pgw-->
+    {% endif %}
     
 {% endblock %}

@@ -11,21 +11,27 @@
         <div class="sortnum">
             <span>Показывать по:</span> 
             <select name="count" class="styleds sortnum_select">
-                <option value="1" {% if count == '1' %}selected{% endif %}>1</option>
-                <option value="3" {% if count == '3' %}selected{% endif %}>3</option>
-                <option value="5" {% if count == '5' %}selected{% endif %}>5</option>
+                <option value="10" {% if count == '10' %}selected{% endif %}>10</option>
+                <option value="30" {% if count == '30' %}selected{% endif %}>30</option>
+                <option value="50" {% if count == '50' %}selected{% endif %}>50</option>
             </select>
         </div> <!--sortnum-->
     </form>
     <form method='GET'>
         <div class="sortpage">
-            <div class="inpgw">
-                <button name='page' class='transparent' value=''><img src="/static/images/pl.png" alt="" /></button>
-                <button name='page' class='transparent' value=''>1</button>
-                <button name='page' class='transparent active' value='' >2</button>
-                <button name='page' class='transparent' value=''>3</button>   
-                <button name='page' class='transparent' value=''><img src="/static/images/pr.png" alt="" /></button>
-            </div> <!--pgw-->
+            {% if need_pagination %}
+                <div class="inpgw">
+                    {% if items.has_previous %}
+                        <a href="{{ get_request }}?page={{ items.previous_page_number }}" class='transparent'><img src="/static/images/pl.png" /></a>
+                    {% endif %}
+                    {% for p in page_range %}
+                        <a href="{{ get_request }}?page={{ p }}" class='transparent{% if p == items.number %} active{% endif %}'>{{ p }}</a>
+                    {% endfor %}
+                    {% if items.has_next %}
+                        <a href="{{ get_request }}?page={{ items.next_page_number }}" class='transparent'><img src="/static/images/pr.png" /></a>
+                    {% endif %}
+                </div> <!--pgw-->
+            {% endif %}
         </div> <!--sortpage-->
     </form>
 </div> <!--sorting-->

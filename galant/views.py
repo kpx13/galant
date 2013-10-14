@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.forms.util import ErrorList
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 
 from call_request.forms import CallRequestForm
@@ -19,6 +20,9 @@ from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
 from users.forms import RegisterForm, RegisterOptForm, ProfileForm
 from feedback.forms import FeedbackForm
+
+NEWS_PAGINATION_COUNT = 10
+
 
 def get_common_context(request):
     c = {}
@@ -61,7 +65,23 @@ def home_page(request):
 def news(request, slug=None):
     c = get_common_context(request)
     if slug == None:
-        c['news'] = NewsItem.objects.all()
+        items = NewsItem.objects.all()
+        paginator = Paginator(items, NEWS_PAGINATION_COUNT)
+        page = int(request.GET.get('page', '1'))
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            page = 1
+            items = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            items = paginator.page(page)
+        c['page'] = page
+        c['page_range'] = paginator.page_range
+        if len(c['page_range']) > 1:
+            c['need_pagination'] = True
+        
+        c['news'] = items
         return render_to_response('news.html', c, context_instance=RequestContext(request))
     else:
         c['item'] = NewsItem.get_by_slug(slug)
@@ -127,12 +147,26 @@ def filter_items(request, c, items):
     if 'count' in request.GET:
         request.session['catalog_count'] = request.GET['count']
     if 'catalog_count' in request.session:
-        items = items[0:request.session['catalog_count']]
         c['count'] = request.session['catalog_count']
     else:
-        items = items[0:1]
+        request.session['catalog_count'] = 1
         c['count'] = 1
- 
+    
+    paginator = Paginator(items, request.session['catalog_count'])
+    page = int(request.GET.get('page', '1'))
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        items = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        items = paginator.page(page)
+    c['page'] = page
+    c['page_range'] = paginator.page_range
+    if len(c['page_range']) > 1:
+        c['need_pagination'] = True
+    
     c['items'] = items
     return c
 
@@ -158,13 +192,14 @@ def item(request, slug):
         if request.POST['action'] == 'add_in_basket':
             sizes = request.POST.getlist('size')
             for s in sizes:
-                print '***', s
                 c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
             messages.success(request, u'Товар был добавлен в корзину.')
         return HttpResponseRedirect(request.get_full_path())
     c['item'] = Item.get_by_slug(slug)
     c['category'] = c['item'].category
     c['same'] = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))[0:4]
+    c['in_cart'] = c['cart_working'].present_item(request.user, c['item'].id)
+    print c['in_cart']
     return render_to_response('item.html', c, context_instance=RequestContext(request))
 
 def cart(request):
@@ -192,7 +227,25 @@ def cart(request):
             messages.success(request, u'Заказ отправлен. Ожидайте звонка.')
             return HttpResponseRedirect('/')
     
-    c['items'] = c['cart_working'].get_content(request.user)
+    items = c['cart_working'].get_content(request.user)
+    
+    paginator = Paginator(items, request.session['catalog_count'])
+    page = int(request.GET.get('page', '1'))
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        items = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        items = paginator.page(page)
+    c['page'] = page
+    c['page_range'] = paginator.page_range
+    if len(c['page_range']) > 1:
+        c['need_pagination'] = True
+    
+    c['items'] = items
+    
     return render_to_response('cart.html', c, context_instance=RequestContext(request))
 
 def order(request, step='1'):

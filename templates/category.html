@@ -56,7 +56,7 @@
     
     <div class="catalog">
         {% if items %}
-            {% for i in items.all %}
+            {% for i in items %}
                 {% include 'item_short.html' with i=i %}
             {% endfor %}
         {% else %}

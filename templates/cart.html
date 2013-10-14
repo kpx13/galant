@@ -64,23 +64,21 @@
         </table>
         
         <div class="sorting">
-            <div class="sortnumleft">
-                <span>Показывать по:</span> 
-                <select name="d" class="selectyze2">
-                    <option value="1">1</option>
-                    <option value="3">3</option>
-                    <option value="5">5</option>
-                </select>
-            </div> <!--sortnum-->
             
             <div class="sortpage">
-                <div class="inpgw">
-                    <a href=""><img src="/static/images/pl.png" alt="" /></a>
-                    <a href="">1</a>   
-                    <a href="" class="active">2</a>   
-                    <a href="">3</a>   
-                    <a href=""><img src="/static/images/pr.png" alt="" /></a>
-                </div> <!--pgw-->
+               {% if need_pagination %}
+                    <div class="inpgw">
+                        {% if items.has_previous %}
+                            <a href="{{ get_request }}?page={{ items.previous_page_number }}" class='transparent'><img src="/static/images/pl.png" /></a>
+                        {% endif %}
+                        {% for p in page_range %}
+                            <a href="{{ get_request }}?page={{ p }}" class='transparent{% if p == items.number %} active{% endif %}'>{{ p }}</a>
+                        {% endfor %}
+                        {% if items.has_next %}
+                            <a href="{{ get_request }}?page={{ items.next_page_number }}" class='transparent'><img src="/static/images/pr.png" /></a>
+                        {% endif %}
+                    </div> <!--pgw-->
+                {% endif %}
             </div> <!--sortpage-->
         </div> <!--sorting-->
 
