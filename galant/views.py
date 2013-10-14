@@ -2,7 +2,7 @@
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponseNotFound
@@ -16,7 +16,7 @@ from news.models import NewsItem
 from catalog.models import Category, Brand, Item
 from shop.models import Cart, Order
 from sessionworking import SessionCartWorking
-from users.forms import RegisterForm, RegisterOptForm
+from users.forms import RegisterForm, RegisterOptForm, ProfileForm
 from feedback.forms import FeedbackForm
 
 def get_common_context(request):
@@ -216,6 +216,20 @@ def opt(request):
                 return HttpResponseRedirect('/')
         c['form'] = register_form
     return render_to_response('opt.html', c, context_instance=RequestContext(request))
+
+def lk(request):
+    c = get_common_context(request)
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/')
+    if request.method == 'GET':
+        c['form'] = ProfileForm(instance=request.user.get_profile())
+    else:
+        form = ProfileForm(request.POST, instance=request.user.get_profile())
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/lk/')
+        c['form'] = form
+    return render_to_response('lk.html', c, context_instance=RequestContext(request))
 
 def other_page(request, page_name):
     c = get_common_context(request)

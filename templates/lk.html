@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+
+{% block breadcrumb %}
+    <a href="" class="no">Личный кабинет</a>
+{% endblock %}
+
+{% block content %}
+    <div class="forms info1 stretch">
+        <form method='POST'>
+            
+            <label>ФИО*</label>
+            {{ form.fio }}
+            {% if form.fio.errors %}
+                <div class="fail">{{ form.fio.errors.0 }}</div>
+            {% endif %} 
+
+            <label>Контактный телефон</label>
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="fail">{{ form.phone.errors.0 }}</div>
+            {% endif %}
+            
+            <label>Индекс</label>
+            {{ form.index }}
+            {% if form.index.errors %}
+                <div class="fail">{{ form.index.errors.0 }}</div>
+            {% endif %}
+            
+            <label>Город</label>
+            {{ form.city }}
+            {% if form.city.errors %}
+                <div class="fail">{{ form.city.errors.0 }}</div>
+            {% endif %}
+
+            <label>Улица</label>
+            {{ form.street }}
+            {% if form.street.errors %}
+                <div class="fail">{{ form.street.errors.0 }}</div>
+            {% endif %}
+
+            <label>Дом / квартира</label>
+            {{ form.house }}
+            {% if form.house.errors %}
+                <div class="fail">{{ form.house.errors.0 }}</div>
+            {% endif %}
+            
+            
+            {% if form.is_opt.value %}
+                <label>Организация</label>
+                {{ form.organization }}
+                {% if form.organization.errors %}
+                    <div class="fail">{{ form.organization.errors.0 }}</div>
+                {% endif %}
+
+                <label>Адрес торгового центра</label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                    <div class="fail">{{ form.address.errors.0 }}</div>
+                {% endif %}
+            {% endif %}
+            
+            <div style='display: none'>{{ form.is_opt }}</div>
+                                 
+            <div class="clear"></div>
+            
+            {% if form.is_opt.value %}
+                <p>Вы оптовый покупатель.</p>
+            {% else %}
+                <p>Вы розничный покупатель. Чтобы стать оптовым, обратитесь к администрации.</p>
+            {% endif %}
+
+            <input type="submit" class="send cl" value="Сохранить">
+            {% csrf_token %}
+        </form>
+
+    </div> <!--forms-->
+{% endblock %}

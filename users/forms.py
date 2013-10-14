@@ -6,7 +6,7 @@ from models import UserProfile
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('fio', 'phone',)
+        exclude = ('user', )
         
         
 class RegisterForm(Form):

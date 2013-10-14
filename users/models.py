@@ -8,11 +8,15 @@ from django.db.models.signals import post_save
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='profile', verbose_name=u'пользователь')
     fio = models.CharField(max_length=256, verbose_name=u'ФИО')
-    is_opt = models.BooleanField(blank=True, verbose_name=u'это оптовик')
     phone = models.CharField(max_length=20, blank=True, verbose_name=u'телефон')
-    city = models.CharField(max_length=20, blank=True,verbose_name=u'город')
+    index = models.CharField(max_length=25, blank=True,verbose_name=u'индекс')
+    city = models.CharField(max_length=100, blank=True,verbose_name=u'город')
+    street = models.CharField(max_length=256, blank=True,verbose_name=u'улица')
+    house = models.CharField(max_length=25, blank=True,verbose_name=u'дом, квартира')
+    
+    is_opt = models.BooleanField(blank=True, verbose_name=u'это оптовик')
     organization = models.CharField(max_length=20,blank=True, verbose_name=u'организация')
-    address = models.CharField(max_length=20, blank=True,verbose_name=u'адрес')
+    address = models.CharField(max_length=20, blank=True, verbose_name=u'адрес ТЦ')
     
 
     class Meta:
