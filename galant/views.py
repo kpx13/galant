@@ -151,8 +151,8 @@ def filter_items(request, c, items):
     if 'catalog_count' in request.session:
         c['count'] = request.session['catalog_count']
     else:
-        request.session['catalog_count'] = 1
-        c['count'] = 1
+        request.session['catalog_count'] = 10
+        c['count'] = 10
     
     paginator = Paginator(items, request.session['catalog_count'])
     page = int(request.GET.get('page', '1'))
@@ -229,9 +229,16 @@ def cart(request):
             messages.success(request, u'Заказ отправлен. Ожидайте звонка.')
             return HttpResponseRedirect('/')
     
-    items = c['cart_working'].get_content(request.user)
+    if 'count' in request.GET:
+        request.session['catalog_cart_count'] = request.GET['count']
+    if 'catalog_cart_count' in request.session:
+        c['count'] = request.session['catalog_cart_count']
+    else:
+        request.session['catalog_cart_count'] = 10
+        c['count'] = 10
     
-    paginator = Paginator(items, request.session['catalog_count'])
+    items = c['cart_working'].get_content(request.user)
+    paginator = Paginator(items, request.session['catalog_cart_count'])
     page = int(request.GET.get('page', '1'))
     try:
         items = paginator.page(page)

@@ -808,6 +808,7 @@ margin: 10px 0;
 	font-size: 1em;
 	text-transform: uppercase;
 	line-height: 2.2em;
+    border: none;
 	border-radius: 2px;
 	cursor: pointer;
 	margin: 20px auto 0 auto;
@@ -1411,7 +1412,7 @@ color: #b3b2af!important;
 
 .breadcrumbs .empty {
 	background: 0;
-	padding: 0 20px 0 0;
+	padding: 0 5px 0 0;
 	margin: 0;
 }
 
@@ -1420,7 +1421,8 @@ color: #b3b2af!important;
 font-family: tahoma, verdana, arial;
 font-size: 1.2em;
 display: inline;
-padding: 0 20px;
+padding: 3px 10px;
+padding-right: 5px;
 background: url(../images/bc.png) no-repeat 0 12px;
 }
 

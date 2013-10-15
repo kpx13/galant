@@ -65,6 +65,22 @@
         
         <div class="sorting">
             
+            <form method='GET'>
+                <div class="sortnumleft">
+                    <span>Показывать по:</span> 
+                    <select name="count" class="selectyze2 sortnum_select">
+                        <option value="10" {% if count == '10' %}selected{% endif %}>10</option>
+                        <option value="30" {% if count == '30' %}selected{% endif %}>30</option>
+                        <option value="50" {% if count == '50' %}selected{% endif %}>50</option>
+                    </select>
+                </div> <!--sortnum-->
+            </form>
+            <script>
+                $('.sortnum_select').change(function(){
+                    $(this).parent().parent().submit();
+                });
+            </script>
+            
             <div class="sortpage">
                {% if need_pagination %}
                     <div class="inpgw">
