@@ -1,8 +1,26 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load i18n %}
 
-{% block content %}
-	<div id='wrapper'>
-		<h2>404</h2>
-		<p>Страница не найдена.</p>
-	</div>
+{% block all_wrapper %}
+    <div class="maskwrap">
+
+        <div class="breadcrumbs fixedbc">
+            <a href="/" class="empty">Главная</a> 
+            <a href="/lk/">Личный кабинет</a> 
+            <a href="" class="no">Смена пароля</a>
+        </div>
+
+
+        <div class="colmask doublepage1">
+            <div class="colleft">
+                <div class="col1">
+                    <h2>404</h2>
+                    <p>Страница не найдена.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+	
+	

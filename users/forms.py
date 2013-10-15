@@ -16,7 +16,12 @@ class RegisterForm(Form):
     password_2 = fields.CharField(label=u'пароль 2', widget=PasswordInput)
     
         
-class RegisterOptForm(Form):
+class RegisterOptForm(ModelForm):
+    
+    class Meta:
+        model = UserProfile
+        exclude = ('user', )
+    
     fio = fields.CharField(label=u'ФИО')
     email = fields.EmailField(label=u'email')
     password_1 = fields.CharField(label=u'пароль 1', widget=PasswordInput)

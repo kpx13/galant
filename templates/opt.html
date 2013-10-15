@@ -19,6 +19,9 @@
     <p><strong>Заполните, пожалуйста, следующую форму. Поля отмеченные * - обязательны к заполнению.</strong></p>
 
     <div class="forms info stretch">
+        {% if msg_sent %}
+            <p style='color: red'>Ваша заявка отправлена.</p>
+        {% endif %}
         <form method='POST' >
             <label>ФИO*</label>
             {{ form.fio }}

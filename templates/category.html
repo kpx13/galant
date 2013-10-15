@@ -43,7 +43,7 @@
     {% for p in category.breadcrumb %}
         <a href="/category/{{ p.slug }}">{{ p.name }}</a>
     {% empty %}
-        <a href="" {% if not category %} class="no" {% endif %}>Каталог</a>
+        <a href="/category/" {% if not category %} class="no" {% endif %}>Каталог</a>
     {% endfor %}
     {% if category %}
         <a href="" class="no">{{ category.name }}</a>

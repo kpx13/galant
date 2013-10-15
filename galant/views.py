@@ -176,10 +176,18 @@ def category(request, slug):
     c = get_common_context(request)
     if slug:
         c['category'] = Category.get_by_slug(slug)
-        
         items = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))
     else:
         items = Item.objects.all()
+    
+    c['brands'] = []
+    c['colors'] = []
+    c['materials'] = []
+    for i in items:
+        if i.brand not in c['brands']: c['brands'].append(i.brand)
+        if i.color not in c['colors']: c['colors'].append(i.color)
+        if i.material not in c['materials']: c['materials'].append(i.material) 
+    
     return render_to_response('category.html', filter_items(request, c, items), context_instance=RequestContext(request))
 
 def brand(request, slug):
@@ -360,12 +368,16 @@ def opt(request):
                 u.set_password(register_form.data.get('password_1'))
                 u.save()
                 p = u.get_profile()
-                p.fio = register_form.data.get('fio')
-                p.is_opt = True
-                p.save()
+                register_form = RegisterOptForm(request.POST, instance=p)
+                register_form.save()
+                p.send()
                 user = auth.authenticate(username=register_form.data.get('email'), password=register_form.data.get('password_1'))
                 auth.login(request, user)
-                return HttpResponseRedirect('/')
+                
+                c['form'] = RegisterOptForm()
+                c['msg_sent'] = u'Ваш отзыв отправлен. Спасибо.'
+                return render_to_response('opt.html', c, context_instance=RequestContext(request))
+            
         c['form'] = register_form
     return render_to_response('opt.html', c, context_instance=RequestContext(request))
 
