@@ -340,14 +340,13 @@ color: #fff!important;
 	line-height: 2em;
 }
 
+.mini a:hover .zakaz4  {
+    text-decoration: none !important;
+}
+
 .mini a{
 	text-decoration: none!important;
 }
-
-.mini a:hover{
-	text-decoration: underline!important;
-}
-
 
 .mini .item {
 	margin: 0 auto 5px auto;
@@ -654,7 +653,7 @@ hr {
 	margin: 5px 0;
 }
 
-.colors {
+.sizes {
 	background: #fff;
 	padding: 10px;
 	width: 45%;
@@ -717,13 +716,12 @@ margin: 10px 0;
 	color: #cecece;
 }
 
-.sizes {
-	background: #fff;
+.to_order_div {
 	padding: 10px;
-	width: 45%;
 	float: right;
 	color: #000;
-	height: 50px;
+    width: 200px;
+	
 }
 
 .discount {
@@ -800,7 +798,6 @@ margin: 10px 0;
 .tovardsc .zakaz_ {
 	background: url(../images/button.jpg) repeat-x;
 	height: 35px;
-	width: 25%;
 	text-align: center;
 	color: #fff;
 	clear: both;
@@ -811,8 +808,9 @@ margin: 10px 0;
     border: none;
 	border-radius: 2px;
 	cursor: pointer;
-	margin: 20px auto 0 auto;
-	float: left;
+	margin: 0px auto 0px auto;
+    margin-left: 15px;
+    margin-top: -10px;
 }
 
 .tovardsc .zakaz_:hover {
@@ -925,9 +923,13 @@ padding: 0;
 	border: 1px solid #cecece;
 	display: block;
 	text-align: center;
+    width: 100px;
 	}	
 	
-	
+
+
+.tnum1w input[type=text]{ margin: 0px; padding-left: 0px; padding-right: 0px}
+
 
 .check .tnum1 {
 	display: inline;
@@ -942,6 +944,7 @@ padding: 0;
 	display: inline;
     background: transparent;
     border: none;
+    width: 20px;
 }
 
 
@@ -1306,7 +1309,17 @@ color: #b3b2af!important;
 	display: inline-block;
 	clear: both;
 	margin: 0 0 10px 0;
-	
+}
+
+.catalog .block img.action {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    position: absolute;
+    border: none;
+    margin-top: -270px;
+    margin-left: 135px;
+    z-index: 2;
 }
 
 .catalog .block a {

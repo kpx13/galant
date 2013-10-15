@@ -88,14 +88,17 @@
                             {% endfor %}
                         
                         </div> <!--sizes-->
-                    
-                        <button type="submit" class="zakaz_">заказать</button>
-                        <input type="hidden" name='action' value="add_in_basket" />
-                        <input type="hidden" name='item_id' value="{{ item.id }}" />
-                        {% csrf_token %}
+                        
+                        <div class='to_order_div'>
+                            <button type="submit" class="zakaz_">заказать</button>
+                            <input type="hidden" name='action' value="add_in_basket" />
+                            <input type="hidden" name='item_id' value="{{ item.id }}" />
+                            {% csrf_token %}
+                            <div class="instock">Товар в наличии</div>
+                        </div>
                     </form>
                     
-                    <div class="instock">Товар в наличии</div>
+                    
                     <div class="clear"></div>
                     
                     

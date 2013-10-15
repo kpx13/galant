@@ -1,6 +1,6 @@
- {% load thumbnail %}
+{% load thumbnail %}
  
- <div class="block">
+<div class="block">
     <form method='POST' action='/item/{{ i.slug }}/'>
         <div class="tovarup">
             <span>Выбор размера</span>
@@ -17,7 +17,12 @@
         {% csrf_token %}
     </form>    
     {% thumbnail i.image.all.0.image "300" as im %}
-        <a href="/item/{{ i.slug }}/"><img src="{{ im.url }}" alt="" /></a>
+        <a href="/item/{{ i.slug }}/">
+            <img src="{{ im.url }}" alt="" />
+            {% if i.price_old %}
+                <img src="/static/img/sticker2.png/" class='action' />
+            {% endif %}
+        </a>
     {% endthumbnail %}
     
     <div class="dsc">

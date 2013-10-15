@@ -12,25 +12,24 @@
             <tr class="heds">
                 <td >Фото</td>
                 <td width='40%'>Описание</td>
-                <td>Кол-во</td>
-                <td >Цена</td>
+                <td>Количество</td>
+                <td>Цена</td>
                 <td >Сумма</td>
                 <td ></td>
             </tr>
             
             {% for i in items %}
                 <tr>
-                    <td><img src="/media/{{ i.item.image.all.0.image }}/" /></td>
+                    <td><a href='/item/{{i.item.slug}}/'><img src="/media/{{ i.item.image.all.0.image }}/" /></a></td>
                     <td>
-                        <p><strong>{{ i.item.name }}</strong></p>
+                        <a href='/item/{{i.item.slug}}/' style='text-decoration: none'><p><strong>{{ i.item.name }}</strong></p></a>
                         <p>Артикул: {{ i.item.art }}</p>
                         <p>Цвет: {{ i.item.color }}</p>
                         <p>Размер: {{ i.size }}</p>
                     </td>
-                    <td>
+                    <td style='text-align: center'>
                         <div class="number">
-
-                            <div class="tnum1w">
+                            <div class="tnum1w"  style='margin: 0 auto; '>
                                 <div class="tnum1w1">
                                     <form method='POST'>
                                         <button type="submit" value="minus" name="action"  class="minus"><span>-</span></button>
