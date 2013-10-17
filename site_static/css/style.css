@@ -2005,8 +2005,7 @@ background: url(../images/menubg.jpg) repeat-x;
    position:relative;
    left:50%;
    text-align:center;
-  
-   font-size: 0.8em;
+   font-size: 0.7em;
    text-transform: none;
 }
 
@@ -2031,6 +2030,7 @@ background: url(../images/menubg.jpg) repeat-x;
    font-family:  tahoma, arial;
    text-transform: uppercase;
 	text-shadow: 0px 1px 0px rgba(55, 55, 55, 1);
+    padding-top: 4px;
 }
 #menu ul li a:hover {
    color:#323637;
