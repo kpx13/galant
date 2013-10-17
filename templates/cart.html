@@ -25,7 +25,7 @@
                         <a href='/item/{{i.item.slug}}/' style='text-decoration: none'><p><strong>{{ i.item.name }}</strong></p></a>
                         <p>Артикул: {{ i.item.art }}</p>
                         <p>Цвет: {{ i.item.color }}</p>
-                        <p>Размер: {{ i.size }}</p>
+                        {% if i.size %}<p>Размер: {{ i.size }}</p>{% endif %}
                     </td>
                     <td style='text-align: center'>
                         <div class="number">
@@ -44,7 +44,7 @@
                         </div> <!--number-->
 
                     </td>
-                    <td><div class="price nobright"> {{ i.item.price|floatformat:"0" }}</div></td>
+                    <td><div class="price nobright"> {{ i.price|floatformat:"0" }} </div></td>
                     <td><div class="price"> {{ i.sum|floatformat:"0" }}</div></td>
                     <td>
                         <form method='POST'>

@@ -5,6 +5,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 import pytils
 import datetime
+from dashboard import string_with_title
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'название')
@@ -37,6 +38,7 @@ class Category(MPTTModel):
         verbose_name = u'категория'
         verbose_name_plural = u'категории'
         ordering=['order']
+        app_label = string_with_title("catalog", u"Каталог")
 
     
     class MPTTMeta:
@@ -75,6 +77,7 @@ class Brand(models.Model):
         verbose_name = u'бренд'
         verbose_name_plural = u'бренды'
         ordering=['id']
+        app_label = string_with_title("catalog", u"Каталог")
     
     def __unicode__(self):
         return self.name
@@ -86,6 +89,7 @@ class Color(models.Model):
         verbose_name = u'цвет'
         verbose_name_plural = u'цвета'
         ordering=['name']
+        app_label = string_with_title("catalog", u"Каталог")
     
     def __unicode__(self):
         return self.name
@@ -97,6 +101,7 @@ class Material(models.Model):
         verbose_name = u'материал'
         verbose_name_plural = u'материалы'
         ordering=['name']
+        app_label = string_with_title("catalog", u"Каталог")
     
     def __unicode__(self):
         return self.name
@@ -108,6 +113,7 @@ class Size(models.Model):
         verbose_name = u'размер'
         verbose_name_plural = u'размеры'
         ordering=['name']
+        app_label = string_with_title("catalog", u"Каталог")
     
     def __unicode__(self):
         return self.name
@@ -121,10 +127,11 @@ class Item(models.Model):
     color = models.ForeignKey(Color, blank=True, verbose_name=u'цвет', related_name='items')
     material = models.ForeignKey(Material, blank=True, verbose_name=u'материал', related_name='items')
     sizes = models.ManyToManyField(Size, blank=True, verbose_name=u'размеры')
-    name = models.CharField(max_length=512, verbose_name=u'название')
+    name = models.CharField(max_length=512, blank=True, verbose_name=u'название')
     art = models.CharField(max_length=50, verbose_name=u'артикул')
     price = models.FloatField(verbose_name=u'цена')
     price_old = models.FloatField(blank=True, null=True, verbose_name=u'старая цена (для акций)')
+    price_opt = models.FloatField(blank=True, null=True, verbose_name=u'цена для оптовиков')
     season = models.CharField(choices=SEASON, blank=True, null=True, max_length=2, verbose_name=u'сезон (если есть)')
     description = RichTextField(default=u'', verbose_name=u'описание')
     order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
@@ -134,7 +141,11 @@ class Item(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug=pytils.translit.slugify(self.name) + '-' + self.art
+            self.slug=pytils.translit.slugify(self.art)
+        if not self.name:
+            self.name = u'Артикул: ' + self.art
+        if not self.price_opt:
+            self.price_opt = self.price
         super(Item, self).save(*args, **kwargs)
     
     @staticmethod
@@ -171,9 +182,10 @@ class Item(models.Model):
         verbose_name = u'товар'
         verbose_name_plural = u'товары'
         ordering=['order']
+        app_label = string_with_title("catalog", u"Каталог")
         
     def __unicode__(self):
-        return self.name
+        return self.art
     
 class Image(models.Model):
     item = models.ForeignKey(Item, verbose_name=u'товар', related_name='image')
@@ -191,6 +203,7 @@ class Image(models.Model):
         verbose_name = u'изображение'
         verbose_name_plural = u'изображения'
         ordering=['order']
+        app_label = string_with_title("catalog", u"Каталог")
         
     def __unicode__(self):
         return str(self.id) 

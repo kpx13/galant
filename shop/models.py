@@ -7,7 +7,25 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template import Context, Template
 
+from dashboard import string_with_title
 from catalog.models import Item, Size
+import config
+from livesettings import config_value
+
+DELIVERY_TYPE = (('post', u'Почта России'),
+                 ('pickpoint', u'Пункты выдачи PickPoint'),
+                 ('ems', u'EMS Почта России (экспресс почта)'),)
+
+def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):
+    mail_subject = ''.join(subject)
+    send_mail(mail_subject, body, settings.DEFAULT_FROM_EMAIL,
+        [to_email])
+
+def get_size(size):
+    if size and size != 'None':
+        return Size.objects.get(name=size)
+    else:
+        return None
 
 class Cart(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
@@ -21,15 +39,17 @@ class Cart(models.Model):
         verbose_name = u'товар в корзине'
         verbose_name_plural = u'товары в корзине'
         ordering = ['-date']
+        app_label = string_with_title("shop", u"Магазин")
         
     def __unicode__(self):
         return self.item.name
+
     
     @staticmethod
     def add_to_cart(user, item, size, count=1):
-        alr = Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size))
+        alr = Cart.objects.filter(user=user, item=item, size=get_size(size))
         if len(alr) == 0:
-            Cart(user=user, item=Item.get(item), size=Size.objects.get(name=size), count=count).save()
+            Cart(user=user, item=Item.get(item), size=get_size(size), count=count).save()
         else:
             alr[0].count = alr[0].count + count
             alr[0].save()
@@ -37,27 +57,27 @@ class Cart(models.Model):
     @staticmethod     
     def update(user, dict_): 
         for d in dict_:
-            Cart(user=user, item=d['item'], count=d['count'], size=Size.objects.get(name=d['size'])).save()
+            Cart(user=user, item=d['item'], count=d['count'], size=get_size(d['size'])).save()
     
     @staticmethod
     def set_count(user, item, size, count):
         if count <= 0:
-            Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size)).delete()
+            Cart.objects.filter(user=user, item=item, size=get_size(size)).delete()
         else: 
-            alr = Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size))[0]
+            alr = Cart.objects.filter(user=user, item=item, size=get_size(size))[0]
             alr.count = count 
             alr.save()
     
     @staticmethod
     def count_plus(user, item, size):
-        alr = Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size))[0]
+        alr = Cart.objects.filter(user=user, item=item, size=get_size(size))[0]
         alr.count += 1 
         alr.save()
             
     
     @staticmethod
     def count_minus(user, item, size):
-        alr = Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size))[0]
+        alr = Cart.objects.filter(user=user, item=item, size=get_size(size))[0]
         if alr.count <= 1:
             alr.delete()
             return
@@ -66,11 +86,19 @@ class Cart(models.Model):
             
     @staticmethod
     def del_from_cart(user, item, size):
-        Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size)).delete()
+        Cart.objects.filter(user=user, item=item, size=get_size(size)).delete()
     
     @staticmethod    
     def clear(user):
         Cart.objects.filter(user=user).delete()
+    
+    @staticmethod
+    def get_price(cap, item):
+        opt = cap.is_authenticated() and cap.get_profile().is_opt
+        if opt: 
+            return item.price_opt
+        else:
+            return item.price
     
     @staticmethod
     def get_content(user):
@@ -78,9 +106,10 @@ class Cart(models.Model):
         res = []
         for c in cart:
             res.append({'item': c.item,
-                        'size': c.size.name,
+                        'size': c.size,
                         'count': c.count,
-                        'sum': c.item.price * c.count})
+                        'price': Cart.get_price(user, c.item),
+                        'sum': Cart.get_price(user, c.item) * c.count})
         return res
     
     @staticmethod
@@ -89,14 +118,14 @@ class Cart(models.Model):
         res = []
         for c in cart:
             res.append({'item': c.item,
-                        'size': c.size.name,
+                        'size': c.size,
                         'count': c.count,
-                        'sum': c.item.price * c.count})
+                        'sum': Cart.get_price(user, c.item) * c.count})
         return res
     
     @staticmethod
     def get_count(user, item, size):
-        cart = list(Cart.objects.filter(user=user, item=item, size=Size.objects.get(name=size)))
+        cart = list(Cart.objects.filter(user=user, item=item, size=get_size(size)))
         if len(cart) > 0:
             return cart[0].count
         else:
@@ -105,19 +134,8 @@ class Cart(models.Model):
     @staticmethod
     def get_goods_count_and_sum(user):
         cart = Cart.get_content(user)
-        return (sum([x['count'] for x in cart]), sum([x['count'] * x['item'].price for x in cart]))
+        return (sum([x['count'] for x in cart]), sum([x['count'] * Cart.get_price(user, x['item']) for x in cart]))
 
-
-DELIVERY_TYPE = (('post', u'Почта России'),
-                 ('pickpoint', u'Пункты выдачи PickPoint'),
-                 ('ems', u'EMS Почта России (экспресс почта)'),)
-
-import config
-from livesettings import config_value
-def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):
-    mail_subject = ''.join(subject)
-    send_mail(mail_subject, body, settings.DEFAULT_FROM_EMAIL,
-        [to_email])
 
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name=u'пользователь')
@@ -130,6 +148,7 @@ class Order(models.Model):
         verbose_name = u'заказ'
         verbose_name_plural = u'заказы'
         ordering = ['-date']
+        app_label = string_with_title("shop", u"Магазин")
     
     def __unicode__(self):
         return str(self.date)
@@ -138,7 +157,7 @@ class Order(models.Model):
         return sum([x.count for x in OrderContent.get_content(self)])
     
     def get_sum(self):
-        return sum([x.count * x.item.price for x in OrderContent.get_content(self)])
+        return sum([x.count * x.price for x in OrderContent.get_content(self)])
     
     def save(self, *args, **kwargs):
         super(Order, self).save(*args, **kwargs)
@@ -157,10 +176,10 @@ Cпособ доставки: {{ o.get_delivery_display }}
 Содержимое:
     {% for c in o.content.all %}
         Ссылка на товар: {{ site }}item/{{ c.item.slug }}/
-        Название: {{ c.item.name }} 
-        Размер: {{ c.size }} 
+        {{ c.item.name }} {% if c.size %}
+        Размер: {{ c.size }}{% endif %}
         Кол-во: {{ c.count }}
-        Цена: {{ c.item.price }} руб.
+        Цена: {{ c.price }} руб.
     {% endfor %}
 
 Общая стоимость:  {{ o.get_sum }} руб. 
@@ -176,10 +195,10 @@ Cпособ доставки: {{ o.get_delivery_display }}
 Содержимое:
     {% for c in o.content.all %}
         Ссылка на товар: {{ site }}item/{{ c.item.slug }}/
-        Название: {{ c.item.name }} 
-        Размер: {{ c.size }} 
+        {{ c.item.name }} {% if c.size %}
+        Размер: {{ c.size }}{% endif %} 
         Кол-во: {{ c.count }}
-        Цена: {{ c.item.price }} руб.
+        Цена: {{ c.price }} руб.
     {% endfor %}
 
 Общая стоимость:  {{ o.get_sum }} руб. 
@@ -223,10 +242,19 @@ class OrderContent(models.Model):
     def move_from_cart(user, order):
         cart_content = Cart.get_content(user)
         for c in cart_content:
-            OrderContent.add(order, c['item'], c['count'], Size.objects.get(name=c['size']))
+            OrderContent.add(order, c['item'], c['count'], get_size(c['size']))
         Cart.clear(user) 
         
     @staticmethod
     def get_content(order):
         return list(OrderContent.objects.filter(order=order))
+    
+    @property
+    def price(self):
+        user = self.order.user
+        opt = user.is_authenticated() and user.get_profile().is_opt
+        if opt: 
+            return self.item.price_opt
+        else:
+            return self.item.price
     

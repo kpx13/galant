@@ -3,6 +3,7 @@ from django.db import models
 import pytils
 from ckeditor.fields import RichTextField
 import datetime
+from dashboard import string_with_title
     
 class NewsItem(models.Model):
     name = models.CharField(max_length=200, verbose_name=u'название')
@@ -27,6 +28,7 @@ class NewsItem(models.Model):
     class Meta:
         verbose_name = u'новость'
         verbose_name_plural = u'новости'
+        app_label = string_with_title("news", u"Новости")
     
     def __unicode__(self):
         return self.name

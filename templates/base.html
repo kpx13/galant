@@ -181,8 +181,10 @@
                                                                 <img src="/media/{{ cc.item.image.all.0.image }}/" alt="" style='max-height: 100px' />
                                                                 <span class="model">{{ cc.item.name }}</span>
                                                                 <span class="amount">Всего: {{ cc.count }}</span>
-                                                                <span class="amount">Размер: {{ cc.size }}</span>
-                                                                <span class="counter">Цена: {{ cc.item.price }} руб.</span>
+                                                                {% if cc.size %}<span class="amount">Размер: {{ cc.size }}</span>{% endif %}
+                                                                <span class="counter">
+                                                                    Цена: {{ cc.price }} руб.
+                                                                </span>
                                                             </div> <!--item-->
                                                         </a>
                                                         

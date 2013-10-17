@@ -8,7 +8,7 @@
             <div class="slider-wrapper theme-default">
                 <div id="slider" class="nivoSlider">
                     {% for s in slideshow %}    
-                        <a href="{{ s.href }}"><img src="/media/{{ s.image }}" data-thumb="/media/{{s.image}}" alt=""/></a>
+                        <a href="{{ s.href }}"><img src="/media/{{ s.image }}" data-thumb="/media/{{s.image}}" alt="{{ s.name }}"/></a>
                     {% endfor %}
                 </div> <!--nivoSlider-->
 

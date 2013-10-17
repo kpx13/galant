@@ -3,12 +3,14 @@
 <div class="block">
     <form method='POST' action='/item/{{ i.slug }}/'>
         <div class="tovarup">
-            <span>Выбор размера</span>
-            {% for s in i.sizes.all %}
-                <input id="Checkbox_{{ i.id }}_{{ s.name }}" name="size" value="{{ s.name }}" class="css-checkbox" type="checkbox" />
-                <label for="Checkbox_{{ i.id }}_{{ s.name }}" name="lbl_Checkbox_{{ i.id }}_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
-                <br />
-            {% endfor %}
+            {% if i.sizes.all %}
+                <span>Выбор размера</span>
+                {% for s in i.sizes.all %}
+                    <input id="Checkbox_{{ i.id }}_{{ s.name }}" name="size" value="{{ s.name }}" class="css-checkbox" type="checkbox" />
+                    <label for="Checkbox_{{ i.id }}_{{ s.name }}" name="lbl_Checkbox_{{ i.id }}_{{ s.name }}" class="css-label"><span>{{ s.name }}</span></label>                                      
+                    <br />
+                {% endfor %}
+            {% endif %}
             <button type="submit" class="zakaz1">Подтвердить</button>
             <input type="hidden" name='action' value="add_in_basket" />
             <input type="hidden" name='item_id' value="{{ i.id }}" />
@@ -28,7 +30,11 @@
     <div class="dsc">
         <a href="/item/{{ i.slug }}/" >{{ i.name }}</a>    
     </div> <!--dsc-->   
-    <span>{{ i.price|floatformat:"0" }} р.</span>
+    {% if user_opt %}
+        <span>{{ i.price_opt|floatformat:"0" }} р.</span>
+    {% else %}
+        <span>{{ i.price|floatformat:"0" }} р.</span>
+    {% endif %}
     <div class="clear"></div>
     <div class="zakaz"><a href="">заказать</a></div>
     

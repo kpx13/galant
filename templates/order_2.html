@@ -74,7 +74,7 @@
                                 <p><strong>{{ i.item.name }}</strong></p>
                                 <p>Артикул: {{ i.item.art }}</p>
                                 <p>Цвет: {{ i.item.color }}</p>
-                                <p>Размер: {{ i.size }}</p>
+                                {% if i.size %}<p>Размер: {{ i.size }}</p>{% endif %}
                             </td>
                             <td><div class="price nobright">{{ i.count }}</td>
                             <td><div class="price nobright"> {{ i.item.price|floatformat:"0" }}</div></td>

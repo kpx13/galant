@@ -35,6 +35,7 @@ def get_common_context(request):
     c['colors'] = Color.objects.all()
     c['materials'] = Material.objects.all()
     c['news_left'] = NewsItem.objects.all()[0:3]
+    c['user_opt'] = request.user.is_authenticated() and request.user.get_profile().is_opt 
     
     if request.user.is_authenticated():
         c['cart_working'] = Cart
@@ -201,8 +202,11 @@ def item(request, slug):
     if request.method == 'POST':
         if request.POST['action'] == 'add_in_basket':
             sizes = request.POST.getlist('size')
-            for s in sizes:
-                c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
+            if sizes:
+                for s in sizes:
+                    c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
+            else:
+                c['cart_working'].add_to_cart(request.user, request.POST['item_id'], 0)
             messages.success(request, u'Товар был добавлен в корзину.')
         return HttpResponseRedirect(request.get_full_path())
     c['item'] = Item.get_by_slug(slug)

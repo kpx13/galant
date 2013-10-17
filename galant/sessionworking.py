@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm 
-from django.contrib import auth
-from django.core.context_processors import csrf
-from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-
-
-from pages.models import Page
-from news.models import NewsItem
-from catalog.models import Item, Category, Size
-from shop.models import Cart, Order
+from catalog.models import Item
 
 def get_item_and_size(is_str):
     res = is_str.split('_')
@@ -40,6 +28,13 @@ class SessionCartWorking(object):
     def get_count(self, cap, item, size):
         return self.__request.session[self.var(item, size)]
     
+    def get_price(self, cap, item):
+        opt = cap.is_authenticated() and cap.get_profile().is_opt
+        if opt: 
+            return item.price_opt
+        else:
+            return item.price
+    
     def get_content(self, cap):
         res = []
         
@@ -47,10 +42,12 @@ class SessionCartWorking(object):
             if i.startswith('cart_'):
                 item, size = get_item_and_size(i[5:])
                 item = Item.get(int(item))
+                if size == '0': size = None
                 res.append({'item': item,
                             'size': size,
                             'count': int(self.__request.session[i]),
-                            'sum': int(self.__request.session[i]) * item.price})
+                            'price': self.get_price(cap, item),
+                            'sum': int(self.__request.session[i]) * self.get_price(cap, item)})
         return res
     
     def present_item(self, cap, item):
@@ -58,11 +55,12 @@ class SessionCartWorking(object):
         for i in self.__request.session.keys():
             if i.startswith('cart_' + str(item)):
                 item, size = get_item_and_size(i[5:])
+                if size == '0': size = None
                 item = Item.get(int(item))
                 res.append({'item': item,
                             'size': size,
                             'count': int(self.__request.session[i]),
-                            'sum': int(self.__request.session[i]) * item.price})
+                            'sum': int(self.__request.session[i]) * self.get_price(cap, item)})
         return res
     
     def pop_content(self):
@@ -70,6 +68,7 @@ class SessionCartWorking(object):
         for i in self.__request.session.keys():
             if i.startswith('cart_'):
                 item, size = get_item_and_size(i[5:])
+                if size == '0': size = None
                 res.append({'item': Item.get(int(item)),
                             'size': size,
                             'count': int(self.__request.session[i])})
@@ -78,7 +77,7 @@ class SessionCartWorking(object):
     
     def get_goods_count_and_sum(self, cap):
         cart = self.get_content(cap)
-        return (sum([x['count'] for x in cart]), sum([x['count'] * x['item'].price for x in cart]))
+        return (sum([x['count'] for x in cart]), sum([x['count'] * self.get_price(cap, x['item']) for x in cart]))
     
     def count_plus(self, cap, item, size):
         self.__request.session[self.var(item, size)] += 1
@@ -90,7 +89,6 @@ class SessionCartWorking(object):
             self.__request.session[self.var(item, size)] -= 1
             
     def set_count(self, cap, item, size, count):
-        print count
         count= int(count)
         
         if count <= 0:
