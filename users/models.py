@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from dashboard import string_with_title
 
 import config
 from livesettings import config_value
@@ -19,7 +20,7 @@ def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='profile', verbose_name=u'пользователь')
     fio = models.CharField(max_length=256, verbose_name=u'ФИО')
-    phone = models.CharField(max_length=20, blank=True, verbose_name=u'телефон')
+    phone = models.CharField(max_length=128, blank=True, verbose_name=u'телефон')
     index = models.CharField(max_length=25, blank=True,verbose_name=u'индекс')
     city = models.CharField(max_length=100, blank=True,verbose_name=u'город')
     street = models.CharField(max_length=256, blank=True,verbose_name=u'улица')
@@ -33,6 +34,7 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = 'профиль пользователя'
         verbose_name_plural = 'профили пользователей'
+        app_label = string_with_title("users", u"Пользователи")
     
     def __unicode__ (self):
         return str(self.user.username)

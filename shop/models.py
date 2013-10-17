@@ -12,8 +12,8 @@ from catalog.models import Item, Size
 import config
 from livesettings import config_value
 
-DELIVERY_TYPE = (('post', u'Почта России'),
-                 ('pickpoint', u'Пункты выдачи PickPoint'),
+DELIVERY_TYPE = (('nal', u'Наличными курьеру'),
+                 ('post', u'Почта России'),
                  ('ems', u'EMS Почта России (экспресс почта)'),)
 
 def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):

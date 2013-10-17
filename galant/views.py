@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from django.core.context_processors import csrf
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.forms.util import ErrorList
@@ -207,13 +206,11 @@ def item(request, slug):
                     c['cart_working'].add_to_cart(request.user, request.POST['item_id'], s)
             else:
                 c['cart_working'].add_to_cart(request.user, request.POST['item_id'], 0)
-            messages.success(request, u'Товар был добавлен в корзину.')
         return HttpResponseRedirect(request.get_full_path())
     c['item'] = Item.get_by_slug(slug)
     c['category'] = c['item'].category
     c['same'] = Item.objects.filter(category__in=c['category'].get_descendants(include_self=True))[0:4]
     c['in_cart'] = c['cart_working'].present_item(request.user, c['item'].id)
-    print c['in_cart']
     return render_to_response('item.html', c, context_instance=RequestContext(request))
 
 def cart(request):
@@ -221,7 +218,6 @@ def cart(request):
     if request.method == 'POST':
         if request.POST['action'] == 'del_from_basket':
             c['cart_working'].del_from_cart(request.user, request.POST['item_id'], request.POST['size'])
-            messages.success(request, u'Товар был удален из корзины.')
             return HttpResponseRedirect(request.get_full_path())
         elif ('set_count' in request.POST) and (int(request.POST['set_count']) != c['cart_working'].get_count(request.user, request.POST['item_id'], request.POST['size'])):
             c['cart_working'].set_count(request.user, request.POST['item_id'], request.POST['size'], request.POST['set_count'])
@@ -238,7 +234,6 @@ def cart(request):
                 
             Order(user=request.user,
                   comment=comment).save()
-            messages.success(request, u'Заказ отправлен. Ожидайте звонка.')
             return HttpResponseRedirect('/')
     
     if 'count' in request.GET:
@@ -405,8 +400,7 @@ def other_page(request, page_name):
         c.update(Page.get_page_by_slug(page_name))
         return render_to_response('page.html', c, context_instance=RequestContext(request))
     except:
-        return HttpResponseNotFound('page not found')
-        #return render_to_response('base.html', c, context_instance=RequestContext(request))
+        raise Http404()
 
 def register(request):
     c = get_common_context(request)

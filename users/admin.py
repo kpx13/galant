@@ -11,9 +11,13 @@ class UserProfileInline(admin.StackedInline):
 
 class ExtUserAdmin(UserAdmin):
     inlines = [ UserProfileInline, ]
-    list_display = UserAdmin.list_display + ('is_active',)
+    list_display = UserAdmin.list_display + ('is_active', )
 
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('fio', 'city', 'is_opt')
 
 
 admin.site.unregister(User)
 admin.site.register(User, ExtUserAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
