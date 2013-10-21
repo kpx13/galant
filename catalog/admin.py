@@ -11,8 +11,9 @@ class CategoryAdmin(admin.ModelAdmin):
     
 class ItemAdmin(admin.ModelAdmin):
     inlines = [ ImageInline, ]
-    list_display = ('art', 'category', 'price', 'price_old', 'price_opt')
-    search = ['art', 'name']
+    list_display = ('art', 'category', 'price', 'price_old', 'price_opt', 'season', 'at_home')
+    search_fields = ['art', ]
+    list_filter = ('category', )
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand)
