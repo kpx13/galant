@@ -56,9 +56,15 @@ def get_common_context(request):
     
     return c
 
+def reset_catalog(request):
+    for i in request.session.keys():
+        if i.startswith('catalog_'):
+            del request.session[i]
+
 
 def home_page(request):
     c = get_common_context(request)
+    reset_catalog(request)
     c['request_url'] = 'home'
     c['slideshow'] = Slider.objects.all()
     c['items'] = Item.objects.filter(at_home=True)
@@ -66,6 +72,7 @@ def home_page(request):
 
 def news(request, slug=None):
     c = get_common_context(request)
+    reset_catalog(request)
     if slug == None:
         items = NewsItem.objects.all()
         paginator = Paginator(items, NEWS_PAGINATION_COUNT)
@@ -89,6 +96,7 @@ def news(request, slug=None):
         c['item'] = NewsItem.get_by_slug(slug)
         return render_to_response('news_item.html', c, context_instance=RequestContext(request))
 
+
 def filter_items(request, c, items):
     if 'sort' in request.GET:
         request.session['catalog_sort'] = request.GET['sort']
@@ -102,8 +110,11 @@ def filter_items(request, c, items):
     if 'brand' in request.GET:
         request.session['catalog_brand'] = request.GET['brand']
     if 'catalog_brand' in request.session and request.session['catalog_brand']:
-        items = items.filter(brand=Brand.get_by_slug(request.session['catalog_brand']))
-        c['brand'] = request.session['catalog_brand']
+        if Brand.get_by_slug(request.session['catalog_brand']) in c['brands']:
+            items = items.filter(brand=Brand.get_by_slug(request.session['catalog_brand']))
+            c['brand'] = request.session['catalog_brand']
+        else:
+            del request.session['catalog_brand']
          
     
     if 'from_price' in request.GET:
@@ -137,14 +148,21 @@ def filter_items(request, c, items):
     if 'color' in request.GET:
         request.session['catalog_color'] = request.GET['color']
     if 'catalog_color' in request.session and request.session['catalog_color']:
-        items = items.filter(color=request.session['catalog_color'])
-        c['color'] = int(request.session['catalog_color'])
+        if Color.objects.get(id=int(request.session['catalog_color'])) in c['colors']:
+            items = items.filter(color=request.session['catalog_color'])
+            c['color'] = int(request.session['catalog_color'])
+        else:
+            del request.session['catalog_color']
+            
         
     if 'material' in request.GET:
         request.session['catalog_material'] = request.GET['material']
     if 'catalog_material' in request.session and request.session['catalog_material']:
-        items = items.filter(material=request.session['catalog_material'])
-        c['material'] = int(request.session['catalog_material'])
+        if Material.objects.get(id=int(request.session['catalog_material'])) in c['materials']:
+            items = items.filter(material=request.session['catalog_material'])
+            c['material'] = int(request.session['catalog_material'])
+        else:
+            del request.session['catalog_material']
     
     if 'count' in request.GET:
         request.session['catalog_count'] = request.GET['count']
@@ -184,9 +202,9 @@ def category(request, slug):
     c['colors'] = []
     c['materials'] = []
     for i in items:
-        if i.brand not in c['brands']: c['brands'].append(i.brand)
-        if i.color not in c['colors']: c['colors'].append(i.color)
-        if i.material not in c['materials']: c['materials'].append(i.material) 
+        if i.brand and i.brand not in c['brands']: c['brands'].append(i.brand)
+        if i.color and i.color not in c['colors']: c['colors'].append(i.color)
+        if i.material and i.material not in c['materials']: c['materials'].append(i.material) 
     
     return render_to_response('category.html', filter_items(request, c, items), context_instance=RequestContext(request))
 
@@ -332,6 +350,7 @@ def order(request, step='1'):
         
 
 def contacts(request):
+    reset_catalog(request)
     c = get_common_context(request)
     if request.method == 'GET':
         c['form'] = FeedbackForm()
@@ -347,6 +366,7 @@ def contacts(request):
     return render_to_response('contacts.html', c, context_instance=RequestContext(request))
 
 def opt(request):
+    reset_catalog(request)
     c = get_common_context(request)
     if request.method == 'GET':
         c['form'] = RegisterOptForm()
@@ -395,6 +415,7 @@ def lk(request):
     return render_to_response('lk.html', c, context_instance=RequestContext(request))
 
 def other_page(request, page_name):
+    reset_catalog(request)
     c = get_common_context(request)
     try:
         c.update(Page.get_page_by_slug(page_name))
