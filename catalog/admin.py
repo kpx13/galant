@@ -8,6 +8,10 @@ class ImageInline(admin.StackedInline):
     
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'parent', 'order')
+
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'order')
+
     
 class ItemAdmin(admin.ModelAdmin):
     inlines = [ ImageInline, ]
@@ -19,5 +23,5 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand)
 admin.site.register(Color)
 admin.site.register(Material)
-admin.site.register(Size)
+admin.site.register(Size, SizeAdmin)
 admin.site.register(Item, ItemAdmin)

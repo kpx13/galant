@@ -108,11 +108,12 @@ class Material(models.Model):
     
 class Size(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'название')
+    order = models.IntegerField(null=True, blank=True, default=100, verbose_name=u'порядок сортировки')
         
     class Meta:
         verbose_name = u'размер'
         verbose_name_plural = u'размеры'
-        ordering=['name']
+        ordering=['order']
         app_label = string_with_title("catalog", u"Каталог")
     
     def __unicode__(self):
