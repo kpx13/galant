@@ -10,7 +10,6 @@ MYAPP_GROUP = ConfigurationGroup(
     )
 
 
-
 config_register(StringValue(
                             MYAPP_GROUP,
         'EMAIL', 

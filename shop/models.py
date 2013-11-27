@@ -16,7 +16,7 @@ DELIVERY_TYPE = (('nal', u'Наличными курьеру'),
                  ('post', u'Почта России'),
                  ('ems', u'EMS Почта России (экспресс почта)'),)
 
-def sendmail(subject, body, to_email=config_value('MyApp', 'EMAIL')):
+def sendmail(subject, body, to_email):
     mail_subject = ''.join(subject)
     send_mail(mail_subject, body, settings.DEFAULT_FROM_EMAIL,
         [to_email])
@@ -187,7 +187,7 @@ Cпособ доставки: {{ o.get_delivery_display }}
 Ссылка на заказ: {{ site }}admin/shop/order/{{ o.id }}/
 """
         body = Template(body_templ).render(Context({'o': self, 'site': 'http://galant.webgenesis.ru/'}))
-        sendmail(subject, body)    
+        sendmail(subject, body, config_value('MyApp', 'EMAIL'))    
         
         subject=u'Вы оформили заказ в магазине galant.',
         body_templ=u"""
@@ -207,7 +207,7 @@ Cпособ доставки: {{ o.get_delivery_display }}
 Скоро с Вами свяжется менеджер. Спасибо.
 """
         body = Template(body_templ).render(Context({'o': self, 'site': 'http://galant.webgenesis.ru/'}))
-        sendmail(subject, body, self.user.username)
+        sendmail(subject, body, self.user.email)
     
     @staticmethod
     def get_recent(user):
