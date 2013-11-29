@@ -14,7 +14,10 @@ class SessionCartWorking(object):
         self.__request = request
         
     def var(self, item, size):
-        return  '_'.join(['cart', str(item), str(size)])
+        if size and size != 'None':
+            return  '_'.join(['cart', str(item), str(size)])
+        else:
+            return  '_'.join(['cart', str(item), '0'])
         
     def add_to_cart(self, cap, item, size):
         if self.var(item, size) in self.__request.session.keys():
@@ -23,10 +26,7 @@ class SessionCartWorking(object):
             self.__request.session[self.var(item, size)] = 1 
     
     def del_from_cart(self, cap, item, size):
-	try:
 	    del self.__request.session[self.var(item, size)]
-	except:
-	    pass
         
     def get_count(self, cap, item, size):
         return self.__request.session[self.var(item, size)]
