@@ -178,7 +178,7 @@
                                                     {% for cc in cart_content|slice:"3" %}
                                                         <a href="/item/{{ cc.item.slug }}/">
                                                             <div class="item">
-                                                                <img src="/media/{{ cc.item.image.all.0.image }}/" alt="" style='max-height: 100px' />
+                                                                <img src="/media/{{ cc.item.image.all.0.image }}" alt="" style='max-height: 100px' />
                                                                 <span class="model">{{ cc.item.name }}</span>
                                                                 <span class="amount">Всего: {{ cc.count }}</span>
                                                                 {% if cc.size %}<span class="amount">Размер: {{ cc.size }}</span>{% endif %}

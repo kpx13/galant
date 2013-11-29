@@ -16,7 +16,7 @@
             <a href="/news/{{ n.slug }}/">
                 <div class="nb">
                     {% thumbnail n.image "300" as im %}
-                        <img src="{{ im.url }}/" />
+                        <img src="{{ im.url }}" />
                     {% endthumbnail %}
                     
                     <h2>{{ n.name }}</h2>

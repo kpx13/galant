@@ -23,7 +23,10 @@ class SessionCartWorking(object):
             self.__request.session[self.var(item, size)] = 1 
     
     def del_from_cart(self, cap, item, size):
-        del self.__request.session[self.var(item, size)]
+	try:
+	    del self.__request.session[self.var(item, size)]
+	except:
+	    pass
         
     def get_count(self, cap, item, size):
         return self.__request.session[self.var(item, size)]

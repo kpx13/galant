@@ -111,8 +111,8 @@
                     
                     {% for img in item.image.all %}
                         {% thumbnail img.image "x100" as im %}
-                            <a href="/media/{{ img.image }}/" rel="prettyPhoto[gallery2]">
-                                <img src="{{ im.url }}/"/>
+                            <a href="/media/{{ img.image }}" rel="prettyPhoto[gallery2]">
+                                <img src="{{ im.url }}"/>
                             </a>
                         {% endthumbnail %}
                     {% endfor %}

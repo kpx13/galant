@@ -37,7 +37,7 @@
 
 {% block content %}
     <div class="newsin">
-        <img src="/media/{{ item.image }}/" alt="" />
+        <img src="/media/{{ item.image }}" alt="" />
         <h2>{{ item.name }}</h2>
         {{ item.text|safe }}
     </div> <!--newsin-->
@@ -46,7 +46,7 @@
         <div id="foo1">
             {% for i in item.photos.all %}
                 {% thumbnail i.image "x97" as im %}
-                    <a rel="fancybox" href="/media/{{ i.image }}/"><img src="{{ im.url }}" /></a>
+                    <a rel="fancybox" href="/media/{{ i.image }}"><img src="{{ im.url }}" /></a>
                 {% endthumbnail %}
             {% endfor %}
         </div>

@@ -20,7 +20,7 @@
             
             {% for i in items %}
                 <tr>
-                    <td><a href='/item/{{i.item.slug}}/'><img src="/media/{{ i.item.image.all.0.image }}/" /></a></td>
+                    <td><a href='/item/{{i.item.slug}}/'><img src="/media/{{ i.item.image.all.0.image }}" /></a></td>
                     <td>
                         <a href='/item/{{i.item.slug}}/' style='text-decoration: none'><p><strong>{{ i.item.name }}</strong></p></a>
                         <p>Артикул: {{ i.item.art }}</p>
@@ -116,3 +116,4 @@
     {% endif %}
 
 {% endblock %}
+

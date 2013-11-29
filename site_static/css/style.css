@@ -814,19 +814,8 @@ margin: 10px 0;
 }
 
 .tovardsc .zakaz_:hover {
-	background: url(../images/button1.jpg) repeat-x;
-	height: 35px;
-	width: 25%;
-	text-align: center;
-	color: #fff;
-	font-family: tahoma, arial, verdana;
-	font-size: 1em;
-	text-transform: uppercase;
-	line-height: 2.2em;
-	border-radius: 2px;
 	cursor: pointer;
-	margin: 20px auto 0 auto;
-	float: left;
+	background: url(../images/button1.jpg) repeat-x;
 }
 
 
