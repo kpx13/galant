@@ -1289,15 +1289,15 @@ color: #b3b2af!important;
 	height: 40px;
 }
 
+
+
 .catalog .block img {
-	width: 177px;
-	height: 244px;
-	overflow: hidden;
-	border-radius: 4px;
-	border-top: 1px solid #d4d1c8;
-	display: inline-block;
-	clear: both;
-	margin: 0 0 10px 0;
+
+    overflow: hidden;
+    display: inline-block;
+    clear: both;
+    max-height: 243px;
+    max-width: 177px;
 }
 
 .catalog .block img.action {
@@ -2591,4 +2591,23 @@ text-decoration:underline
 
 .si {
 	margin: 0 5px;
+}
+
+.catalog .block> a{
+    display: table-cell;
+    width: 177px;
+    position: relative;
+    vertical-align: middle;
+    height: 244px;
+    border-radius: 4px;
+    border-top: 1px solid #d4d1c8;
+    background: #fff;
+    margin: 0 0 10px 0;
+    line-height: 0;
+    text-align: center;
+}
+
+.col2_2_2>img{
+    max-height: 243px;
+    max-width: 177px;
 }
